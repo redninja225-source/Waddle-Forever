@@ -31,6 +31,7 @@ export type RoomName = 'town' |
   'agentlobbysolo' |
   'agentlobbymulti' |
   'agentvr' |
+  'timehub' |
   'sport' |
   'mtn' |
   'shack' |
@@ -84,6 +85,8 @@ export type RoomName = 'town' |
 
 
 export type RoomMap<T> = Partial<Record<RoomName, T>>;
+
+export const TIME_HUB_ROOM_ID = 879;
 
 export const ROOMS: Record<RoomName, Room> = {
   'town': {
@@ -206,6 +209,11 @@ export const ROOMS: Record<RoomName, Room> = {
     id: 213,
     name: '',
     preCpipName: null
+  },
+  'timehub': {
+    id: TIME_HUB_ROOM_ID,
+    name: 'Time Command Center',
+    preCpipName: 'TimeHub'
   },
   'forts': {
     id: 801,

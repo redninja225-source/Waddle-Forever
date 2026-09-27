@@ -1,3 +1,4 @@
+import { choose } from "@common/utils";
 import { WorldTable } from "./world-table";
 
 export class MancalaTable extends WorldTable {
@@ -20,6 +21,22 @@ export class MancalaTable extends WorldTable {
 
   override getAutomaticTurnChange() {
     return false;
+  }
+
+  override getAiMove(): number[] | null {
+    if (this._board === undefined) {
+      return null;
+    }
+
+    const start = this.turn === 0 ? 0 : 7;
+    const end = this.turn === 0 ? 5 : 12;
+    const moves = [];
+    for (let cup = start; cup <= end; cup++) {
+      if (this._board[cup] > 0) {
+        moves.push(cup);
+      }
+    }
+    return moves.length === 0 ? null : [choose(moves)];
   }
 
   isMancalaCupForPlayer(player: number, cup: number): boolean {

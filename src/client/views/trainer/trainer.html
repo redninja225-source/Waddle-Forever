@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="../base.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="trainer.css" rel="stylesheet" type="text/css" media="screen"/>
+    <title>Penguin Trainer</title>
+  </head>
+  <body>
+    <header class="trainer-header">
+      <div>
+        <h1>Penguin Trainer</h1>
+        <p>Apply upgrades and unlocks to an online player.</p>
+      </div>
+      <button id="advanced-button">Commands</button>
+    </header>
+
+    <section class="panel target-panel">
+      <label for="player-select">Player</label>
+      <div class="inline-controls">
+        <select id="player-select" class="select"></select>
+        <button id="refresh-button">Refresh</button>
+      </div>
+    </section>
+
+    <main class="trainer-grid">
+      <section class="panel">
+        <h2>Coins</h2>
+        <div class="button-grid">
+          <button data-coins="100">+100</button>
+          <button data-coins="1000">+1,000</button>
+          <button data-coins="10000">+10,000</button>
+          <button data-coins="-1000">-1,000</button>
+        </div>
+        <div class="inline-controls">
+          <input type="number" id="coin-amount" placeholder="Custom amount" />
+          <button id="add-coins-button">Add Coins</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Inventory</h2>
+        <input type="text" id="item-search" placeholder="Search items by name or ID" />
+        <select id="item-select" class="select tall-select" size="6"></select>
+        <div class="button-grid">
+          <button id="add-item-button">Add Item</button>
+          <button id="all-items-button" class="secondary">Add All Items</button>
+          <button id="member-button" class="secondary">Toggle Member</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Badges & Stamps</h2>
+        <input type="text" id="stamp-search" placeholder="Search stamps by name, category, or ID" />
+        <select id="stamp-select" class="select tall-select" size="6"></select>
+        <div class="button-grid">
+          <button id="add-stamp-button">Add Stamp</button>
+          <button id="all-stamps-button" class="secondary">Add All Stamps</button>
+          <button id="awards-button" class="secondary">PSA Awards</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Travel</h2>
+        <input type="text" id="room-search" placeholder="Search rooms" />
+        <select id="room-select" class="select tall-select" size="6"></select>
+        <button id="join-room-button">Join Room</button>
+      </section>
+
+      <section class="panel">
+        <h2>Card-Jitsu</h2>
+        <div class="button-grid">
+          <button data-cj-wins="1">+1 Win</button>
+          <button data-cj-wins="10">+10 Wins</button>
+          <button data-cj-wins="50">+50 Wins</button>
+          <button id="powercards-button" class="secondary">Power Cards</button>
+        </div>
+        <div class="inline-controls">
+          <input type="number" id="card-id" placeholder="Card ID" />
+          <input type="number" id="card-amount" placeholder="Amount" value="1" />
+          <button id="add-card-button">Add Card</button>
+        </div>
+        <div class="button-grid">
+          <button data-amulet="fire">Fire Gem</button>
+          <button data-amulet="water">Water Gem</button>
+          <button data-amulet="snow">Snow Gem</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Account</h2>
+        <div class="inline-controls">
+          <input type="text" id="rename-input" maxlength="30" placeholder="New penguin name" />
+          <button id="rename-button">Rename</button>
+        </div>
+        <div class="button-grid">
+          <button id="safechat-button" class="secondary">Toggle Safe Chat</button>
+          <button id="nosave-button" class="secondary">Disable Saving</button>
+          <button id="enablesave-button" class="secondary">Enable Saving</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div id="status">Choose a player to begin.</div>
+    </footer>
+
+    <script>var exports = {};</script>
+    <script src="trainer-static.js" type="module"></script>
+  </body>
+</html>

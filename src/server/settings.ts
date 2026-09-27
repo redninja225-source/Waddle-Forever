@@ -7,7 +7,6 @@ import { ModManager } from './mods';
 import { EventListener } from '@common/utils';
 
 export type BooleanSettingKey = 
-  'fps30' | 
   'thin_ice_igt' |
   'clothing' |
   'modern_my_puffle' |
@@ -19,11 +18,17 @@ export type BooleanSettingKey =
   'no_rainbow_quest_wait' |
   'medieval_sound_fix' |
   'inventory_accuracy' |
+  'timeline_progression' |
   'no_create_via_login' |
   'faq_warning';
 
 export type Settings = {
   version: Version
+  game_mode: 'main' | 'timeline'
+  /** Latest timeline date that may be selected in progression mode */
+  timeline_unlocked: Version
+  /** Custom SWF frame rate, or 0 to use the original rate */
+  fps: number
   /** Whether or not the user has answered if they want to install a package or not */
   answered_packages: string
   ignored_version: string
@@ -60,16 +65,20 @@ export class SettingsManager {
     }
 
     this.mods = new ModManager();
+    const version = this.readVersion(settingsJson);
 
     this.settings = {
-      fps30: this.readBoolean(settingsJson, 'fps30', false),
+      fps: this.readFps(settingsJson),
       thin_ice_igt: this.readBoolean(settingsJson, 'thin_ice_igt', false),
       clothing: this.readBoolean(settingsJson, 'clothing', false),
       modern_my_puffle: this.readBoolean(settingsJson, 'modern_my_puffle', false),
       remove_idle: this.readBoolean(settingsJson, 'remove_idle', false),
       jpa_level_selector: this.readBoolean(settingsJson, 'jpa_level_selector', false),
       swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false),
-      version: this.readVersion(settingsJson),
+      version,
+      game_mode: settingsJson['game_mode'] === 'main' ? 'main' : 'timeline',
+      timeline_unlocked: this.readTimelineUnlocked(settingsJson, '2006-06-06'),
+      timeline_progression: this.readBoolean(settingsJson, 'timeline_progression', true),
       always_member: this.readBoolean(settingsJson, 'always_member', true),
       minified_website: this.readBoolean(settingsJson, 'minified_website', false),
       no_rainbow_quest_wait: this.readBoolean(settingsJson, 'no_rainbow_quest_wait', false),
@@ -96,6 +105,16 @@ export class SettingsManager {
     }
   }
 
+  readFps(object: any): number {
+    const value = Number(object['fps']);
+    if ([0, 30, 45, 60, 90, 120].includes(value)) {
+      return value;
+    }
+
+    // Compatibility with the old boolean 30 FPS setting.
+    return object['fps30'] === true ? 30 : 0;
+  }
+
   readVersion(object: any): Version {
     const value = object['version'];
     if (value === undefined || !isVersionValid(value)) {
@@ -103,6 +122,11 @@ export class SettingsManager {
     } else {
       return value;
     }
+  }
+
+  readTimelineUnlocked(object: any, fallback: Version): Version {
+    const value = object['timeline_unlocked'];
+    return typeof value === 'string' && isVersionValid(value) ? value : fallback;
   }
 
   readBoolean(object: any, property: string, default_value: boolean): boolean {

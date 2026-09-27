@@ -1,6 +1,13 @@
+@font-face {
+  font-family: 'Bumbastika';
+  src: url('../../assets/Font/BumbastikaImproved.otf') format('opentype');
+  font-display: swap;
+}
+
 :root {
   --background: radial-gradient(circle, #0280cd 20%, #027bc8 47%, #00529b 90%);
   --background-solid: #027bc8;
+  --cp-font: 'Bumbastika', Arial, sans-serif;
   --mono-stack: Menlo, Monaco, 'Courier New', monospace;
 }
 
@@ -25,6 +32,7 @@ body {
 
 button {
   color: white;
+  font-family: var(--cp-font);
   background-color: #0280CD;
   padding: 5px;
   margin: 4px;
@@ -53,9 +61,10 @@ button:focus {
 }
 
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+input[type="password"] {
   border: solid 1px black;
-  font-family: var(--mono-stack);
+  font-family: var(--cp-font);
   font-size: 14px;
   padding: 5px;
   border-radius: 3px;
@@ -84,6 +93,7 @@ input[type="number"] {
 
 .window {
   display: flex;
+  font-family: var(--cp-font);
   text-align: center;
   flex-direction: column;
   row-gap: 15px;
@@ -97,4 +107,51 @@ input[type="number"] {
     0px 0px 0 4px #ffffff80,
     inset 2px 2px 0 0 #00ccff,
     inset -2px -2px 0 0 #00529B;
+}
+
+.cp-bubble,
+.cp-action-bubble {
+  position: relative;
+  display: inline-block;
+  max-width: 320px;
+  padding: 10px 16px;
+  border: 3px solid #003366;
+  border-radius: 18px;
+  background: white;
+  color: #003366;
+  font-family: var(--cp-font);
+  font-size: 18px;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+}
+
+.cp-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 22px;
+  height: 22px;
+  border-right: 3px solid #003366;
+  border-bottom: 3px solid #003366;
+  background: white;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.cp-action-bubble {
+  border-color: #00529b;
+  border-radius: 10px;
+  background: #e6f7ff;
+}
+
+.cp-action-bubble::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #00529b;
+  transform: translateY(-50%);
 }

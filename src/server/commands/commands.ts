@@ -1,6 +1,7 @@
 import { ArgumentsIndicator, GetArgumentsType, parseArgs } from "@server/socket-server/arg-parser";
 import { ITEMS } from "@server/game-logic/items";
-import { filterItems, joinRoom, sendLPMessage } from "@server/socket-server/handlers/join";
+import { filterItems, joinRoom, sendLPMessage, sendStamps } from "@server/socket-server/handlers/join";
+import { getStamp } from "@server/socket-server/handlers/puffle";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
@@ -59,6 +60,26 @@ const handleAddAllItems: CommandHandler<[string]> = ({ msg, penguin, prst, data 
     msg.send(penguin, 'gi', ...filterItems(data, penguin.inventory.items));
     prst(penguin);
   }
+}
+
+const handleAddStamp: CommandHandler<[number]> = (ctx, stampId) => {
+  getStamp(ctx.data, ctx.msg, ctx.penguin, stampId);
+  sendStamps(ctx);
+  ctx.prst(ctx.penguin);
+}
+
+const handleAddAllStamps: CommandHandler<[string]> = (ctx, action) => {
+  if (action !== 'all') {
+    return;
+  }
+
+  ctx.data.getStampbook().forEach(category => {
+    category.stamps.forEach(stamp => {
+      getStamp(ctx.data, ctx.msg, ctx.penguin, stamp.stamp_id);
+    });
+  });
+  sendStamps(ctx);
+  ctx.prst(ctx.penguin);
 }
 
 const handleJoinRoomId: CommandHandler<[number]> = (ctx, id) => {
@@ -243,6 +264,15 @@ const generators: CommandsGenerator = [
       argNames: ['id'],
       description: "Add a clothing item to your penguin. You can also do 'ai all' to add all clothing items in the game.",
       examples: ['ai 102', 'ai all']
+    }
+  ],
+  [
+    'stamp',
+    [c(['number'], handleAddStamp), c(['string'], handleAddAllStamps)],
+    {
+      argNames: ['id'],
+      description: "Add a stamp to your stampbook. You can also do 'stamp all' to add every stamp available in the current timeline.",
+      examples: ['stamp 6', 'stamp all']
     }
   ],
   [

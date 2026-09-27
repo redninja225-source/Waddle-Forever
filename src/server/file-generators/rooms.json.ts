@@ -2042,6 +2042,20 @@ export function getRoomsJson(d: GameData, s: SettingsManager): string {
       "required_item": null,
       "short_name": "Fire"
     },
+    "879": {
+      "room_id": 879,
+      "room_key": "timehub",
+      "name": "Time Command Center",
+      "display_name": "Time Command Center",
+      "music_id": 0,
+      "is_member": 0,
+      "path": "timehub.swf",
+      "max_users": 80,
+      "jump_enabled": false,
+      "jump_disabled": true,
+      "required_item": null,
+      "short_name": "Time Hub"
+    },
     "998": {
       "room_id": 998,
       "room_key": "",

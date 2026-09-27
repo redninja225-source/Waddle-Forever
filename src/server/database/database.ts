@@ -172,6 +172,12 @@ export interface PenguinJson {
 // USER PREFERENCE
   noSave?: boolean;
   safeChat?: boolean;
+
+// WADDLE FOREVER
+  redeemedCodes?: string[];
+  visitedRooms?: number[];
+  questsCompleted?: string[];
+  achievementsUnlocked?: string[];
 }
 
 function capitalizeName(name: string): string {

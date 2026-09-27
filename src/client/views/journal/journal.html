@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link href="../base.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="journal.css" rel="stylesheet" type="text/css" media="screen"/>
+    <title>Era Journal</title>
+  </head>
+  <body class="journal-body">
+    <header class="journal-header">
+      <div>
+        <h1>Era Journal</h1>
+        <div id="player-name" class="player-name"></div>
+      </div>
+      <div class="journal-stats">
+        <span id="current-era"></span>
+        <span id="unlocked-era"></span>
+        <span id="coin-count"></span>
+      </div>
+    </header>
+
+    <main class="journal-grid">
+      <section class="journal-section">
+        <h2>Story Quests <span id="quest-summary"></span></h2>
+        <div id="quest-list" class="journal-list"></div>
+      </section>
+      <section class="journal-section">
+        <h2>Timeline Achievements <span id="achievement-summary"></span></h2>
+        <div id="achievement-list" class="journal-list"></div>
+      </section>
+    </main>
+    <script>var exports = {};</script>
+    <script src="journal-static.js" type="module"></script>
+  </body>
+</html>

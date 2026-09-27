@@ -23,11 +23,17 @@
       <hr>
 
       <h3>Speedrun Related</h3>
-      <label title="Play the game in 30 FPS.">
-        30 FPS
+      <label title="Changes the frame rate of the main Club Penguin SWF files. Higher values may make animations and timers run faster.">
+        Frame Rate
         <div>
-          <input type="checkbox" id="js-fps-input">
-          <span class="box"></span>
+          <select id="js-fps-select" class="select">
+            <option value="0">Original</option>
+            <option value="30">30 FPS</option>
+            <option value="45">45 FPS</option>
+            <option value="60">60 FPS</option>
+            <option value="90">90 FPS</option>
+            <option value="120">120 FPS</option>
+          </select>
         </div>
       </label>
 
@@ -68,6 +74,13 @@
         Remove Idle Disconnect
         <div>
           <input type="checkbox" id="removeidle-input">
+          <span class="box"></span>
+        </div>
+      </label>
+      <label title="Locks future timeline versions until they are purchased in the Time Command Center.">
+        Timeline Progression Mode
+        <div>
+          <input type="checkbox" id="timeline-progression-input">
           <span class="box"></span>
         </div>
       </label>

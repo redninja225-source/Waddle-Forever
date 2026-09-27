@@ -44,10 +44,18 @@ function getDescription(version: DateInfo): string {
 
 // saving selected version globally
 let currentVersion = '';
+let unlockedVersion = '';
+let timelineProgression = true;
+let timelinePlayerId: number | undefined;
+let nextEra: string | undefined;
+let nextEraCost = 0;
+let playerCoins = 0;
 
 const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
+
+updateResetButton();
 
 function setSelectElements(month: number, year: number) {
   monthElement.value = MONTHS[month - 1];
@@ -67,6 +75,7 @@ type DateInfo = {
   year: number;
   events: DateEvent[];
   selected?: boolean;
+  locked?: boolean;
   inParty: boolean;
 };
 
@@ -89,7 +98,7 @@ function getDateInfo(dateStr: string) : {
   };
 }
 
-function getDateElement({ day, year, month, events, selected, inParty }: DateInfo,
+function getDateElement({ day, year, month, events, selected, locked, inParty }: DateInfo,
   left: DateInfo | undefined,
   right: DateInfo | undefined,
   top: DateInfo | undefined,
@@ -119,6 +128,8 @@ function getDateElement({ day, year, month, events, selected, inParty }: DateInf
 
   if (events.length === 0) {
     classes.push('non-day');
+  } else if (locked) {
+    classes.push('locked-day');
   } else if (selected) {
     classes.push('selected-day');
   } else {
@@ -149,6 +160,7 @@ function getDateElement({ day, year, month, events, selected, inParty }: DateInf
   const imageElements = iconsArray.map((imageName) => `
     <div class="image-container">
       <img src="${imageName}.png" class="day-icon" />
+      ${locked ? '<div class="locked-x">×</div>' : ''}
     </div>`);
 
   while (imageElements.length < 4) {
@@ -264,7 +276,11 @@ function createCalendar(
           partyCount--;
         }
       });
-      dayDateInfo = { ...dayDateInfo, inParty: partyCount > 0 };
+      dayDateInfo = {
+        ...dayDateInfo,
+        inParty: partyCount > 0,
+        locked: isLockedDate(dateStr)
+      };
       if (dateStr === currentVersion) {
         dayDateInfo = { ...dayDateInfo, selected: true };
       }
@@ -468,14 +484,17 @@ function createCalendar(
   monthElement.onchange = () => createCalendar(days, CalendarScrollAction.ScrollToMonth);
 
   const as3Footer = document.getElementById('as3-footer')!;
+  const as3Locked = isLockedDate('2016-01-01');
   as3Footer.innerHTML = `
-    <button>
-      Click here to play in a 2016/2017 version (still in development)
+    <button ${as3Locked ? 'disabled' : ''}>
+      ${as3Locked ? '2016/2017 is locked. Visit the Time Command Center.' : 'Click here to play in a 2016/2017 version (still in development)'}
     </button>
   `;
 
-  as3Footer.onclick = (e) => {
-    updateVersion('2016-01-01');
+  as3Footer.onclick = () => {
+    if (!as3Locked) {
+      updateVersion('2016-01-01');
+    }
   }
 }
 
@@ -491,12 +510,15 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
     const date = getDateFormat(day);
 
     const selected = date === currentVersion;
+    const locked = isLockedDate(date);
 
     return `
-      <div class="${selected ? 'selected-list-day' : 'unselected-day'} timeline-row" data-date="${date}">
+      <div class="${selected ? 'selected-list-day' : locked ? 'locked-list-day' : 'unselected-day'} timeline-row" data-date="${date}">
         <div class="center">
           ${selected ? (
             '[SELECTED]'
+          ) : locked ? (
+            '[LOCKED]'
           ) : (
             '[Click to select]'
           )}
@@ -545,19 +567,105 @@ function setSelectedDateText(version: string) {
   document.getElementById('selected-date')!.innerText = getFullDate(getDateInfo(version), true);
 }
 
+function updateTimelineShop() {
+  const shop = document.getElementById('timeline-shop') as HTMLDivElement;
+  if (nextEra === undefined || timelinePlayerId === undefined) {
+    shop.hidden = true;
+    return;
+  }
+
+  document.getElementById('shop-era')!.innerText = getFullDate(getDateInfo(nextEra), true);
+  document.getElementById('shop-cost')!.innerText = `${nextEraCost.toLocaleString()} coins`;
+  document.getElementById('shop-coins')!.innerText = `You have ${playerCoins.toLocaleString()} coins`;
+  shop.hidden = false;
+  shop.onclick = () => {
+    const confirmed = confirm(`Unlock ${nextEra} for ${nextEraCost.toLocaleString()} coins?`);
+    if (confirmed) {
+      timelineApi.unlock(timelinePlayerId);
+    }
+  };
+}
+
+function updateResetButton() {
+  const button = document.getElementById('reset-progress') as HTMLButtonElement;
+  const modal = document.getElementById('reset-modal') as HTMLDivElement;
+  const confirmInput = document.getElementById('reset-confirm') as HTMLInputElement;
+  const error = document.getElementById('reset-error') as HTMLDivElement;
+  const cancel = document.getElementById('reset-cancel') as HTMLButtonElement;
+  const submit = document.getElementById('reset-submit') as HTMLButtonElement;
+
+  const close = () => {
+    modal.hidden = true;
+    confirmInput.value = '';
+    error.innerText = '';
+  };
+
+  button.onclick = () => {
+    error.innerText = timelinePlayerId === undefined ? 'Open the Timeline while a penguin is connected.' : '';
+    confirmInput.value = '';
+    modal.hidden = false;
+    confirmInput.focus();
+  };
+  cancel.onclick = close;
+  confirmInput.onkeydown = (event) => {
+    if (event.key === 'Enter') {
+      submit.click();
+    }
+  };
+  submit.onclick = () => {
+    const password = confirmInput.value;
+    if (timelinePlayerId === undefined || password !== 'ICONFIRM') {
+      error.innerText = 'Type ICONFIRM exactly to reset progress.';
+      return;
+    }
+    submit.disabled = true;
+    timelineApi.resetProgress({ playerId: timelinePlayerId, password });
+    close();
+    submit.disabled = false;
+  };
+}
+
+function isLockedDate(version: string) {
+  return timelineProgression && version > unlockedVersion;
+}
+
 /** Update the timeline version */
 async function updateVersion(version: string) {
+  if (isLockedDate(version)) {
+    alert(`This era is locked. Visit the Time Command Center to unlock the next era for 5,000 coins.`);
+    return;
+  }
   currentVersion = version;
   timelineApi.update({ settings: { version }, reset: true });
   setSelectedDateText(version);
 }
 
+window.addEventListener('timeline-locked', () => {
+  alert('This era is locked. Visit the Time Command Center to unlock the next era for 5,000 coins.');
+});
+
+window.addEventListener('timeline-unlock-result', (e: any) => {
+  alert(e.detail);
+});
+
+window.addEventListener('timeline-reset-result', (e: any) => {
+  alert(e.detail);
+});
+
 window.addEventListener('get-timeline', (e: any) => {
-  const { days, settings } = e.detail as { days: DateInfo[], settings: any };
+  const { days, settings, hub } = e.detail as { days: DateInfo[], settings: any, hub?: any };
   currentVersion = settings.version;
+  unlockedVersion = settings.timeline_unlocked;
+  timelineProgression = settings.timeline_progression;
+  timelinePlayerId = hub?.playerId;
+  nextEra = hub?.nextEra;
+  nextEraCost = hub?.cost ?? 0;
+  playerCoins = hub?.coins ?? 0;
   const dateInfo = getDateInfo(currentVersion);
   setSelectElements(dateInfo.month, dateInfo.year);
   setSelectedDateText(currentVersion);
+  updateTimelineShop();
+  updateResetButton();
   const year = currentVersion.slice(0, 4);
   yearElement.value = year;
   createCalendar(days);

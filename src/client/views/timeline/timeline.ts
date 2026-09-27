@@ -1,7 +1,8 @@
 import path from 'path'
 
-import { BrowserWindow, ipcMain } from "electron";
-import { isEqual, isLower, isLowerOrEqual, processVersion, Version, addDays } from '@server/routes/versions';
+import { BrowserWindow, dialog, ipcMain } from "electron";
+import { TIMELINE_UNLOCK_COST } from "@common/constants";
+import { isEqual, isGreater, isLower, isLowerOrEqual, processVersion, Version, addDays } from '@server/routes/versions';
 import { UPDATES } from '@server/updates/updates';
 import { CatalogItems } from '@server/updates';
 import { getDate } from '@server/timelines/dates';
@@ -9,7 +10,7 @@ import { getPopupCreator } from '@client/popups';
 import { SettingsManager } from '@server/settings';
 import { WorldServer } from '@server/socket-server/world-server';
 
-export const createTimelinePicker = getPopupCreator('timeline', ['update-version'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer) => {
+export const createTimelinePicker = getPopupCreator('timeline', ['update-version', 'unlock-timeline', 'reset-progress'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer, _wins, windowData) => {
   const timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",
@@ -24,6 +25,10 @@ export const createTimelinePicker = getPopupCreator('timeline', ['update-version
 
   ipcMain.on('update-version', (_, arg) => {
     const { settings: s, reset } = arg;
+    if (settings.settings.timeline_progression && isGreater(s.version, settings.settings.timeline_unlocked)) {
+      timelinePicker.webContents.send('timeline-locked', settings.settings.timeline_unlocked);
+      return;
+    }
     settings.updateSettings(s);
     if (reset === true) {
       server.reset();
@@ -31,10 +36,65 @@ export const createTimelinePicker = getPopupCreator('timeline', ['update-version
     mainWindow.webContents.reloadIgnoringCache();
   });
 
+  ipcMain.on('unlock-timeline', async (_, playerId) => {
+    if (typeof playerId !== 'number') {
+      return;
+    }
+
+    const result = await server.advanceTimelineById(playerId).catch((error) => {
+      return `unlock failed: ${error instanceof Error ? error.message : String(error)}`;
+    });
+    if (!timelinePicker.isDestroyed()) {
+      timelinePicker.webContents.send('timeline-unlock-result', result);
+      await dialog.showMessageBox(timelinePicker, {
+        title: 'Timeline Unlock',
+        message: result,
+        buttons: ['OK']
+      });
+      if (result.startsWith('era ')) {
+        timelinePicker.close();
+      }
+    }
+  });
+
+  ipcMain.on('reset-progress', async (_, arg) => {
+    const { playerId, password } = arg ?? {};
+    let result: string;
+    if (password !== 'ICONFIRM' || typeof playerId !== 'number') {
+      result = 'reset rejected. type ICONFIRM exactly';
+    } else {
+      result = await server.resetProgressById(playerId).catch((error) => {
+        return `reset failed: ${error instanceof Error ? error.message : String(error)}`;
+      });
+    }
+
+    if (!timelinePicker.isDestroyed()) {
+      timelinePicker.webContents.send('timeline-reset-result', result);
+      await dialog.showMessageBox(timelinePicker, {
+        title: 'Timeline Reset',
+        message: result,
+        buttons: ['OK']
+      });
+      if (result === 'timeline and penguin progress reset') {
+        timelinePicker.close();
+      }
+    }
+  });
+
   timelinePicker.webContents.on('did-finish-load', () => {
     timelinePicker?.maximize();
     timelinePicker?.show();
-    timelinePicker?.webContents.send('get-timeline', { days: getConsumedTimeline(getTimeline()), settings: settings.settings  });
+    const penguinId = typeof windowData === 'number' ? windowData : server.getAllPlayersInfo()[0]?.id;
+    timelinePicker?.webContents.send('get-timeline', {
+      days: getConsumedTimeline(getTimeline()),
+      settings: settings.settings,
+      hub: {
+        playerId: penguinId,
+        coins: penguinId === undefined ? undefined : server.getPenguinCoins(penguinId),
+        nextEra: server.getNextEra(),
+        cost: TIMELINE_UNLOCK_COST
+      }
+    });
   });
 
   return timelinePicker;

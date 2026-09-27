@@ -259,6 +259,7 @@ export const joinRoom: PenguinHandler<[number, number, number]> = (ctx, id: numb
     const newRoom = world.getRoom(id);
     world.enterState(penguin, { room: newRoom });
     enterRoom(ctx, newRoom, x, y);
+    ctx.npcs.handlePlayerEnteredRoom(penguin, newRoom, ctx.prst);
   }
 }
 
@@ -382,7 +383,10 @@ export const sendBuddyOnlineList: PenguinHandler<[]> = ({ msg, penguin, world })
 }
 
 export const handleBuddyRequest: PenguinHandler<[number]> = (ctx, targetId) => {
-  const { msg, penguin, world, data, prst } = ctx;
+  const { msg, penguin, world, data, prst, npcs } = ctx;
+  if (npcs.handleBuddyRequested(penguin, targetId)) {
+    return;
+  }
   const target = world.getById(targetId);
   if (target === undefined) {
     return;
@@ -404,7 +408,10 @@ export const handleBuddyRequest: PenguinHandler<[number]> = (ctx, targetId) => {
 }
 
 export const handleBuddyAccept: PenguinHandler<[number]> = async (ctx, requesterId) => {
-  const { world, penguin, prst, msg, data, off } = ctx;
+  const { world, penguin, prst, msg, data, off, npcs } = ctx;
+  if (npcs.handleBuddyAccepted(penguin, requesterId)) {
+    return;
+  }
   const requester = world.getById(requesterId) ?? await off.getPenguin(requesterId);
 
   penguin.buddy.add(requesterId);
@@ -470,7 +477,10 @@ export const handleBuddyMessage: PenguinHandler<[number, number]> = (ctx, target
 }
 
 export const handleGetPlayer: PenguinHandler<[number]> = async (ctx, playerId) => {
-  const { world, msg, penguin, data, db } = ctx
+  const { world, msg, penguin, data, db, npcs } = ctx
+  if (npcs.handleNpcClick(penguin, playerId)) {
+    return;
+  }
   const target = world.getById(playerId);
   if (target === undefined) {
     const data = await db.get(playerId);

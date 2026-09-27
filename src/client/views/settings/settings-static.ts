@@ -17,14 +17,6 @@ interface Setting {
 /** Main array of all settings */
 const allSettings: Setting[] = [
   {
-    key: 'fps30',
-    elementId: 'js-fps-input',
-    onChange: ({ checked }) => {
-      update({ fps30: checked });
-      api.reloadCacheless();
-    }
-  },
-  {
     key: 'thin_ice_igt',
     elementId: 'js-thin-ice-igt-input',
     onChange: ({ checked }) => {
@@ -120,6 +112,14 @@ const allSettings: Setting[] = [
     }
   },
   {
+    key: 'timeline_progression',
+    elementId: 'timeline-progression-input',
+    onChange: ({ checked }) => {
+      update({ timeline_progression: checked });
+      api.clearCache();
+    }
+  },
+  {
     key: 'medieval_sound_fix',
     elementId: 'medieval-sound-fix-input',
     onChange: ({ checked }) => {
@@ -138,8 +138,15 @@ for (const setting of allSettings) {
   })
 }
 
+const fpsSelect = document.getElementById('js-fps-select')! as HTMLSelectElement;
+fpsSelect.addEventListener('change', () => {
+  update({ fps: Number(fpsSelect.value) });
+  api.reloadCacheless();
+});
+
 window.addEventListener('get-settings', (e: any) => {
   const settings = e.detail;
+  fpsSelect.value = String(settings.fps ?? 0);
   for (const setting of allSettings) {
     if (settings[setting.key] === undefined) {
       console.log(`settings-static: Couldn't get setting "${setting.key}"!`)

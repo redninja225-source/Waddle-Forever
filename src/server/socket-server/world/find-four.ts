@@ -1,3 +1,4 @@
+import { choose } from "@common/utils";
 import { WorldTable } from "./world-table";
 
 export class FindFourTable extends WorldTable {
@@ -17,12 +18,50 @@ export class FindFourTable extends WorldTable {
     return 2;
   }
 
+  private getDropRow(column: number): number | undefined {
+    if (this._board === undefined) {
+      return undefined;
+    }
+    for (let row = 0; row < FindFourTable.FIND_FOUR_HEIGHT; row++) {
+      if (this._board[column]?.[row] === 0) {
+        return row;
+      }
+    }
+    return undefined;
+  }
+
+  override getAiMove(): number[] | null {
+    if (this._board === undefined) {
+      return null;
+    }
+
+    const columns = Array.from({ length: FindFourTable.FIND_FOUR_WIDTH }, (_, column) => column)
+      .filter(column => this.getDropRow(column) !== undefined);
+    if (columns.length === 0) {
+      return null;
+    }
+
+    const column = choose(columns);
+    const dropRow = this.getDropRow(column);
+    return dropRow === undefined ? null : [column, dropRow];
+  }
+
   override sendMove(moves: number[]): [number[] | null, number[] | null] {
     if (this._board === undefined) {
       return [null, null];
     }
     const column = moves[0];
     const dropRow = moves[1];
+    if (
+      column < 0 ||
+      column >= FindFourTable.FIND_FOUR_WIDTH ||
+      dropRow < 0 ||
+      dropRow >= FindFourTable.FIND_FOUR_HEIGHT ||
+      this._board[column]?.[dropRow] !== 0 ||
+      this.getDropRow(column) !== dropRow
+    ) {
+      return [null, null];
+    }
     this._board[column][dropRow] = this.turn + 1;
     const args = [this.turn, column, dropRow];
     // this.sendXt('zm', this.turn, column, dropRow);

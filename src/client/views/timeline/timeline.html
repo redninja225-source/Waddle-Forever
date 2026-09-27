@@ -54,6 +54,26 @@
       <div class="version-selected">
         Selected Date: <span id="selected-date"></span>
       </div>
+      <div id="timeline-shop" class="timeline-shop" hidden>
+        <div class="shop-title">NEXT ERA</div>
+        <div id="shop-era" class="shop-era"></div>
+        <div class="coin-icon"></div>
+        <div id="shop-cost" class="shop-cost"></div>
+        <div id="shop-coins" class="shop-coins"></div>
+      </div>
+      <button id="reset-progress" class="reset-progress">RESET PROGRESS</button>
+    </div>
+    <div id="reset-modal" class="reset-modal" hidden>
+      <div class="reset-dialog">
+        <div class="reset-title">RESET PROGRESS</div>
+        <div class="reset-message">This resets the current penguin and timeline progression. Type ICONFIRM to continue.</div>
+        <input id="reset-confirm" class="reset-confirm" type="password" autocomplete="off" />
+        <div id="reset-error" class="reset-error"></div>
+        <div class="reset-actions">
+          <button id="reset-cancel" type="button">Cancel</button>
+          <button id="reset-submit" type="button">Reset</button>
+        </div>
+      </div>
     </div>
     <div id="timeline">
     </div>

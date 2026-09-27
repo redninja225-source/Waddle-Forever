@@ -13,18 +13,18 @@ export type Popups = Map<string, BrowserWindow>;
 export function getPopupCreator(
   name: string,
   eventListeners: string[],
-  windowInitializer: (mainWindow: BrowserWindow, settings: SettingsManager, gameServer: WorldServer, wins: Popups
+  windowInitializer: (mainWindow: BrowserWindow, settings: SettingsManager, gameServer: WorldServer, wins: Popups, windowData?: unknown
   ) => BrowserWindow
-): (mainWin: BrowserWindow, wins: Popups, settings: SettingsManager, gameServer: WorldServer
+): (mainWin: BrowserWindow, wins: Popups, settings: SettingsManager, gameServer: WorldServer, windowData?: unknown
 ) => Promise<void> {
-  return (async (mainWin, wins, settings, gameServer) => {
+  return (async (mainWin, wins, settings, gameServer, windowData) => {
     const prev = wins.get(name);
     if (prev !== undefined) {
       prev.focus();
       return;
     }
   
-    const popup = windowInitializer(mainWin, settings, gameServer, wins);
+    const popup = windowInitializer(mainWin, settings, gameServer, wins, windowData);
     wins.set(name, popup);
       popup.on('closed', () => {
       for (const event of eventListeners) {

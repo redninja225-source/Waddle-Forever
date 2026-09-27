@@ -9,6 +9,7 @@ export abstract class WorldTable {
   private started = false;
   private ended = false;
   protected turn = 0;
+  private aiSeat: number | undefined;
 
   constructor(private id: number) {
 
@@ -49,6 +50,22 @@ export abstract class WorldTable {
     return openSeat;
   }
 
+  public addAi(penguin: WorldPenguin): number | undefined {
+    const seat = this.assignSeatIndex(penguin);
+    if (seat === WorldTable.TABLE_SPECTATOR_SEAT) {
+      return undefined;
+    }
+    this.aiSeat = seat;
+    this.joined[seat] = true;
+    return seat;
+  }
+
+  public get isAiTurn(): boolean {
+    return this.aiSeat === this.turn;
+  }
+
+  abstract getAiMove(): number[] | null;
+
   abstract createBoard(): void;
 
   abstract serializeBoard(): string;
@@ -59,6 +76,7 @@ export abstract class WorldTable {
     this.ended = false;
     this.turn = 0;
     this.spectators = new Set<WorldPenguin>();
+    this.aiSeat = undefined;
   }
 
   public getSeats() {
@@ -72,7 +90,7 @@ export abstract class WorldTable {
   }
 
   public hasPlayer(penguin: WorldPenguin) {
-    return this.getSeatIndex(penguin) !== -1;
+    return this.getSeatIndex(penguin) !== undefined;
   }
 
   public removePlayer(penguin: WorldPenguin) {

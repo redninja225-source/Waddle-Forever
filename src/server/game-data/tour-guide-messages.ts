@@ -33,6 +33,7 @@ export const TOUR_GUIDE_MESSAGES: Partial<Record<RoomName, string>> = {
   agentcom: "Welcome agents, to the EPF Command Room.|This room is ultra top secret...|...and contains the latest in secret agent technology.|Check out the new Field Ops computer for your orders.",
   agentlobbysolo: "Hmm.... Looks like I\'m the only one here.|I can\'t really give a tour to just myself...|...or can I?|Here we have the Facility. It\'s pretty empty.",
   agentvr: "This is called the VR room.|VR stands for Virtual Reality.|Here you can see what the old HQ looked like...|...before it was destroyed by a popcorn device.",
+  timehub: "Welcome to the Time Command Center.|The Timeline Keeper can move the island into a new era.|Unlocking the next era costs 5,000 coins.|Click the Timeline Keeper when you are ready.",
   boiler: "This is the Boiler Room.|It gives electricity and heat to Club Penguin.|Here you can read old editions of the newspaper.|It is a great way to learn about Club Penguin.",
   berg: "This is the Iceberg. It is a secret room.|In the distance you can see Club Penguin.|If you want to dive into the ocean depths...|...try out the Aqua Grabber!",
   cave: "Here we have the Cave, which has its own pool.|It also has windows to see underwater.|Wait a moment, and a crab may walk by.",

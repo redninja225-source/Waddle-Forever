@@ -19,6 +19,10 @@ export class TreasureHuntTable extends WorldTable {
     return [[], []];
   }
 
+  override getAiMove(): number[] | null {
+    return null;
+  }
+
   override getAutomaticTurnChange(): boolean {
     return false;
   }

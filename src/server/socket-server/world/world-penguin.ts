@@ -984,6 +984,10 @@ export class WorldPenguin implements UserPenguin {
   private _battleOfDoom: BattleOfDoomStatus;
   private _medieval2012: Medieval2012Status;
   private _preference: UserPreference;
+  private _redeemedCodes: Set<string>;
+  private _visitedRooms: Set<number>;
+  private _questsCompleted: Set<string>;
+  private _achievementsUnlocked: Set<string>;
   private _avatar = new Avatar();
 
   constructor(
@@ -1012,6 +1016,10 @@ export class WorldPenguin implements UserPenguin {
     this._battleOfDoom = new BattleOfDoomStatus(json);
     this._medieval2012 = new Medieval2012Status(json);
     this._preference = new UserPreference(json);
+    this._redeemedCodes = new Set((json.redeemedCodes ?? []).map(code => code.toUpperCase()));
+    this._visitedRooms = new Set(json.visitedRooms ?? []);
+    this._questsCompleted = new Set(json.questsCompleted ?? []);
+    this._achievementsUnlocked = new Set(json.achievementsUnlocked ?? []);
   }
 
   public get id() {
@@ -1088,6 +1096,58 @@ export class WorldPenguin implements UserPenguin {
 
   public get avatar() {
     return this._avatar;
+  }
+
+  public hasRedeemedCode(code: string): boolean {
+    return this._redeemedCodes.has(code.toUpperCase());
+  }
+
+  public redeemCode(code: string): void {
+    this._redeemedCodes.add(code.toUpperCase());
+  }
+
+  public hasVisitedRoom(roomId: number): boolean {
+    return this._visitedRooms.has(roomId);
+  }
+
+  public visitRoom(roomId: number): boolean {
+    if (this._visitedRooms.has(roomId)) {
+      return false;
+    }
+    this._visitedRooms.add(roomId);
+    return true;
+  }
+
+  public get visitedRooms(): number[] {
+    return [...this._visitedRooms];
+  }
+
+  public hasCompletedQuest(questId: string): boolean {
+    return this._questsCompleted.has(questId);
+  }
+
+  public completeQuest(questId: string): void {
+    this._questsCompleted.add(questId);
+  }
+
+  public get questsCompleted(): string[] {
+    return [...this._questsCompleted];
+  }
+
+  public hasAchievement(achievementId: string): boolean {
+    return this._achievementsUnlocked.has(achievementId);
+  }
+
+  public unlockAchievement(achievementId: string): boolean {
+    if (this._achievementsUnlocked.has(achievementId)) {
+      return false;
+    }
+    this._achievementsUnlocked.add(achievementId);
+    return true;
+  }
+
+  public get achievementsUnlocked(): string[] {
+    return [...this._achievementsUnlocked];
   }
 
   public get puffleLaunch() {
@@ -1194,7 +1254,11 @@ export class WorldPenguin implements UserPenguin {
       medieval2012Message: this._medieval2012.message,
 
       noSave: !this._preference.canSave,
-      safeChat: this._preference.isSafeChat
+      safeChat: this._preference.isSafeChat,
+      redeemedCodes: [...this._redeemedCodes],
+      visitedRooms: [...this._visitedRooms],
+      questsCompleted: [...this._questsCompleted],
+      achievementsUnlocked: [...this._achievementsUnlocked]
     }
   }
 

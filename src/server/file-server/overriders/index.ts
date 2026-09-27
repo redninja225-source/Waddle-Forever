@@ -1,6 +1,6 @@
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
-import { makeSwf30Fps } from "./30fps";
+import { makeSwfFps } from "./30fps";
 import { overrideIndexHtml } from "./index.html";
 import { overrideLoadSwf } from "./load.swf";
 import { overrideDanceContest, overrideJPALevelSelector, overrideThinIce, overrideRollerscape } from "./mods";
@@ -12,10 +12,10 @@ export type OverriderFunction = (d: GameData, s: SettingsManager, b: Buffer | st
 export const OVERRIDERS: Record<string, OverriderFunction> = {
   '': overrideIndexHtml,
   'load.swf': overrideLoadSwf,
-  'play/v2/client/load.swf': makeSwf30Fps,
-  'play/v2/load.swf': makeSwf30Fps,
-  'boots.swf': makeSwf30Fps,
-  'play/v2/client/club_penguin.swf': makeSwf30Fps,
+  'play/v2/client/load.swf': makeSwfFps,
+  'play/v2/load.swf': makeSwfFps,
+  'boots.swf': makeSwfFps,
+  'play/v2/client/club_penguin.swf': makeSwfFps,
   'play/v2/games/book1/bootstrap.swf': overrideMyPuffle,
   'play/v2/games/dancing/dance.swf': overrideDanceContest,
   'play/v2/games/jetpack/JetpackAdventures.swf': overrideJPALevelSelector,
@@ -25,7 +25,7 @@ export const OVERRIDERS: Record<string, OverriderFunction> = {
 };
 
 export const REGEX_OVERRIDERS: Array<[RegExp, OverriderFunction]> = [
-  [/^chat\d+\.swf$/, makeSwf30Fps]
+  [/^chat\d+\.swf$/, makeSwfFps]
 ];
 
 export class FileOverrider {

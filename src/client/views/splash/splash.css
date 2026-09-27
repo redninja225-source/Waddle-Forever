@@ -1,0 +1,119 @@
+.splash-body {
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: var(--cp-font);
+}
+
+.splash-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.back-bubble {
+  width: 540px;
+  height: 350px;
+  padding: 78px 58px 88px;
+  box-sizing: border-box;
+  background-image: url('../../../assets/Bubbles/BackBubble.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  color: white;
+  text-align: center;
+  -webkit-text-stroke: 1.2px #003366;
+  text-shadow:
+    0 3px 0 #003366,
+    2px 0 0 #003366,
+    -2px 0 0 #003366;
+}
+
+.back-bubble h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: normal;
+  line-height: 1.35;
+}
+
+.back-bubble p {
+  margin: 16px 0 0;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.mode-options {
+  display: flex;
+  align-items: flex-start;
+  gap: 42px;
+}
+
+.mode-option {
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mode-button {
+  width: 340px;
+  height: 132px;
+  padding: 0 38px 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url('../../../assets/Bubbles/InteractBubble.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  box-shadow: none;
+  color: white;
+  font-family: var(--cp-font);
+  font-size: 18px;
+  line-height: 1.25;
+  text-align: center;
+  -webkit-text-stroke: 0.8px #003366;
+  text-shadow:
+    0 2px 0 #003366,
+    1px 0 0 #003366,
+    -1px 0 0 #003366;
+}
+
+.mode-button:hover {
+  transform: scale(1.04);
+  background-color: transparent;
+}
+
+.mode-button:active {
+  transform: scale(0.98);
+  background-color: transparent;
+}
+
+.mode-title,
+.mode-description {
+  display: block;
+}
+
+.mode-title {
+  font-size: 21px;
+  line-height: 1.35;
+}
+
+.mode-description {
+  margin-top: 14px;
+  max-width: 320px;
+  color: white;
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: center;
+  -webkit-text-stroke: 0.7px #003366;
+  text-shadow:
+    0 2px 0 #003366,
+    1px 0 0 #003366,
+    -1px 0 0 #003366;
+}

@@ -1,13 +1,15 @@
 import { getPenguinString } from "./join";
+import { getDefaultPenguin } from "@server/database/database";
 import { WorldPenguin } from "@server/socket-server/world/world-penguin";
 import { WorldTable } from "@server/socket-server/world/world-table";
 import { ROOMS } from "@server/game-data/rooms";
 import { RoomGuard, RoomHandler } from "./handlers";
 
-export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg, data }, x, y) => {
+export const handleSetPosition: RoomHandler<[number, number]> = ({ penguin, room, msg, data, npcs }, x, y) => {
   const state = room.getState(penguin);
   const isInitialPosition = state.x === 0 && state.y === 0;
   room.updatePosition(penguin, x, y);
+  npcs.handlePlayerMoved(penguin, room, x, y);
   if (data.isSpOnJr() && isInitialPosition) {
     msg.send(room.players, 'ap', getPenguinString(data, penguin, { ...state, x, y }));
   } else {
@@ -42,8 +44,9 @@ export const handleSendJoke: RoomHandler<[string]> = ({ room, msg, penguin }, jo
   msg.send(room.players, 'sj', penguin.id, joke);
 }
 
-export const handleSendMessage: RoomHandler<[string, string]> = ({ room, msg }, penguin, message) => {
-  msg.send(room.players, 'sm', penguin, message);
+export const handleSendMessage: RoomHandler<[string, string]> = ({ room, msg, penguin, npcs, prst }, senderId, message) => {
+  msg.send(room.players, 'sm', senderId, message);
+  npcs.handlePlayerMessage(penguin, message, room, prst);
 }
 
 export const handleSafeMessage: RoomHandler<[string]> = ({ room, msg, penguin }, message) => {
@@ -181,7 +184,7 @@ export const handleGetTableGame: RoomHandler<[string]> = ({ msg, room, penguin }
   msg.send(penguin, 'gz', ...table.getNames(), boardState);
 }
 
-export const handleJoinTableGame: RoomHandler<[]> = ({ msg, room, penguin }) => {
+export const handleJoinTableGame: RoomHandler<[]> = ({ msg, room, penguin, settings }) => {
   // join the game instance after table seat selection
   const table = room.getPenguinTable(penguin);
   if (table !== null) {
@@ -194,6 +197,16 @@ export const handleJoinTableGame: RoomHandler<[]> = ({ msg, room, penguin }) => 
     }
 
     table.setJoined(seatId);
+    if (seatId !== WorldTable.TABLE_SPECTATOR_SEAT && table.getCount() === 1) {
+      const aiJson = getDefaultPenguin(
+        'CPU',
+        8,
+        settings.settings.always_member,
+        settings.getVirtualDate(0).getTime()
+      );
+      aiJson.noSave = true;
+      table.addAi(new WorldPenguin(910000 + table.getId(), aiJson, settings));
+    }
 
     msg.send(penguin, 'jz', seatId);
     table.getSeats().forEach((seat, index) => {
@@ -261,21 +274,18 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin,
       return;
     }
 
-    // table game specific logic
-    if (moves.length === table.getMoveLength()) {
-      // TODO
-      const [endArgs, args] = table.sendMove(moves);
-      
-      // Ignore non-table zm packets (e.g. sled racing uses 4 args).
+    const playMove = (movesToPlay: number[]) => {
+      const [endArgs, args] = table.sendMove(movesToPlay);
+      if (args === null) {
+        return;
+      }
+
       if (table.getAutomaticTurnChange()) {
         table.changeTurn();
       }
-      if (args !== null) {
-        msg.send(table.penguins, 'zm', ...args);
-      }
+      msg.send(table.penguins, 'zm', ...args);
+
       if (endArgs !== null) {
-        // end args is pre-cpip thing
-        // post-cpip: regular player coins
         if (data.isPreCpip()) {
           table.blockSpectators();
           msg.send(table.penguins, 'zo', ...endArgs);
@@ -284,6 +294,17 @@ export const handleSendTableMove: RoomHandler<number[]> = ({ msg, room, penguin,
         }
         msg.send(room.players, 'ut', table.getId(), table.getCount());
         table.resetRound();
+      }
+    };
+
+    if (moves.length === table.getMoveLength()) {
+      playMove(moves);
+      while (table.hasStarted() && !table.hasEnded() && table.isAiTurn) {
+        const aiMove = table.getAiMove();
+        if (aiMove === null) {
+          break;
+        }
+        playMove(aiMove);
       }
     }
   }  

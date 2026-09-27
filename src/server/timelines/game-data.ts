@@ -249,6 +249,8 @@ export class GameData {
     this.addIdMap(furnitureDir, 'sprites', FURNITURE_SPRITES);
 
     this.addRouteMap(PRE_CPIP_STATIC_FILES);
+    this.addRoute('artwork/rooms/timehub.swf', 'archives:ArtworkRoomsAgent10.swf');
+    this.addRoute('play/v2/content/global/rooms/timehub.swf', 'archives:RoomsAgent.swf');
 
     // furniture prices
     FURNITURE.rows.forEach((furniture) => {

@@ -1,14 +1,16 @@
-import { BrowserWindow, Menu, MenuItemConstructorOptions } from "electron";
+import { BrowserWindow, dialog, Menu, MenuItemConstructorOptions } from "electron";
 import { enableOrDisableDiscordRPC, enableOrDisableDiscordRPCLocationTracking } from "./discord";
 import { Store } from "./store";
 import { loadMain, toggleFullScreen } from "./window";
 import { createSettingsWindow } from "./views/settings/settings";
 import { GlobalSettings } from "@common/utils";
 import { createTimelinePicker } from "./views/timeline/timeline";
+import { createJournal } from "./views/journal/journal";
 import { createModsWindow } from "./views/mods/mods";
 import { SettingsManager } from "@server/settings";
 import { createMultiplayerSettings } from "./views/multiplayer/multiplayer";
 import { createCommands } from "./views/commands/commands";
+import { createTrainer } from "./views/trainer/trainer";
 import { Popups } from "./popups";
 import { WorldServer } from "@server/socket-server/world-server";
 
@@ -20,6 +22,58 @@ const startMenu = (
   popups: Popups,
   gameServer: WorldServer
 ) => {
+  let wasdMovement = false;
+  const lastClick = { x: 640, y: 360 };
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.type === 'mouseDown') {
+      const mouse = input as typeof input & { x?: number, y?: number };
+      lastClick.x = mouse.x ?? lastClick.x;
+      lastClick.y = mouse.y ?? lastClick.y;
+      return;
+    }
+    if (!wasdMovement || input.type !== 'keyDown') {
+      return;
+    }
+
+    const key = input.key.toLowerCase();
+    const delta = key === 'w' ? [0, -120] : key === 's' ? [0, 120] : key === 'a' ? [-120, 0] : key === 'd' ? [120, 0] : null;
+    if (delta === null) {
+      return;
+    }
+    event.preventDefault();
+    const bounds = mainWindow.getContentBounds();
+    lastClick.x = Math.min(Math.max(lastClick.x + delta[0], 0), bounds.width);
+    lastClick.y = Math.min(Math.max(lastClick.y + delta[1], 0), bounds.height);
+    mainWindow.webContents.sendInputEvent({ type: 'mouseDown', x: lastClick.x, y: lastClick.y, button: 'left', clickCount: 1 });
+    mainWindow.webContents.sendInputEvent({ type: 'mouseUp', x: lastClick.x, y: lastClick.y, button: 'left', clickCount: 1 });
+  });
+
+  if (gameServer !== null) {
+    gameServer.addHubRequestListener(async (penguinId) => {
+      const result = await dialog.showMessageBox(mainWindow, {
+        title: 'Guide Gary',
+        message: 'Guide Gary wants to teleport you to the Time Command Center. Do you want to go?',
+        buttons: ['Teleport', 'Cancel'],
+        defaultId: 0,
+        cancelId: 1
+      });
+      if (result.response === 0) {
+        gameServer.travelToHubById(penguinId);
+      }
+    });
+    gameServer.addTimelineRequestListener((penguinId) => {
+      void createTimelinePicker(mainWindow, popups, serverSettings, gameServer, penguinId);
+    });
+    gameServer.addJournalRequestListener((penguinId) => {
+      void createJournal(mainWindow, popups, serverSettings, gameServer, penguinId);
+    });
+    gameServer.addTimelineAdvanceListener(() => {
+      if (!mainWindow.isDestroyed()) {
+        mainWindow.webContents.reloadIgnoringCache();
+      }
+    });
+  }
+
   const app: MenuItemConstructorOptions = { 
     id: '0', 
     role: 'appMenu'
@@ -41,6 +95,16 @@ const startMenu = (
           click: () => createModsWindow(mainWindow, popups, serverSettings, gameServer)
         },
         {
+          label: 'Open Trainer',
+          accelerator: 'CommandOrControl+T',
+          click: () => createTrainer(mainWindow, popups, serverSettings, gameServer)
+        },
+        {
+          label: 'Open Era Journal',
+          accelerator: 'CommandOrControl+J',
+          click: () => createJournal(mainWindow, popups, serverSettings, gameServer)
+        },
+        {
           label: 'Open Commands',
           accelerator: 'CommandOrControl+D',
           click: () => createCommands(mainWindow, popups, serverSettings, gameServer)
@@ -49,6 +113,15 @@ const startMenu = (
       {
         label: 'Open Multiplayer Settings',
         click: () => createMultiplayerSettings(globalSettings,serverSettings, mainWindow)
+      },
+      {
+        label: 'WASD Movement',
+        type: 'checkbox',
+        checked: false,
+        accelerator: 'F6',
+        click: (item) => {
+          wasdMovement = item.checked;
+        }
       },
       {
         type: 'separator'
