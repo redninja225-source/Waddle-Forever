@@ -237,6 +237,7 @@ export const ICONS: IdRefMap = {
   368: 'slegacy:media/play/v2/content/global/clothing/icons/368.swf',
   369: 'slegacy:media/play/v2/content/global/clothing/icons/369.swf',
   370: 'slegacy:media/play/v2/content/global/clothing/icons/370.swf',
+  371: 'slegacy:media/play/v2/content/global/clothing/icons/5471.swf',
   372: 'slegacy:media/play/v2/content/global/clothing/icons/372.swf',
   373: 'slegacy:media/play/v2/content/global/clothing/icons/373.swf',
   374: 'slegacy:media/play/v2/content/global/clothing/icons/374.swf',
@@ -5195,6 +5196,7 @@ export const PAPER: IdRefMap = {
   368: 'slegacy:media/play/v2/content/global/clothing/paper/368.swf',
   369: 'slegacy:media/play/v2/content/global/clothing/paper/369.swf',
   370: 'slegacy:media/play/v2/content/global/clothing/paper/370.swf',
+  371: 'slegacy:media/play/v2/content/global/clothing/paper/5471.swf',
   372: 'slegacy:media/play/v2/content/global/clothing/paper/372.swf',
   373: 'slegacy:media/play/v2/content/global/clothing/paper/373.swf',
   374: 'slegacy:media/play/v2/content/global/clothing/paper/374.swf',
@@ -9128,6 +9130,7 @@ export const PAPER: IdRefMap = {
 
 /** Files for the backgrounds of each relevant clothing ID */
 export const PHOTOS: IdRefMap = {
+  371: 'slegacy:media/play/v2/content/global/clothing/paper/5471.swf',
   901: 'slegacy:media/play/v2/content/global/clothing/photos/901.swf',
   902: 'slegacy:media/play/v2/content/global/clothing/photos/902.swf',
   903: 'slegacy:media/play/v2/content/global/clothing/photos/903.swf',
@@ -9748,6 +9751,7 @@ export const SPRITES: IdRefMap = {
   368: 'slegacy:media/play/v2/content/global/clothing/sprites/368.swf',
   369: 'slegacy:media/play/v2/content/global/clothing/sprites/369.swf',
   370: 'slegacy:media/play/v2/content/global/clothing/sprites/370.swf',
+  371: 'slegacy:media/play/v2/content/global/clothing/sprites/5471.swf',
   372: 'slegacy:media/play/v2/content/global/clothing/sprites/372.swf',
   373: 'slegacy:media/play/v2/content/global/clothing/sprites/373.swf',
   374: 'slegacy:media/play/v2/content/global/clothing/sprites/374.swf',

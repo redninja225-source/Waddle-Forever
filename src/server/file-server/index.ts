@@ -7,7 +7,7 @@ import { FileGenerator, getGeneratorsMap, postGeneratorsMap } from '@server/file
 import { MEDIA_DIRECTORY, readFile, toForwardSlash } from '@common/utils';
 import { SettingsManager } from '@server/settings';
 import { FileOverrider, OVERRIDERS, REGEX_OVERRIDERS } from './overriders';
-import { getYellowString, logverbose } from '@server/logger';
+import { getYellowString, logdebug, logverbose } from '@server/logger';
 
 /** Server that serves files to the game webpage and files in the game */
 export class FileServer {
@@ -83,6 +83,7 @@ export class FileServer {
       const route = req.params[0];
       this.getFile(route).then((binary) => {
         if (binary === undefined) {
+          logdebug(`missing file route: ${route}`);
           next();
         } else {
           const split = route.split('.');

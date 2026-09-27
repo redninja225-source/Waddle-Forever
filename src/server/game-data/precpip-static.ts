@@ -1,4 +1,7 @@
 export const PRE_CPIP_STATIC_FILES: Record<string, string> = {
+  'artwork/icons/371.swf': 'slegacy:media/play/v2/content/global/clothing/icons/5471.swf',
+  'artwork/paper/371.swf': 'slegacy:media/play/v2/content/global/clothing/paper/5471.swf',
+  'artwork/photos/371.swf': 'slegacy:media/play/v2/content/global/clothing/paper/5471.swf',
   'artwork/characters/16.swf': 'mammoth:artwork/characters/penguin.swf',
   'artwork/characters/penguin.swf': 'approximation:penguin_no_shadow.swf',
   'edit/edit6.swf': 'mammoth:edit/edit6.swf',
