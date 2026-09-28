@@ -346,17 +346,7 @@ export const UPDATES_2013: Update[] = [
           party4: 'archives:StarWarsTakeover-RoomsParty4.swf',
           party5: 'archives:StarWarsTakeover-RoomsParty5.swf',
           party6: 'archives:StarWarsTakeover-RoomsParty6.swf',
-          party7: 'archives:StarWarsTakeover-RoomsParty7.swf',
-          party8: 'archives:StarWarsTakeover-RoomsParty8.swf',
-          party9: 'archives:StarWarsTakeover-RoomsParty9.swf',
-          party10: 'archives:StarWarsTakeover-RoomsParty10.swf',
-          party11: 'archives:StarWarsTakeover-RoomsParty11.swf',
-          party12: 'archives:StarWarsTakeover-RoomsParty12.swf',
-          party13: 'archives:StarWarsTakeover-RoomsParty13.swf',
-          party14: 'archives:StarWarsTakeover-RoomsParty14.swf',
-          party15: 'archives:StarWarsTakeover-RoomsParty15.swf',
-          party16: 'archives:StarWarsTakeover-RoomsParty16.swf',
-          party17: 'archives:StarWarsTakeover-RoomsParty17.swf'
+          party7: 'archives:StarWarsTakeover-RoomsParty7.swf'
         },
         music: {
           beach: 380,
@@ -371,17 +361,7 @@ export const UPDATES_2013: Update[] = [
           party4: 444,
           party5: 446,
           party6: 445,
-          party7: 438,
-          party8: 451,
-          party9: 441,
-          party10: 440,
-          party11: 439,
-          party12: 439,
-          party13: 452,
-          party14: 442,
-          party15: 450,
-          party16: 448,
-          party17: 449
+          party7: 438
         },
         startscreens: [
           'archives:StarWarsTakeover-ENLoginScreenCadence.swf',
@@ -456,7 +436,27 @@ export const UPDATES_2013: Update[] = [
     date: '2013-08-01',
     temp: {
       party: {
-        update: 'The Death Star is now open'
+        update: 'The Death Star is now open',
+        rooms: {
+          party8: 'archives:StarWarsTakeover-RoomsParty8.swf',
+          party9: 'archives:StarWarsTakeover-RoomsParty9.swf',
+          party10: 'archives:StarWarsTakeover-RoomsParty10.swf',
+          party11: 'archives:StarWarsTakeover-RoomsParty11.swf',
+          party12: 'archives:StarWarsTakeover-RoomsParty12.swf',
+          party13: 'archives:StarWarsTakeover-RoomsParty13.swf',
+          party14: 'archives:StarWarsTakeover-RoomsParty14.swf',
+          party15: 'archives:StarWarsTakeover-RoomsParty15.swf'
+        },
+        music: {
+          party8: 451,
+          party9: 441,
+          party10: 440,
+          party11: 439,
+          party12: 439,
+          party13: 452,
+          party14: 442,
+          party15: 450
+        }
       }
     }
   },
@@ -464,7 +464,15 @@ export const UPDATES_2013: Update[] = [
     date: '2013-08-08',
     temp: {
       party: {
-        update: 'Yavin 4 is now open'
+        update: 'Yavin 4 is now open',
+        rooms: {
+          party16: 'archives:StarWarsTakeover-RoomsParty16.swf',
+          party17: 'archives:StarWarsTakeover-RoomsParty17.swf'
+        },
+        music: {
+          party16: 448,
+          party17: 449
+        }
       }
     }
   },
