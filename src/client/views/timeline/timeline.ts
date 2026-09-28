@@ -57,18 +57,19 @@ export const createTimelinePicker = getPopupCreator('timeline', ['update-version
     }
   });
 
-  ipcMain.on('unlock-all-timeline', (_, password) => {
-    if (password !== 'ICONFIRM') {
+  ipcMain.on('unlock-all-timeline', async (_, arg) => {
+    const { playerId, password } = arg ?? {};
+    if (password !== 'ICONFIRM' || typeof playerId !== 'number') {
       timelinePicker.webContents.send('timeline-unlock-all-result', { result: 'unlock rejected. type ICONFIRM exactly' });
       return;
     }
 
-    const lastUpdate = UPDATES[UPDATES.length - 1];
-    settings.updateSettings({ timeline_unlocked: lastUpdate.date });
-    timelinePicker.webContents.send('timeline-unlock-all-result', {
-      result: 'all timeline eras unlocked',
-      unlockedVersion: lastUpdate.date
+    const result = await server.unlockEverythingById(playerId).catch((error) => {
+      return { result: `unlock failed: ${error instanceof Error ? error.message : String(error)}` };
     });
+    if (!timelinePicker.isDestroyed()) {
+      timelinePicker.webContents.send('timeline-unlock-all-result', result);
+    }
   });
 
   ipcMain.on('reset-progress', async (_, arg) => {

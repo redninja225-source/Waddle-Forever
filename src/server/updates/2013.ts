@@ -7,11 +7,376 @@ export const UPDATES_2013: Update[] = [
     end: ['party']
   },
   {
+    date: '2013-01-10',
+    temp: {
+      const: {
+        rooms: {
+          forts: 'archives:PrehistoricPartyConstForts.swf',
+          party1: 'archives:PrehistoricPartyConstParty1.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-01-17',
+    temp: {
+      party: {
+        partyName: 'Prehistoric Party',
+        rooms: {
+          forts: 'archives:PrehistoricPartyForts.swf',
+          party1: 'archives:PrehistoricPartyParty1.swf',
+          party2: 'archives:PrehistoricPartyParty2.swf',
+          party3: 'archives:PrehistoricPartyParty3.swf',
+          party4: 'archives:PrehistoricPartyParty4.swf',
+          party5: 'archives:PrehistoricPartyParty5.swf',
+          party6: 'archives:PrehistoricPartyParty6.swf',
+          party7: 'archives:PrehistoricPartyParty7.swf',
+          party8: 'archives:PrehistoricPartyParty8.swf',
+          party9: 'archives:PrehistoricPartyParty9.swf',
+          party10: 'archives:PrehistoricPartyParty10.swf',
+          party11: 'archives:PrehistoricPartyParty11.swf',
+          party12: 'archives:PrehistoricPartyParty12.swf'
+        },
+        music: {
+          party1: 348,
+          party2: 348,
+          party3: 350,
+          party4: 350,
+          party5: 350,
+          party6: 350,
+          party7: 350,
+          party8: 348,
+          party9: 348,
+          party10: 350,
+          party11: 348,
+          party12: 349
+        },
+        startscreens: [
+          'archives:SwfPrehistoric-2.swf',
+          'archives:SwfPrehistoric-3.swf',
+          'archives:SwfPrehistoric-4.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENPrehistoricPartyCatalog.swf'
+          },
+          'close_ups/map_interface.swf': {
+            en: 'archives:ENCloseUpsMapInterface-PrehistoricParty.swf'
+          },
+          'close_ups/quest_interface.swf': {
+            en: 'archives:ENQuestInterface.swf'
+          }
+        },
+        mapNote: 'archives:ENPrehistoricPartyMapNote.swf',
+        partyIconFile: 'archives:PrehistoricPartyIcon.swf'
+      }
+    }
+  },
+  {
+    date: '2013-01-30',
+    end: ['party']
+  },
+  {
+    date: '2013-02-14',
+    temp: {
+      party: {
+        partyName: 'Hollywood Party',
+        rooms: {
+          attic: 'archives:HollywoodPartyRoomsAttic.swf',
+          beach: 'archives:HollywoodPartyRoomsBeach.swf',
+          beacon: 'archives:HollywoodPartyRoomsBeacon.swf',
+          berg: 'archives:HollywoodPartyRoomsBerg.swf',
+          book: 'archives:HollywoodPartyRoomsBook.swf',
+          coffee: 'archives:HollywoodPartyRoomsCoffee.swf',
+          cove: 'archives:HollywoodPartyRoomsCove.swf',
+          dance: 'archives:HollywoodPartyRoomsDance.swf',
+          dock: 'archives:HollywoodPartyRoomsDock.swf',
+          dojo: 'archives:HollywoodPartyRoomsDojo.swf',
+          dojoext: 'archives:HollywoodPartyRoomsDojoext.swf',
+          dojofire: 'archives:HollywoodPartyRoomsDojofire.swf',
+          dojohide: 'archives:HollywoodPartyRoomsDojohide.swf',
+          forest: 'archives:HollywoodPartyRoomsForest.swf',
+          forts: 'archives:HollywoodPartyRoomsForts1.swf',
+          lodge: 'archives:HollywoodPartyRoomsLodge.swf',
+          mtn: 'archives:HollywoodPartyRoomsMtn.swf',
+          party1: 'archives:HollywoodPartyRoomsParty1.swf',
+          party2: 'archives:HollywoodPartyRoomsParty2.swf',
+          party3: 'archives:HollywoodPartyRoomsParty3.swf',
+          party4: 'archives:HollywoodPartyRoomsParty4.swf',
+          pet: 'archives:HollywoodPartyRoomsPet.swf',
+          pizza: 'archives:HollywoodPartyRoomsPizza.swf',
+          plaza: 'archives:HollywoodPartyRoomsPlaza.swf',
+          rink: 'archives:HollywoodPartyRoomsRink.swf',
+          shack: 'archives:HollywoodPartyRoomsShack.swf',
+          shop: 'archives:HollywoodPartyRoomsShop.swf',
+          stage: 'archives:HollywoodPartyRoomsStage.swf',
+          town: 'archives:RoomsTown-HollywoodParty.swf',
+          village: 'archives:HollywoodPartyRoomsVillage.swf'
+        },
+        music: {
+          shop: 352,
+          coffee: 353,
+          party1: 355,
+          party2: 359,
+          party4: 356,
+          pizza: 352,
+          plaza: 354,
+          forts: 357,
+          party3: 358,
+          town: 360
+        },
+        startscreens: [
+          'archives:SwfHollywood-1.swf',
+          'archives:SwfHollywood-2.swf',
+          'archives:SwfHollywood-3.swf'
+        ],
+        globalChanges: {
+          'avatar/sprites/starpenguin.swf': 'archives:Hollywood2013GlobalPenguinStarpenguin.swf',
+          'rooms/effects/avatar.swf': 'archives:Hollywood2013GlobalRoomsEffectsAvatar.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-02-28',
+    end: ['party']
+  },
+  {
+    date: '2013-03-07',
+    temp: {
+      const: {
+        rooms: {
+          dock: 'archives:PuffleParty2013Construction-Dock.swf',
+          forest: 'archives:PuffleParty2013Construction-Forest.swf',
+          pet: 'archives:PuffleParty2013Construction-Pet.swf',
+          plaza: 'archives:PuffleParty2013Construction-Plaza.swf',
+          village: 'archives:PuffleParty2013Construction-Village.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-03-14',
+    temp: {
+      const: {
+        rooms: {
+          plaza: 'archives:PuffleParty2013Construction-Plaza_2.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-03-21',
+    dateReference: 'hotel',
+    temp: {
+      party: {
+        partyName: 'Puffle Party 2013',
+        rooms: {
+          beach: 'archives:RoomsBeach-PuffleParty2013.swf',
+          beacon: 'archives:RoomsBeacon-PuffleParty2013.swf',
+          berg: 'archives:RoomsBerg-PuffleParty2013.swf',
+          boxdimension: 'archives:RoomsBoxDimension-PuffleParty2013.swf',
+          cave: 'archives:RoomsCave-PuffleParty2013.swf',
+          cloudforest: 'archives:RoomsCloudForest-PuffleParty2013.swf',
+          cove: 'archives:RoomsCove-PuffleParty2013.swf',
+          dance: 'archives:RoomsDance-PuffleParty2013.swf',
+          dock: 'archives:RoomsDock-PuffleParty2013.swf',
+          forts: 'archives:RoomsForts-PuffleParty2013.swf',
+          hotellobby: 'archives:RoomsHotelLobby-PuffleParty2013.swf',
+          hotelroof: 'archives:RoomsHotelRoof-PuffleParty2013.swf',
+          hotelspa: 'archives:RoomsHotelSpa-PuffleParty2013.swf',
+          light: 'archives:RoomsLight-PuffleParty2013.swf',
+          lodge: 'archives:RoomsLodge-PuffleParty2013.swf',
+          lounge: 'archives:RoomsLounge-PuffleParty2013.swf',
+          mtn: 'archives:RoomsMtn-PuffleParty2013.swf',
+          party1: 'archives:PuffleParty2013-Party1.swf',
+          party2: 'archives:PuffleParty2013-Party2.swf',
+          pet: 'archives:RoomsPet-PuffleParty2013.swf',
+          plaza: 'archives:RoomsPlaza-PuffleParty2013.swf',
+          town: 'archives:RoomsTown-PuffleParty2013.swf',
+          village: 'archives:RoomsVillage-PuffleParty2013.swf'
+        },
+        music: {
+          hotelroof: 360,
+          hotelspa: 361,
+          hotellobby: 362,
+          cloudforest: 363,
+          light: 364,
+          cave: 366,
+          cove: 367,
+          pet: 368,
+          party2: 368,
+          lodge: 368,
+          plaza: 369,
+          party1: 369,
+          forts: 369,
+          town: 369,
+          mtn: 370,
+          village: 370,
+          beach: 371,
+          beacon: 371,
+          dock: 371,
+          berg: 371,
+          dance: 373,
+          lounge: 374
+        },
+        startscreens: [
+          'archives:SwfPuffle-party-1.swf',
+          'archives:SwfPuffle-party-2.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENPuffleParty2013-PartyCatalog.swf'
+          },
+          'close_ups/party_map_note.swf': {
+            en: 'archives:ENClose_upsParty_map_note.swf'
+          },
+          'close_ups/puffle_choose.swf': {
+            en: 'archives:ENClose_upsPuffle_choose.swf'
+          },
+          'close_ups/hotel_elevator.swf': {
+            en: 'archives:ENClose_upsHotel_elevator.swf'
+          },
+          'close_ups/rainbow_cannon_prompt.swf': {
+            en: 'archives:ENClose_upsRainbow_cannon_prompt.swf'
+          },
+          'close_ups/rainbow_puffle_quest.swf': {
+            en: 'archives:ENClose_upsRainbow_puffle_quest.swf'
+          }
+        },
+        fileChanges: {
+          'play/v2/client/interface.swf': 'archives:ClientInterfacePuffleParty2013.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-04-05',
+    end: ['party']
+  },
+  {
+    date: '2013-04-18',
+    temp: {
+      const: {
+        rooms: {
+          beach: 'archives:RoomsBeach-MarvelSuperHeroTakeover2013Construction.swf',
+          dock: 'archives:RoomsDock-MarvelSuperHeroTakeover2013Construction.swf',
+          forest: 'archives:RoomsForest-MarvelSuperHeroTakeover2013Construction.swf',
+          forts: 'archives:RoomsForts-MarvelSuperHeroTakeover2013Construction.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-04-25',
+    temp: {
+      party: {
+        partyName: 'Marvel Super Hero Takeover 2013',
+        rooms: {
+          beach: 'archives:RoomsBeach-Marvel2013.swf',
+          cove: 'archives:RoomsCove-Marvel2013.swf',
+          dock: 'archives:RoomsDock-Marvel2013.swf',
+          forest: 'archives:RoomsForest-Marvel2013.swf',
+          forts: 'archives:RoomsForts-Marvel2013.swf',
+          light: 'archives:RoomsLight-Marvel2013.swf',
+          party1: 'archives:RoomsParty1-Marvel2013.swf',
+          party2: 'archives:RoomsParty2-Marvel2013.swf',
+          party3: 'archives:RoomsParty3-Marvel2013.swf',
+          pizza: 'archives:RoomsPizza-Marvel2013.swf',
+          plaza: 'archives:RoomsPlaza-Marvel2013.swf',
+          stage: 'archives:RoomsStage-Marvel2013.swf',
+          town: 'archives:RoomsTown-Marvel2013.swf'
+        },
+        music: {
+          dock: 389,
+          plaza: 389,
+          forts: 389,
+          stage: 391,
+          town: 389
+        },
+        startscreens: [
+          'archives:ENMarvelSuperHeroTakeover2013LoginScreen1.swf',
+          'archives:ENMarvelSuperHeroTakeover2013LoginScreen2.swf',
+          'archives:ENMarvelSuperHeroTakeover2013LoginScreen3.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENCataloguesParty-Marvel2013.swf'
+          },
+          'close_ups/hero_endscreen.swf': {
+            en: 'archives:ENCloseUpsHeroEndscreen.swf'
+          },
+          'close_ups/hero_interface.swf': {
+            en: 'archives:ENCloseUpsHeroInterface.swf'
+          },
+          'close_ups/splashscreen.swf': {
+            en: 'archives:ENCloseUpsSplashscreen.swf'
+          },
+          'close_ups/villain_endscreen.swf': {
+            en: 'archives:ENCloseUpsVillainEndscreen.swf'
+          },
+          'close_ups/villain_interface.swf': {
+            en: 'archives:ENCloseUpsVillainInterface.swf'
+          }
+        },
+        globalChanges: {
+          'membership/party1.swf': 'archives:ENMembershipParty1-Marvel2013.swf',
+          'membership/party2.swf': 'archives:ENMembershipParty2-Marvel2013.swf',
+          'membership/party3.swf': 'archives:ENMembershipParty3-Marvel2013.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-05-08',
+    end: ['party']
+  },
+  {
+    date: '2013-05-16',
+    temp: {
+      const: {
+        rooms: {
+          dojoext: 'archives:RoomsDojoext-CardJitsuParty2013.swf',
+          dojohide: 'archives:RoomsDojohide-CardJitsuParty2013.swf'
+        },
+        music: {
+          dojoext: 398,
+          dojohide: 399
+        }
+      }
+    }
+  },
+  {
     date: '2013-05-22',
-    martialArtworks: 'archives:ENCataloguesNinja-May2013.swf'
+    martialArtworks: 'archives:ENCataloguesNinja-May2013.swf',
+    temp: {
+      const: {
+        rooms: {
+          dojo: 'archives:RoomsDojo2-CardJitsuParty2013.swf',
+          dojoext: 'archives:RoomsDojoext2-CardJitsuParty2013.swf',
+          dojohide: 'archives:RoomsDojohide2-CardJitsuParty2013.swf'
+        },
+        music: {
+          dojo: 400,
+          dojoext: 401,
+          dojohide: 402
+        },
+        globalChanges: {
+          'music/400.swf': 'archives:MusicNew400.swf',
+          'music/401.swf': 'archives:MusicNew401.swf',
+          'music/402.swf': 'archives:MusicNew402.swf'
+        }
+      }
+    }
   },
   {
     date: '2013-05-23',
+    dateReference: 'dojosnow',
+    rooms: {
+      dojo: 'archives:RoomsDojo_5.swf',
+      dojoext: 'archives:RoomsDojoext_6.swf',
+      dojosnow: 'archives:RoomsDojosnow.swf'
+    },
     stampUpdates: [
       {
         category:   {
@@ -205,7 +570,62 @@ export const UPDATES_2013: Update[] = [
           }
         ]
       }
-    ]
+    ],
+    temp: {
+      party: {
+        partyName: 'Card-Jitsu Party',
+        rooms: {
+          beach: 'archives:RoomsBeach-CardJitsuParty2013.swf',
+          coffee: 'archives:RoomsCoffee-CardJitsuParty2013.swf',
+          cove: 'archives:RoomsCove-CardJitsuParty2013.swf',
+          dock: 'archives:RoomsDock-CardJitsuParty2013.swf',
+          dojo: 'archives:RoomsDojo-CardJitsuParty2013.swf',
+          forest: 'archives:RoomsForest-CardJitsuParty2013.swf',
+          forts: 'archives:RoomsForts-CardJitsuParty2013.swf',
+          lodge: 'archives:RoomsLodge-CardJitsuParty2013.swf',
+          mtn: 'archives:RoomsMtn-CardJitsuParty2013.swf',
+          party1: 'archives:RoomsParty1-CardJitsuParty2013.swf',
+          pizza: 'archives:RoomsPizza-CardJitsuParty2013.swf',
+          plaza: 'archives:RoomsPlaza-CardJitsuParty2013.swf',
+          rink: 'archives:RoomsRink-CardJitsuParty2013.swf',
+          town: 'archives:RoomsTown-CardJitsuParty2013.swf',
+          village: 'archives:RoomsVillage-CardJitsuParty2013.swf'
+        },
+        music: {
+          beach: 408,
+          coffee: 409,
+          cove: 410,
+          dock: 408,
+          forest: 410,
+          party1: 413,
+          pizza: 414,
+          plaza: 411,
+          mtn: 407,
+          lodge: 412,
+          village: 416,
+          forts: 411,
+          rink: 415,
+          town: 411
+        },
+        startscreens: [
+          'archives:ENCardJitsuSnowLoginScreen1.swf',
+          'archives:ENCardJitsuSnowLoginScreen2.swf',
+          'archives:ENCardJitsuSnowLoginScreen3.swf'
+        ],
+        localChanges: {
+          'close_ups/poster.swf': {
+            en: 'archives:ENClose_upsPoster-CardJitsuParty2013.swf'
+          },
+          'catalogues/party.swf': {
+            en: 'archives:ENCataloguesParty-CardJitsuParty2013.swf'
+          }
+        }
+      }
+    }
+  },
+  {
+    date: '2013-06-06',
+    end: ['party']
   },
   {
     date: '2013-06-20',
@@ -274,7 +694,73 @@ export const UPDATES_2013: Update[] = [
     ]
   },
   {
+    date: '2013-06-27',
+    temp: {
+      party: {
+        partyName: 'Monsters University Takeover',
+        rooms: {
+          coffee: 'archives:RoomsCoffee-MUTakeover2013.swf',
+          forts: 'archives:RoomsForts-MUTakeover2013.swf',
+          party1: 'archives:MUTakeover2013-Party1.swf',
+          party2: 'archives:MUTakeover2013-Party2.swf',
+          party3: 'archives:MUTakeover2013-Party3.swf',
+          party4: 'archives:MUTakeover2013-Party4.swf',
+          party5: 'archives:MUTakeover2013-Party5.swf',
+          party6: 'archives:MUTakeover2013-Party6.swf',
+          party7: 'archives:MUTakeover2013-Party7.swf',
+          party8: 'archives:MUTakeover2013-Party8.swf',
+          pizza: 'archives:RoomsPizza-MUTakeover2013.swf',
+          plaza: 'archives:RoomsPlaza-MUTakeover2013.swf',
+          town: 'archives:RoomsTown-MUTakeover2013.swf'
+        },
+        music: {
+          party3: 420,
+          party1: 419,
+          coffee: 429,
+          party4: 423,
+          party6: 427,
+          party5: 425,
+          pizza: 421,
+          plaza: 419,
+          party8: 424,
+          party7: 426,
+          party2: 422,
+          forts: 419,
+          town: 419
+        },
+        startscreens: [
+          'archives:ENMonstersUniversityTakeoverLoginScreen1.swf',
+          'archives:ENMonstersUniversityTakeoverLoginScreen2.swf',
+          'archives:ENMonstersUniversityTakeoverLoginScreen3.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENMUTakeoverCatalog.swf'
+          },
+          'close_ups/member.swf': {
+            en: 'archives:ENClose_upsMember-MUTakeover.swf'
+          },
+          'close_ups/party_map_note.swf': {
+            en: 'archives:ENClose_upsMap-MUTakeover.swf'
+          },
+          'close_ups/login_prompt.swf': {
+            en: 'archives:ENCloseUpsLoginPrompt-MUTakeover2013.swf'
+          },
+          'close_ups/frat_house_dialog.swf': {
+            en: 'archives:ENCloseUpsFratHouseDialog.swf'
+          }
+        }
+      }
+    }
+  },
+  {
     date: '2013-07-11',
+    end: ['party'],
+    dateReference: 'school',
+    rooms: {
+      school: 'archives:RoomsSchool.swf',
+      dojosnow: 'archives:RoomsDojosnow-July2013.swf'
+    },
     temp: {
       const: {
         rooms: {
@@ -482,6 +968,82 @@ export const UPDATES_2013: Update[] = [
     martialArtworks: 'archives:ENCataloguesNinja-August2013.swf'
   },
   {
+    date: '2013-08-22',
+    temp: {
+      party: {
+        partyName: 'Teen Beach Movie Summer Jam',
+        rooms: {
+          beach: 'archives:RoomsBeach-TeenBeachMovieSummerJam.swf',
+          cove: 'archives:RoomsCove-TeenBeachMovieSummerJam.swf',
+          dock: 'archives:RoomsDock-TeenBeachMovieSummerJam.swf',
+          forest: 'archives:RoomsForest-TeenBeachMovieSummerJam.swf',
+          forts: 'archives:RoomsForts-TeenBeachMovieSummerJam.swf',
+          party1: 'archives:RoomsParty1-TeenBeachMovieSummerJam.swf',
+          party2: 'archives:RoomsParty2-TeenBeachMovieSummerJam.swf',
+          party3: 'archives:RoomsParty3-TeenBeachMovieSummerJam.swf',
+          party4: 'archives:RoomsParty4-TeenBeachMovieSummerJam.swf',
+          plaza: 'archives:RoomsPlaza-TeenBeachMovieSummerJam.swf',
+          rink: 'archives:RoomsRink-TeenBeachMovieSummerJam.swf',
+          school: 'archives:RoomsSchool-TeenBeachMovieSummerJam.swf',
+          town: 'archives:RoomsTown-TeenBeachMovieSummerJam.swf'
+        },
+        music: {
+          town: 472,
+          school: 436,
+          plaza: 470,
+          beach: 467,
+          dock: 468,
+          forts: 469,
+          rink: 471,
+          forest: 477,
+          cove: 469,
+          party1: 474,
+          party2: 473,
+          party3: 475,
+          party4: 476
+        },
+        startscreens: [
+          'archives:LoginScreen-ENTeenBeachTeaser1.swf',
+          'archives:TeenBeach-ENLoginScreen1.swf',
+          'archives:LoginScreen-ENTeen-beach-member.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENCataloguesParty-TBMSummerJam.swf'
+          }
+        }
+      }
+    }
+  },
+  {
+    date: '2013-09-05',
+    end: ['party']
+  },
+  {
+    date: '2013-09-11',
+    temp: {
+      const: {
+        rooms: {
+          dock: 'archives:RoomsDock-MedievalParty2013Construction.swf',
+          forest: 'archives:RoomsForest-MedievalParty2013Construction.swf',
+          shack: 'archives:RoomsShack-MedievalParty2013Construction.swf',
+          school: 'archives:RoomsSchool-MedievalParty2013Construction.swf',
+          town: 'archives:RoomsTown-MedievalParty2013Construction.swf'
+        },
+        music: {
+          dock: 380,
+          forest: 382,
+          shack: 383,
+          school: 436,
+          town: 383
+        },
+        startscreens: [
+          'archives:LoginScreen-ENMedieval-preawareness.swf'
+        ]
+      }
+    }
+  },
+  {
     date: '2013-09-12',
     roomComment: 'Sound is added to the Crow\'s Nest',
     rooms: {
@@ -489,7 +1051,431 @@ export const UPDATES_2013: Update[] = [
     }
   },
   {
+    date: '2013-09-18',
+    temp: {
+      party: {
+        partyName: 'Medieval Party',
+        rooms: {
+          coffee: 'archives:RoomsCoffee-MedievalParty2013.swf',
+          dance: 'archives:RoomsDance-MedievalParty2013.swf',
+          dock: 'archives:RoomsDock-MedievalParty2013.swf',
+          forest: 'archives:RoomsForest-MedievalParty2013.swf',
+          forts: 'archives:RoomsForts-MedievalParty2013.swf',
+          party1: 'archives:RoomsParty1-MedievalParty2013.swf',
+          party2: 'archives:RoomsParty2-MedievalParty2013.swf',
+          pizza: 'archives:RoomsPizza-MedievalParty2013.swf',
+          plaza: 'archives:RoomsPlaza-MedievalParty2013.swf',
+          rink: 'archives:RoomsRink-MedievalParty2013.swf',
+          school: 'archives:RoomsSchool-MedievalParty2013.swf',
+          shack: 'archives:RoomsShack-MedievalParty2013.swf',
+          town: 'archives:RoomsTown-MedievalParty2013.swf'
+        },
+        music: {
+          coffee: 480,
+          party1: 484,
+          dock: 481,
+          forest: 482,
+          shack: 489,
+          dance: 493,
+          pizza: 485,
+          plaza: 486,
+          school: 436,
+          forts: 483,
+          rink: 487,
+          town: 490,
+          party2: 494
+        },
+        startscreens: [
+          'archives:LoginScreen-ENMedieval-onnow-1.swf',
+          'archives:LoginScreen-ENMedieval-onnow-2.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENCataloguesParty-MedievalParty2013.swf'
+          },
+          'close_ups/quest_book.swf': {
+            en: 'archives:ENClose_upsQuest_book-MedievalParty2013.swf'
+          },
+          'close_ups/character_dialogue_soloroom.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_soloroom-MedievalParty2013.swf'
+          },
+          'close_ups/character_dialogue_reminder.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_reminder-MedievalParty2013.swf'
+          },
+          'close_ups/character_dialogue_final_ingredient.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_final_ingredient-MedievalParty2013.swf'
+          },
+          'close_ups/character_dialogue_game_success.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_game_success-MedievalParty2013.swf'
+          },
+          'close_ups/character_dialogue_game_fail.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_game_fail-MedievalParty2013.swf'
+          }
+        },
+        mapNote: 'archives:ENClose_upsParty_map_note-MedievalParty2013.swf',
+        partyIconFile: 'archives:ContentParty_icon-MedievalParty2013.swf'
+      }
+    }
+  },
+  {
+    date: '2013-10-03',
+    end: ['party']
+  },
+  {
+    date: '2013-10-10',
+    temp: {
+      const: {
+        rooms: {
+          beach: 'archives:RoomsBeach-HalloweenParty2013Construction.swf',
+          cove: 'archives:RoomsCove-HalloweenParty2013Construction.swf',
+          dock: 'archives:RoomsDock-HalloweenParty2013Construction.swf',
+          forest: 'archives:RoomsForest-HalloweenParty2013Construction.swf',
+          school: 'archives:RoomsSchool-HalloweenParty2013Construction.swf'
+        },
+        music: {
+          forest: 382,
+          school: 436
+        },
+        startscreens: [
+          'archives:LoginScreen-ENHalloween-preawareness.swf'
+        ]
+      }
+    }
+  },
+  {
+    date: '2013-10-16',
+    temp: {
+      party: {
+        partyName: 'Halloween Party',
+        rooms: {
+          attic: 'archives:RoomsAttic-HalloweenParty2013.swf',
+          beach: 'archives:RoomsBeach-HalloweenParty2013.swf',
+          beacon: 'archives:RoomsBeacon-HalloweenParty2013.swf',
+          berg: 'archives:RoomsBerg-HalloweenParty2013.swf',
+          book: 'archives:RoomsBook-HalloweenParty2013.swf',
+          cave: 'archives:RoomsCave-HalloweenParty2013.swf',
+          coffee: 'archives:RoomsCoffee-HalloweenParty2013.swf',
+          cove: 'archives:RoomsCove-HalloweenParty2013.swf',
+          dance: 'archives:RoomsDance-HalloweenParty2013.swf',
+          dock: 'archives:RoomsDock-HalloweenParty2013.swf',
+          dojo: 'archives:RoomsDojo-HalloweenParty2013.swf',
+          dojoext: 'archives:RoomsDojoext-HalloweenParty2013.swf',
+          forest: 'archives:RoomsForest-HalloweenParty2013.swf',
+          forts: 'archives:RoomsForts-HalloweenParty2013.swf',
+          hotellobby: 'archives:RoomsHotellobby-HalloweenParty2013.swf',
+          hotelroof: 'archives:RoomsHotelroof-HalloweenParty2013.swf',
+          hotelspa: 'archives:RoomsHotelspa-HalloweenParty2013.swf',
+          light: 'archives:RoomsLight-HalloweenParty2013.swf',
+          lodge: 'archives:RoomsLodge-HalloweenParty2013.swf',
+          mtn: 'archives:RoomsMtn-HalloweenParty2013.swf',
+          pet: 'archives:RoomsPet-HalloweenParty2013.swf',
+          pizza: 'archives:RoomsPizza-HalloweenParty2013.swf',
+          plaza: 'archives:RoomsPlaza-HalloweenParty2013.swf',
+          rink: 'archives:RoomsRink-HalloweenParty2013.swf',
+          school: 'archives:RoomsSchool-HalloweenParty2013.swf',
+          shack: 'archives:RoomsShack-HalloweenParty2013.swf',
+          shop: 'archives:RoomsShop-HalloweenParty2013.swf',
+          town: 'archives:RoomsTown-HalloweenParty2013.swf',
+          village: 'archives:RoomsVillage-HalloweenParty2013.swf'
+        },
+        music: {
+          beach: 495,
+          beacon: 504,
+          cove: 496,
+          dance: 497,
+          dock: 498,
+          dojo: 403,
+          dojoext: 404,
+          forest: 499,
+          hotellobby: 362,
+          hotelroof: 360,
+          hotelspa: 361,
+          shack: 503,
+          village: 381,
+          forts: 500,
+          town: 512
+        },
+        startscreens: [
+          'archives:LoginScreen-ENHalloween-member-1.swf',
+          'archives:LoginScreen-ENHalloween-member-2.swf'
+        ],
+        localChanges: {
+          'close_ups/pumpkingame.swf': {
+            en: 'archives:ENClose_upsPumpkingame.swf'
+          },
+          'close_ups/character_dialogue_login.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_login-HalloweenParty2013.swf'
+          },
+          'close_ups/character_dialogue_specialcandy.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_specialcandy-HalloweenParty2013.swf'
+          },
+          'close_ups/character_dialogue_transformcandy.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_transformcandy-HalloweenParty2013.swf'
+          }
+        },
+        globalChanges: {
+          'avatar/sprites/vampirea.swf': 'archives:AvatarSpritesVampireA-HalloweenParty2013.swf',
+          'avatar/sprites/vampireb.swf': 'archives:AvatarSpritesVampireB-HalloweenParty2013.swf',
+          'avatar/sprites/vampirec.swf': 'archives:AvatarSpritesVampireC-HalloweenParty2013.swf',
+          'avatar/sprites/werewolfa.swf': 'archives:AvatarSpritesWerewolfA-HalloweenParty2013.swf',
+          'avatar/sprites/werewolfb.swf': 'archives:AvatarSpritesWerewolfB-HalloweenParty2013.swf',
+          'avatar/sprites/werewolfc.swf': 'archives:AvatarSpritesWerewolfC-HalloweenParty2013.swf',
+          'avatar/sprites/zombiea.swf': 'archives:AvatarSpritesZombieA-HalloweenParty2013.swf',
+          'avatar/sprites/zombieb.swf': 'archives:AvatarSpritesZombieB-HalloweenParty2013.swf',
+          'avatar/sprites/zombiec.swf': 'archives:AvatarSpritesZombieC-HalloweenParty2013.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-10-24',
+    temp: {
+      party2: {
+        update: 'The 8th Anniversary Party begins'
+      }
+    }
+  },
+  {
+    date: '2013-11-01',
+    end: ['party', 'party2']
+  },
+  {
+    date: '2013-11-06',
+    temp: {
+      const: {
+        rooms: {
+          boiler: 'archives:RoomsBoiler-OperationPuffleConstruction.swf',
+          lake: 'archives:RoomsLake-OperationPuffleConstruction.swf',
+          mine: 'archives:RoomsMine-OperationPuffleConstruction.swf'
+        },
+        music: {
+          boiler: 6
+        }
+      }
+    }
+  },
+  {
+    date: '2013-11-13',
+    temp: {
+      const: {
+        rooms: {
+          boxdimension: 'archives:RoomsBoxdimension-OperationPuffleConstruction.swf',
+          cavemine: 'archives:RoomsCavemine-OperationPuffleConstruction.swf',
+          shack: 'archives:RoomsShack-OperationPuffleConstruction.swf',
+          dance: 'archives:RoomsDance-OperationPuffleConstruction.swf',
+          stage: 'archives:RoomsStage-OperationPuffleConstruction.swf'
+        },
+        music: {
+          dance: 5
+        }
+      }
+    }
+  },
+  {
+    date: '2013-11-20',
+    temp: {
+      party: {
+        partyName: 'Operation: Puffle',
+        rooms: {
+          agentlobbymulti: 'archives:OperationPuffleRoomsAgentlobbymulti.swf',
+          attic: 'archives:OperationPuffleRoomsAttic.swf',
+          beach: 'archives:OperationPuffleRoomsBeach.swf',
+          beacon: 'archives:OperationPuffleRoomsBeacon.swf',
+          berg: 'archives:OperationPuffleRoomsBerg.swf',
+          book: 'archives:OperationPuffleRoomsBook.swf',
+          coffee: 'archives:OperationPuffleRoomsCoffee.swf',
+          cove: 'archives:OperationPuffleRoomsCove.swf',
+          dock: 'archives:OperationPuffleRoomsDock.swf',
+          dojofire: 'archives:RoomsDojofire-OperationPuffle.swf',
+          dojosnow: 'archives:RoomsDojosnow-OperationPuffle.swf',
+          forest: 'archives:OperationPuffleRoomsForest.swf',
+          forts: 'archives:OperationPuffleRoomsForts.swf',
+          hotellobby: 'archives:OperationPuffleRoomsHotelLobby.swf',
+          hotelroof: 'archives:OperationPuffleRoomsHotelRoof.swf',
+          hotelspa: 'archives:OperationPuffleRoomsHotelSpa.swf',
+          light: 'archives:OperationPuffleRoomsLight.swf',
+          lodge: 'archives:OperationPuffleRoomsLodge.swf',
+          mtn: 'archives:OperationPuffleRoomsMtn.swf',
+          party1: 'archives:OperationPuffleRoomsParty1.swf',
+          party2: 'archives:OperationPuffleRoomsParty2.swf',
+          party3: 'archives:OperationPuffleRoomsParty3.swf',
+          party4: 'archives:OperationPuffleRoomsParty4.swf',
+          party5: 'archives:OperationPuffleRoomsParty5.swf',
+          party6: 'archives:OperationPuffleRoomsParty6.swf',
+          party7: 'archives:OperationPuffleRoomsParty7.swf',
+          party8: 'archives:OperationPuffleRoomsParty8.swf',
+          party9: 'archives:OperationPuffleRoomsParty9.swf',
+          party10: 'archives:OperationPuffleRoomsParty10.swf',
+          pet: 'archives:OperationPuffleRoomsPet.swf',
+          pizza: 'archives:OperationPuffleRoomsPizza.swf',
+          plaza: 'archives:OperationPuffleRoomsPlaza.swf',
+          rink: 'archives:OperationPuffleRoomsRink.swf',
+          school: 'archives:RoomsSchool-OperationPuffle.swf',
+          shack: 'archives:OperationPuffleRoomsShack.swf',
+          shop: 'archives:OperationPuffleRoomsShop.swf',
+          town: 'archives:OperationPuffleRoomsTown.swf',
+          village: 'archives:OperationPuffleRoomsVillage.swf'
+        },
+        music: {
+          dojofire: 405,
+          forest: 379,
+          shack: 437,
+          hotellobby: 362,
+          hotelspa: 361,
+          dojosnow: 407,
+          forts: 382,
+          school: 436,
+          party1: 522,
+          party2: 523,
+          party3: 524,
+          party4: 525,
+          party5: 526,
+          party6: 527,
+          party7: 528,
+          party8: 529,
+          party9: 530,
+          party10: 531
+        },
+        startscreens: [
+          'archives:LoginScreen-ENEpf-puffle-onnow.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENOperationPuffleCatalog.swf'
+          },
+          'close_ups/chips_matching_game.swf': {
+            en: 'archives:ENCloseUpsChipsMatchingGame-OperationPuffle.swf'
+          },
+          'close_ups/quest_interface.swf': {
+            en: 'archives:OperationPuffleCloseUpsQuestInterface.swf'
+          },
+          'close_ups/pregame_interface.swf': {
+            en: 'archives:OperationPuffleCloseUpsPreGameInterface.swf'
+          },
+          'close_ups/postgame_interface.swf': {
+            en: 'archives:OperationPuffleCloseUpsPostGameInterface.swf'
+          },
+          'close_ups/character_dialogue_gary_chipscollected.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_gary_chipscollected-OperationPuffle.swf'
+          },
+          'close_ups/character_dialogue_herbert_1.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_herbert_1-OperationPuffle.swf'
+          },
+          'close_ups/character_dialogue_herbert_2.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_herbert_2-OperationPuffle.swf'
+          },
+          'close_ups/character_dialogue_herbert_3.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_herbert_3-OperationPuffle.swf'
+          },
+          'close_ups/character_dialogue_herbert_4.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_herbert_4-OperationPuffle.swf'
+          },
+          'close_ups/character_dialogue_herbert_5.swf': {
+            en: 'archives:Close_upsCharacter_dialogue_herbert_5-OperationPuffle.swf'
+          },
+          'membership/party1.swf': {
+            en: 'archives:ENMembershipParty1.swf'
+          }
+        },
+        globalChanges: {
+          'rooms/effects/avatar.swf': 'archives:OperationPuffleRoomsEffectsAvatar.swf',
+          'telescope/telescope.swf': 'archives:OperationPuffleGlobalTelescopeEpfnightsky.swf',
+          'binoculars/empty.swf': 'archives:OperationPuffleGlobalBinocularsEpfnightsky.swf'
+        },
+        fileChanges: {
+          'play/v2/games/chase/chase.swf': 'archives:GamesChaseChase.swf',
+          'play/v2/games/chase/lang/en/locale.swf': 'archives:GamesChaseLangEnLocale.swf'
+        }
+      }
+    }
+  },
+  {
+    date: '2013-12-05',
+    end: ['party']
+  },
+  {
     date: '2013-12-12',
     petFurniture: 'archives:ENCataloguesPetsDec2013.swf'
+  },
+  {
+    date: '2013-12-18',
+    temp: {
+      party: {
+        partyName: 'Holiday Party',
+        rooms: {
+          agentlobbymulti: 'archives:RoomsAgentlobbymulti-HolidayParty2013.swf',
+          attic: 'archives:RoomsAttic-HolidayParty2013.swf',
+          beach: 'archives:RoomsBeach-HolidayParty2013.swf',
+          beacon: 'archives:RoomsBeacon-HolidayParty2013.swf',
+          berg: 'archives:RoomsBerg-HolidayParty2013.swf',
+          book: 'archives:RoomsBook-HolidayParty2013.swf',
+          cloudforest: 'archives:RoomsCloudForest-HolidayParty2013.swf',
+          coffee: 'archives:RoomsCoffee-HolidayParty2013.swf',
+          cove: 'archives:RoomsCove-HolidayParty2013.swf',
+          dock: 'archives:RoomsDock-HolidayParty2013.swf',
+          dojofire: 'archives:RoomsDojofire-HolidayParty2013.swf',
+          dojosnow: 'archives:RoomsDojosnow-HolidayParty2013.swf',
+          forest: 'archives:RoomsForest-HolidayParty2013.swf',
+          forts: 'archives:RoomsForts-HolidayParty2013.swf',
+          hotellobby: 'archives:RoomsHotellobby-HolidayParty2013.swf',
+          hotelroof: 'archives:RoomsHotelroof-HolidayParty2013.swf',
+          hotelspa: 'archives:RoomsHotelspa-HolidayParty2013.swf',
+          light: 'archives:RoomsLight-HolidayParty2013.swf',
+          lodge: 'archives:RoomsLodge-HolidayParty2013.swf',
+          mtn: 'archives:RoomsMtn-HolidayParty2013.swf',
+          party1: 'archives:RoomsParty1-HolidayParty2013.swf',
+          party2: 'archives:RoomsParty2-HolidayParty2013.swf',
+          party3: 'archives:RoomsParty3-HolidayParty2013.swf',
+          party4: 'archives:RoomsParty4-HolidayParty2013.swf',
+          pet: 'archives:RoomsPet-HolidayParty2013.swf',
+          pizza: 'archives:RoomsPizza-HolidayParty2013.swf',
+          plaza: 'archives:RoomsPlaza-HolidayParty2013.swf',
+          rink: 'archives:RoomsRink-HolidayParty2013.swf',
+          school: 'archives:RoomsSchool-HolidayParty2013.swf',
+          shack: 'archives:RoomsShack-HolidayParty2013.swf',
+          shop: 'archives:RoomsShop-HolidayParty2013.swf',
+          town: 'archives:RoomsTown-HolidayParty2013.swf',
+          village: 'archives:RoomsVillage-HolidayParty2013.swf'
+        },
+        music: {
+          dock: 545,
+          shack: 556,
+          pizza: 552,
+          forts: 556,
+          town: 556,
+          school: 552,
+          party1: 315,
+          party2: 557,
+          party3: 557,
+          party4: 557
+        },
+        startscreens: [
+          'archives:LoginScreen-ENCfc.swf',
+          'archives:LoginScreen-ENCfc-gift.swf'
+        ],
+        localChanges: {
+          'catalogues/party.swf': {
+            en: 'archives:ENCataloguesParty-HolidayParty2013.swf'
+          },
+          'close_ups/party_interface.swf': {
+            en: 'archives:ENClose_upsParty_interface-HolidayParty2013.swf'
+          },
+          'close_ups/train_catalogue.swf': {
+            en: 'archives:ENClose_upsTrain_catalogue-HolidayParty2013.swf'
+          },
+          'close_ups/donation_ui.swf': {
+            en: 'archives:ENClose_upsDonation_ui-HolidayParty2013.swf'
+          },
+          'close_ups/trainstation_igloo_list.swf': {
+            en: 'archives:ENClose_upsTrainstation_igloo_list-HolidayParty2013.swf'
+          }
+        },
+        coinsForChange: true
+      }
+    }
+  },
+  {
+    date: '2014-01-02',
+    end: ['party']
   }
 ]

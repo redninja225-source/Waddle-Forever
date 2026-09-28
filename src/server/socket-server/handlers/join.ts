@@ -11,12 +11,13 @@ import { WorldTable } from '@server/socket-server/world/world-table';
 import { getOfflinePenguinCrumb } from '@server/http/php-server';
 import { ItemType } from '@server/game-logic/items';
 import { isFlag } from '@server/game-logic/flags';
-import { STARTER_DECKS } from '@server/game-logic/starter-deck';
+import { DOJO_EXTERIOR_ITEM_IDS, STARTER_DECKS } from '@server/game-logic/starter-deck';
 import { CARDS } from '@server/game-logic/cards';
 import { choose } from '@common/utils';
 import { SPY_DRILLS_DATA } from '@server/game-logic/spy-drills';
 import { PenguinHandler, PenguinGuard, RoomHandler, WorldContext } from './handlers';
 import { handleLeaveFire } from './fire';
+import { isGreaterOrEqual } from '@server/routes/versions';
 
 
 function unequipPuffle(p: WorldPenguin): void {
@@ -125,12 +126,21 @@ const enterRoom: PenguinHandler<[WorldRoom, number, number]> = (ctx, r, x, y) =>
 }
 
 export function filterItems(data: GameData, items: number[]): number[] {
-  if (data.isPreCpip()) {
-    const clientItems = data.getClientItems();
-    return items.filter(i => clientItems.has(i));
+  const filtered = data.isPreCpip()
+    ? items.filter(i => data.getClientItems().has(i))
+    : items;
+
+  if (isGreaterOrEqual(data.getDate(), '2013-05-22')) {
+    const result = [...filtered];
+    DOJO_EXTERIOR_ITEM_IDS.forEach((id) => {
+      if (!result.includes(id)) {
+        result.push(id);
+      }
+    });
+    return result;
   }
 
-  return items;
+  return filtered;
 }
 
 function sendCoinsForChange(data: GameData, msg: PenguinMessenger, penguin: WorldPenguin) {

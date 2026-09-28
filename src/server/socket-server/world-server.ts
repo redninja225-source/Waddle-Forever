@@ -32,6 +32,7 @@ import { UPDATES } from "@server/updates/updates";
 import { isGreater, Version } from "@server/routes/versions";
 import { joinRoom, sendLPMessage } from "./handlers/join";
 import { STORY_QUESTS, TIMELINE_ACHIEVEMENTS } from "@server/game-data/story-progress";
+import { CARDS } from "@server/game-logic/cards";
 
 const INITIAL_TIMELINE_UNLOCKED: Version = '2006-06-06';
 
@@ -146,6 +147,43 @@ export class WorldServer implements MessageHandler {
     await this.reset();
     this._timelineAdvanceListeners.forEach(callback => callback());
     return 'timeline and penguin progress reset';
+  }
+
+  public async unlockEverythingById(penguinId: number): Promise<{
+    result: string;
+    unlockedVersion?: Version;
+    coins?: number;
+  }> {
+    const penguin = this._world.getById(penguinId);
+    if (penguin === undefined) {
+      return { result: 'penguin is no longer connected' };
+    }
+
+    const lastUpdate = UPDATES[UPDATES.length - 1];
+    this._settings.updateSettings({ timeline_unlocked: lastUpdate.date });
+
+    Object.values(ROOMS).forEach(room => penguin.visitRoom(room.id));
+    ITEMS.rows.forEach(item => penguin.inventory.add(item.id));
+    this._gameData.getReleasedStamps().forEach(stamp => penguin.stampbook.add(stamp));
+    STORY_QUESTS.forEach(quest => penguin.completeQuest(quest.id));
+    TIMELINE_ACHIEVEMENTS.forEach(achievement => penguin.unlockAchievement(achievement.id));
+    CARDS.rows.forEach(card => penguin.ninja.addCard(card.id, 3));
+    penguin.psa.setAgent();
+    penguin.epf.addMedals(1000);
+    penguin.ninja.becomeNinja();
+    penguin.ninja.setWaterNinja(true);
+    penguin.ninja.setSnowNinja(true);
+    if (penguin.currency.coins < 100000) {
+      penguin.currency.add(100000 - penguin.currency.coins);
+    }
+
+    this._persister(penguin, true);
+    await sendLPMessage(penguin, this._gameData, this._msg);
+    return {
+      result: 'all timeline eras, items, stamps, cards, quests, and achievements unlocked',
+      unlockedVersion: lastUpdate.date,
+      coins: penguin.currency.coins
+    };
   }
 
   public getNextEra(): Version | undefined {

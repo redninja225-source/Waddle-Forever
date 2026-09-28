@@ -2,6 +2,12 @@ import { Update } from ".";
 
 export const UPDATES_2014: Update[] = [
   {
+    date: '2014-03-20',
+    rooms: {
+      dojo: 'archives:RoomsDojo_6.swf'
+    }
+  },
+  {
     date: '2014-04-17',
     petFurniture: 'archives:ENCataloguesPetsApr2014.swf'
   },
@@ -22,6 +28,9 @@ export const UPDATES_2014: Update[] = [
   },
   {
     date: '2014-07-17',
+    rooms: {
+      dojo: 'archives:RoomsDojo_7.swf'
+    },
     gameUpgrades: {
       newItems: [],
       removed: [

@@ -77,16 +77,24 @@
   align-items: center;
 }
 
+.timeline-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8em;
+  padding: 0.7em 2em;
+  background-color: var(--background-solid);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+}
+
 .version-selected {
-  position: absolute;
-  right: 2em;
+  margin: 0 auto;
   font-weight: bold;
   font-size: x-large;
+  text-align: center;
 }
 
 .timeline-shop {
-  position: absolute;
-  left: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,9 +151,6 @@
 
 .reset-progress,
 .unlock-all {
-  position: absolute;
-  z-index: 30;
-  bottom: 0.7em;
   padding: 6px 12px;
   border: 2px solid #8c1d1d;
   border-radius: 8px;
@@ -155,12 +160,7 @@
   cursor: pointer;
 }
 
-.reset-progress {
-  right: 2em;
-}
-
 .unlock-all {
-  right: 15em;
   border-color: #135fa4;
   background: #2f77a8;
 }

@@ -274,6 +274,9 @@ export type DateReference = 'cpip' |
   'igloo-music' |
   'stamps-release' |
   'placeholder-2016' |
+  'hotel' |
+  'dojosnow' |
+  'school' |
   'vr-room' |
   'old-rink' |
   'string-verify' |

@@ -14,7 +14,21 @@ export function getSetupTxt(d: GameData, s: SettingsManager): string {
   // sending the ID of 1 because we don't have any information about these scavenger hunts
   const eggId = d.getEgg();
 
-  const rooms = Object.entries(ROOMS).map((pair) => {
+  const rooms = Object.entries(ROOMS).filter(([room]) => {
+    if (room === 'eco') {
+      return !d.hasSchool();
+    }
+    if (room === 'school') {
+      return d.hasSchool();
+    }
+    if (room === 'dojosnow') {
+      return d.hasSnowDojo();
+    }
+    if (room === 'hotellobby' || room === 'hotelspa' || room === 'hotelroof' || room === 'cloudforest') {
+      return d.hasHotel();
+    }
+    return true;
+  }).map((pair) => {
     const [room, info] = pair;
     const music = roomMusic.get(room as RoomName) ?? 0;
     const frame = frames.get(room as RoomName) ?? 1;

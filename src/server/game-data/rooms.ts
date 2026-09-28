@@ -24,7 +24,13 @@ export type RoomName = 'town' |
   'dojoext' |
   'dojofire' |
   'dojowater' |
+  'dojosnow' |
   'dojohide' |
+  'school' |
+  'hotellobby' |
+  'hotelspa' |
+  'hotelroof' |
+  'cloudforest' |
   'forts' |
   'agent' |
   'agentcom' |
@@ -185,6 +191,11 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Water Dojo',
     preCpipName: null
   },
+  'dojosnow': {
+    id: 326,
+    name: 'Snow Dojo',
+    preCpipName: null
+  },
   'agent': {
     id: 803,
     name: 'PSA HQ',
@@ -283,6 +294,31 @@ export const ROOMS: Record<RoomName, Room> = {
   'eco': {
     id: 122,
     name: 'Recycling Plant',
+    preCpipName: null
+  },
+  'school': {
+    id: 122,
+    name: 'School',
+    preCpipName: null
+  },
+  'hotellobby': {
+    id: 430,
+    name: 'Puffle Hotel Lobby',
+    preCpipName: null
+  },
+  'hotelspa': {
+    id: 431,
+    name: 'Puffle Hotel Spa',
+    preCpipName: null
+  },
+  'hotelroof': {
+    id: 432,
+    name: 'Puffle Hotel Rooftop',
+    preCpipName: null
+  },
+  'cloudforest': {
+    id: 433,
+    name: 'Cloud Forest',
     preCpipName: null
   },
   'beach': {

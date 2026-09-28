@@ -12,6 +12,6 @@ addDispatchEventListeners([
 (window as any).api = {
   update: (obj: any) => ipcRenderer.send('update-version', obj),
   unlock: (obj: any) => ipcRenderer.send('unlock-timeline', obj),
-  unlockAll: (password: string) => ipcRenderer.send('unlock-all-timeline', password),
+  unlockAll: (obj: { playerId: number | undefined; password: string }) => ipcRenderer.send('unlock-all-timeline', obj),
   resetProgress: (obj: any) => ipcRenderer.send('reset-progress', obj)
 };

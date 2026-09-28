@@ -79,6 +79,8 @@ type GameState = {
   furniturePrices: Map<number, number>;
   itemPrices: Map<number, number>;
   globalPaths: Map<string, string>;
+  hotel: boolean;
+  dojosnow: boolean;
   school: boolean;
   mall: boolean;
   vr: boolean;
@@ -136,6 +138,8 @@ function getFreshState(): GameState {
     furniturePrices: new Map<number, number>(),
     itemPrices: new Map<number, number>(),
     globalPaths: new Map<string, string>(),
+    hotel: false,
+    dojosnow: false,
     school: false,
     mall: false,
     vr: true,
@@ -321,6 +325,17 @@ export class GameData {
             this.state.newShell2009 = true;
             break;
           case 'placeholder-2016':
+            this.state.hotel = true;
+            this.state.dojosnow = true;
+            this.state.school = true;
+            break;
+          case 'hotel':
+            this.state.hotel = true;
+            break;
+          case 'dojosnow':
+            this.state.dojosnow = true;
+            break;
+          case 'school':
             this.state.school = true;
             break;
           case 'mall':
@@ -876,6 +891,14 @@ export class GameData {
     return this.state.globalPaths;
   }
 
+  public hasHotel() {
+    return this.state.hotel;
+  }
+
+  public hasSnowDojo() {
+    return this.state.dojosnow;
+  }
+
   public hasSchool() {
     return this.state.school;
   }
@@ -969,6 +992,10 @@ export class GameData {
 
   public isStampAvailable(stamp: number): boolean {
     return this.state.releasedStamps.has(stamp);
+  }
+
+  public getReleasedStamps(): number[] {
+    return [...this.state.releasedStamps];
   }
 
   public getExtraWaddleRooms() {

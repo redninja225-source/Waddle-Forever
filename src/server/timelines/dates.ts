@@ -22,6 +22,9 @@ const dateRefRecord: Record<DateReference, Version | undefined> = {
   'pet-furniture-rename1': undefined,
   'pet-furniture-rename2': undefined,
   'furniture-catalog-name': undefined,
+  'dojosnow': undefined,
+  'hotel': undefined,
+  'school': undefined,
   'mall': undefined,
   'owned-igloos': undefined
 };

@@ -2114,6 +2114,16 @@ export function getRoomsJson(d: GameData, s: SettingsManager): string {
     }
   }
 
+  if (!d.hasSnowDojo()) {
+    delete json['326'];
+  }
+  if (!d.hasHotel()) {
+    delete json['430'];
+    delete json['431'];
+    delete json['432'];
+    delete json['433'];
+  }
+
   if (d.hasVRRoom()) {
     json["213"] = 
     {

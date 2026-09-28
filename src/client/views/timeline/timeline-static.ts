@@ -536,7 +536,7 @@ function updateTimeline(days: DateInfo[], scroll: boolean = true) {
   const timelineRows = document.querySelectorAll('.unselected-day');
 
   if (scroll) {
-    const selected = document.querySelectorAll('.selected-day')[0];
+    const selected = document.querySelectorAll('.selected-list-day')[0];
   
     // is undefined if picked a range where nothing is selected
     if (selected === undefined) {
@@ -655,12 +655,12 @@ function updateUnlockAllButton() {
   };
   submit.onclick = () => {
     const password = confirmInput.value;
-    if (password !== 'ICONFIRM') {
+    if (timelinePlayerId === undefined || password !== 'ICONFIRM') {
       error.innerText = 'Type ICONFIRM exactly to unlock everything.';
       return;
     }
     submit.disabled = true;
-    timelineApi.unlockAll(password);
+    timelineApi.unlockAll({ playerId: timelinePlayerId, password });
     close();
     submit.disabled = false;
   };
@@ -670,6 +670,9 @@ window.addEventListener('timeline-unlock-all-result', (e: any) => {
   alert(e.detail.result);
   if (e.detail.unlockedVersion !== undefined) {
     unlockedVersion = e.detail.unlockedVersion;
+    nextEra = undefined;
+    playerCoins = e.detail.coins ?? playerCoins;
+    updateTimelineShop();
     const calendarButton = document.getElementById('calendar-timeline') as HTMLInputElement;
     if (calendarButton.checked) {
       createCalendar(timelineDays);
