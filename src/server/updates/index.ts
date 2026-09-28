@@ -137,6 +137,8 @@ export type CPUpdate = {
    */
   newspaper?: 'irregular' | 'period-start' | 'period-end' | 'fan';
 
+  issue?: NewspaperIssue;
+
   /** New version of the igloo swf */
   iglooVersion?: number;
 
