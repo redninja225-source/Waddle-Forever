@@ -274,15 +274,203 @@ export const UPDATES_2013: Update[] = [
     ]
   },
   {
+    date: '2013-07-11',
+    temp: {
+      const: {
+        rooms: {
+          beach: 'archives:StarWarsTakeoverConstruction-RoomsBeach.swf',
+          dock: 'archives:StarWarsTakeoverConstruction-RoomsDock.swf',
+          berg: 'archives:StarWarsTakeoverConstruction-RoomsBerg.swf',
+          mtn: 'archives:StarWarsTakeoverConstruction-RoomsMtn.swf',
+          village: 'archives:StarWarsTakeoverConstruction-RoomsVillage.swf',
+          town: 'archives:RoomsTown-StarWarsTakeoverPre.swf'
+        },
+        music: {
+          beach: 380,
+          dock: 380,
+          berg: 380,
+          mtn: 381,
+          village: 381,
+          town: 383
+        },
+        globalChanges: {
+          'telescope/telescope.swf': 'archives:StarWarsTakeover-TelescopeDeathstar.swf'
+        },
+        startscreens: [
+          'archives:StarWarsTakeover-ENLoginScreen1.swf'
+        ]
+      }
+    }
+  },
+  {
     date: '2013-07-18',
     // target background redesign
     fileChanges: {
       'play/v2/content/global/clothing/photos/906.swf': 'slegacy:media/play/v2/content/global/clothing/photos/906.swf',
       'play/v2/content/global/clothing/icons/906.swf': 'slegacy:media/play/v2/content/global/clothing/icons/906.swf'
+    },
+    temp: {
+      const: {
+        rooms: {
+          beach: 'archives:StarWarsTakeoverConstruction2-RoomsBeach.swf',
+          dock: 'archives:StarWarsTakeoverConstruction2-RoomsDock.swf',
+          berg: 'archives:StarWarsTakeoverConstruction2-RoomsBerg.swf',
+          mtn: 'archives:StarWarsTakeoverConstruction2-RoomsMtn.swf',
+          village: 'archives:StarWarsTakeoverConstruction2-RoomsVillage.swf',
+          town: 'archives:RoomsTown-StarWarsTakeoverPre2.swf'
+        },
+        globalChanges: {
+          'telescope/telescope.swf': 'archives:StarWarsTakeover-TelescopeDeathstar2.swf'
+        },
+        startscreens: [
+          'archives:StarWarsTakeover-ENLoginScreen2.swf'
+        ]
+      }
+    }
+  },
+  {
+    date: '2013-07-25',
+    temp: {
+      party: {
+        partyName: 'Star Wars Takeover',
+        rooms: {
+          beach: 'archives:StarWarsTakeover-RoomsBeach.swf',
+          dock: 'archives:StarWarsTakeover-RoomsDock.swf',
+          berg: 'archives:StarWarsTakeover-RoomsBerg.swf',
+          mtn: 'archives:StarWarsTakeover-RoomsMtn.swf',
+          village: 'archives:StarWarsTakeover-RoomsVillage.swf',
+          town: 'archives:RoomsTown-StarWarsTakeover.swf',
+          party1: 'archives:StarWarsTakeover-RoomsParty1.swf',
+          party2: 'archives:StarWarsTakeover-RoomsParty2.swf',
+          party3: 'archives:StarWarsTakeover-RoomsParty3.swf',
+          party4: 'archives:StarWarsTakeover-RoomsParty4.swf',
+          party5: 'archives:StarWarsTakeover-RoomsParty5.swf',
+          party6: 'archives:StarWarsTakeover-RoomsParty6.swf',
+          party7: 'archives:StarWarsTakeover-RoomsParty7.swf',
+          party8: 'archives:StarWarsTakeover-RoomsParty8.swf',
+          party9: 'archives:StarWarsTakeover-RoomsParty9.swf',
+          party10: 'archives:StarWarsTakeover-RoomsParty10.swf',
+          party11: 'archives:StarWarsTakeover-RoomsParty11.swf',
+          party12: 'archives:StarWarsTakeover-RoomsParty12.swf',
+          party13: 'archives:StarWarsTakeover-RoomsParty13.swf',
+          party14: 'archives:StarWarsTakeover-RoomsParty14.swf',
+          party15: 'archives:StarWarsTakeover-RoomsParty15.swf',
+          party16: 'archives:StarWarsTakeover-RoomsParty16.swf',
+          party17: 'archives:StarWarsTakeover-RoomsParty17.swf'
+        },
+        music: {
+          beach: 380,
+          dock: 380,
+          berg: 380,
+          mtn: 381,
+          village: 381,
+          town: 383,
+          party1: 453,
+          party2: 445,
+          party3: 447,
+          party4: 444,
+          party5: 446,
+          party6: 445,
+          party7: 438,
+          party8: 451,
+          party9: 441,
+          party10: 440,
+          party11: 439,
+          party12: 439,
+          party13: 452,
+          party14: 442,
+          party15: 450,
+          party16: 448,
+          party17: 449
+        },
+        startscreens: [
+          'archives:StarWarsTakeover-ENLoginScreenCadence.swf',
+          'archives:StarWarsTakeover-ENLoginScreenHerbert.swf'
+        ],
+        globalChanges: {
+          'telescope/telescope.swf': 'archives:StarWarsTakeover-TelescopeDeathstar3.swf',
+          'avatar/sprites/jedibrown.swf': [
+            'archives:AvatarSpritesJedi_Brown.swf',
+            'w.avatarsprite.starwars.jedibrown'
+          ],
+          'avatar/sprites/jediblack.swf': [
+            'archives:AvatarSpritesJedi_Black.swf',
+            'w.avatarsprite.starwars.jediblack'
+          ],
+          'avatar/sprites/vader.swf': [
+            'archives:AvatarSpritesVader.swf',
+            'w.avatarsprite.starwars.vader'
+          ]
+        },
+        localChanges: {
+          'catalogues/party.swf': {
+            en: ['archives:ENCataloguesParty-StarWarsTakeover.swf', 'party_catalogue', 'w.party.clothing.catalogue1']
+          },
+          'close_ups/starwars_party_interface.swf': {
+            en: ['archives:ENClose_upsTatooine_map.swf', 'w.p2013.starwars.partyinterface']
+          },
+          'close_ups/blaster_game_interface.swf': {
+            en: ['archives:StarWarsTakeover-ENCloseUps-blaster_game_interface.swf', 'w.p2013.starwars.blastergameui']
+          },
+          'close_ups/icejam_interface.swf': {
+            en: ['archives:StarWarsTakeover-ENCloseUps-icejam_interface.swf', 'w.p2013.starwars.icejamui']
+          },
+          'close_ups/xwing_game_interface.swf': {
+            en: ['archives:StarWarsTakeover-ENCloseUps-xwing_game_interface.swf', 'w.p2013.starwars.xwinggameui']
+          },
+          'close_ups/tatooine_map.swf': {
+            en: ['archives:ENClose_upsTatooine_map.swf', 'w.p2013.starwars.tatooinemap']
+          },
+          'close_ups/deathstar_map.swf': {
+            en: ['archives:ENClose_upsDeathstar_map.swf', 'w.p2013.starwars.deathstarmap']
+          },
+          'close_ups/yavin_map.swf': {
+            en: ['archives:ENClose_upsYavin_map.swf', 'w.p2013.starwars.yavinmap']
+          },
+          'close_ups/character_dialogue_soloroom.swf': {
+            en: ['archives:ENClose_upsCharacter_dialogue_soloroom.swf', 'w.p2013.starwars.dialogue_soloroom']
+          },
+          'close_ups/character_dialogue_tatooine_welcome.swf': {
+            en: ['archives:ENClose_upsCharacter_dialogue_tatooine_welcome.swf', 'w.p2013.starwars.dialogue_tatooine_1']
+          },
+          'close_ups/character_dialogue_tatooine_congratulations.swf': {
+            en: ['archives:ENClose_upsCharacter_dialogue_tatooine_congratulations.swf', 'w.p2013.starwars.dialogue_tatooine_2']
+          },
+          'close_ups/character_dialogue_deathstar_welcome.swf': {
+            en: ['archives:ENClose_upsCharacter_dialogue_deathstar_welcome.swf', 'w.p2013.starwars.dialogue_deathstar_1']
+          },
+          'close_ups/character_dialogue_deathstar_congratulations.swf': {
+            en: ['archives:ENClose_upsCharacter_dialogue_deathstar_congratulations.swf', 'w.p2013.starwars.dialogue_deathstar_2']
+          },
+          'close_ups/character_dialogue_yavin_welcome.swf': {
+            en: ['archives:ENClose_upsCharacter_dialogue_yavin_welcome.swf', 'w.p2013.starwars.dialogue_yavin_1']
+          },
+          'close_ups/character_dialogue_yavin_congratulations.swf': {
+            en: ['archives:ENClose_upsCharacter_dialogue_yavin_congratulations.swf', 'w.p2013.starwars.dialogue_yavin_2']
+          }
+        }
+      }
+    }
+  },
+  {
+    date: '2013-08-01',
+    temp: {
+      party: {
+        update: 'The Death Star is now open'
+      }
+    }
+  },
+  {
+    date: '2013-08-08',
+    temp: {
+      party: {
+        update: 'Yavin 4 is now open'
+      }
     }
   },
   {
     date: '2013-08-14',
+    end: ['party'],
     martialArtworks: 'archives:ENCataloguesNinja-August2013.swf'
   },
   {
