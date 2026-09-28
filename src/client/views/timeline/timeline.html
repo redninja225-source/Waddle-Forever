@@ -62,6 +62,7 @@
         <div id="shop-cost" class="shop-cost"></div>
         <div id="shop-coins" class="shop-coins"></div>
       </div>
+      <button id="unlock-all" class="unlock-all">UNLOCK ALL</button>
       <button id="reset-progress" class="reset-progress">RESET PROGRESS</button>
     </div>
     <div id="reset-modal" class="reset-modal" hidden>
@@ -73,6 +74,18 @@
         <div class="reset-actions">
           <button id="reset-cancel" type="button">Cancel</button>
           <button id="reset-submit" type="button">Reset</button>
+        </div>
+      </div>
+    </div>
+    <div id="unlock-modal" class="reset-modal" hidden>
+      <div class="reset-dialog">
+        <div class="reset-title">DEBUG UNLOCK</div>
+        <div class="reset-message">Type ICONFIRM to unlock every timeline era.</div>
+        <input id="unlock-confirm" class="reset-confirm" type="password" autocomplete="off" />
+        <div id="unlock-error" class="reset-error"></div>
+        <div class="reset-actions">
+          <button id="unlock-cancel" type="button">Cancel</button>
+          <button id="unlock-submit" type="button">Unlock</button>
         </div>
       </div>
     </div>

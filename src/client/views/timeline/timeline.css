@@ -141,10 +141,10 @@
   color: #2a5b7f;
 }
 
-.reset-progress {
+.reset-progress,
+.unlock-all {
   position: absolute;
   z-index: 30;
-  right: 2em;
   bottom: 0.7em;
   padding: 6px 12px;
   border: 2px solid #8c1d1d;
@@ -155,8 +155,22 @@
   cursor: pointer;
 }
 
+.reset-progress {
+  right: 2em;
+}
+
+.unlock-all {
+  right: 15em;
+  border-color: #135fa4;
+  background: #2f77a8;
+}
+
 .reset-progress:hover {
   background: #8c1d1d;
+}
+
+.unlock-all:hover {
+  background: #135fa4;
 }
 
 .reset-modal {

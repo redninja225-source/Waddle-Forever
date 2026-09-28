@@ -50,12 +50,14 @@ let timelinePlayerId: number | undefined;
 let nextEra: string | undefined;
 let nextEraCost = 0;
 let playerCoins = 0;
+let timelineDays: DateInfo[] = [];
 
 const timelineElement = document.getElementById('timeline')!;
 const yearElement = document.getElementById('year')! as HTMLSelectElement;
 const monthElement = document.getElementById('month')! as HTMLSelectElement;
 
 updateResetButton();
+updateUnlockAllButton();
 
 function setSelectElements(month: number, year: number) {
   monthElement.value = MONTHS[month - 1];
@@ -625,6 +627,58 @@ function updateResetButton() {
   };
 }
 
+function updateUnlockAllButton() {
+  const button = document.getElementById('unlock-all') as HTMLButtonElement;
+  const modal = document.getElementById('unlock-modal') as HTMLDivElement;
+  const confirmInput = document.getElementById('unlock-confirm') as HTMLInputElement;
+  const error = document.getElementById('unlock-error') as HTMLDivElement;
+  const cancel = document.getElementById('unlock-cancel') as HTMLButtonElement;
+  const submit = document.getElementById('unlock-submit') as HTMLButtonElement;
+
+  const close = () => {
+    modal.hidden = true;
+    confirmInput.value = '';
+    error.innerText = '';
+  };
+
+  button.onclick = () => {
+    confirmInput.value = '';
+    error.innerText = '';
+    modal.hidden = false;
+    confirmInput.focus();
+  };
+  cancel.onclick = close;
+  confirmInput.onkeydown = (event) => {
+    if (event.key === 'Enter') {
+      submit.click();
+    }
+  };
+  submit.onclick = () => {
+    const password = confirmInput.value;
+    if (password !== 'ICONFIRM') {
+      error.innerText = 'Type ICONFIRM exactly to unlock everything.';
+      return;
+    }
+    submit.disabled = true;
+    timelineApi.unlockAll(password);
+    close();
+    submit.disabled = false;
+  };
+}
+
+window.addEventListener('timeline-unlock-all-result', (e: any) => {
+  alert(e.detail.result);
+  if (e.detail.unlockedVersion !== undefined) {
+    unlockedVersion = e.detail.unlockedVersion;
+    const calendarButton = document.getElementById('calendar-timeline') as HTMLInputElement;
+    if (calendarButton.checked) {
+      createCalendar(timelineDays);
+    } else {
+      updateTimeline(timelineDays, false);
+    }
+  }
+});
+
 function isLockedDate(version: string) {
   return timelineProgression && version > unlockedVersion;
 }
@@ -654,6 +708,7 @@ window.addEventListener('timeline-reset-result', (e: any) => {
 
 window.addEventListener('get-timeline', (e: any) => {
   const { days, settings, hub } = e.detail as { days: DateInfo[], settings: any, hub?: any };
+  timelineDays = days;
   currentVersion = settings.version;
   unlockedVersion = settings.timeline_unlocked;
   timelineProgression = settings.timeline_progression;

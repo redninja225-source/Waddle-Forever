@@ -10,7 +10,7 @@ import { getPopupCreator } from '@client/popups';
 import { SettingsManager } from '@server/settings';
 import { WorldServer } from '@server/socket-server/world-server';
 
-export const createTimelinePicker = getPopupCreator('timeline', ['update-version', 'unlock-timeline', 'reset-progress'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer, _wins, windowData) => {
+export const createTimelinePicker = getPopupCreator('timeline', ['update-version', 'unlock-timeline', 'unlock-all-timeline', 'reset-progress'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer, _wins, windowData) => {
   const timelinePicker = new BrowserWindow({
     show: false,
     title: "Timeline",
@@ -55,6 +55,20 @@ export const createTimelinePicker = getPopupCreator('timeline', ['update-version
         timelinePicker.close();
       }
     }
+  });
+
+  ipcMain.on('unlock-all-timeline', (_, password) => {
+    if (password !== 'ICONFIRM') {
+      timelinePicker.webContents.send('timeline-unlock-all-result', { result: 'unlock rejected. type ICONFIRM exactly' });
+      return;
+    }
+
+    const lastUpdate = UPDATES[UPDATES.length - 1];
+    settings.updateSettings({ timeline_unlocked: lastUpdate.date });
+    timelinePicker.webContents.send('timeline-unlock-all-result', {
+      result: 'all timeline eras unlocked',
+      unlockedVersion: lastUpdate.date
+    });
   });
 
   ipcMain.on('reset-progress', async (_, arg) => {
