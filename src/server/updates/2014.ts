@@ -1,15 +1,11 @@
 import { Update } from ".";
+import { UPDATES_2014_PARTIES } from "./party-2014";
+import { mergeIssueUpdates, NEWSPAPER_ISSUES_2014 } from "./newspaper-issues";
 
-export const UPDATES_2014: Update[] = [
+const BASE_UPDATES_2014: Update[] = [
   {
-    date: '2014-03-20',
-    rooms: {
-      dojo: 'archives:RoomsDojo_6.swf'
-    }
-  },
-  {
-    date: '2014-04-17',
-    petFurniture: 'archives:ENCataloguesPetsApr2014.swf'
+    date: '2014-01-02',
+    end: ['party']
   },
   {
     date: '2014-05-14',
@@ -25,27 +21,10 @@ export const UPDATES_2014: Update[] = [
   {
     date: '2014-06-01',
     dateReference: 'vr-room'
-  },
-  {
-    date: '2014-07-17',
-    rooms: {
-      dojo: 'archives:RoomsDojo_7.swf'
-    },
-    gameUpgrades: {
-      newItems: [],
-      removed: [
-        5037,
-        5039,
-        5038,
-        5071,
-        5072,
-        5070,
-        5121
-      ]
-    }
-  },
-  {
-    date: '2014-09-18',
-    dateReference: 'mall'
   }
-]
+];
+
+export const UPDATES_2014: Update[] = mergeIssueUpdates(
+  [...BASE_UPDATES_2014, ...UPDATES_2014_PARTIES],
+  NEWSPAPER_ISSUES_2014
+);

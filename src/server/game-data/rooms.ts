@@ -26,7 +26,13 @@ export type RoomName = 'town' |
   'dojowater' |
   'dojosnow' |
   'dojohide' |
+  'dojoextsolo' |
   'school' |
+  'mall' |
+  'park' |
+  'skatepark' |
+  'pufflewild' |
+  'ufo' |
   'hotellobby' |
   'hotelspa' |
   'hotelroof' |
@@ -86,7 +92,14 @@ export type RoomName = 'town' |
   'party25' |
   'party26' |
   'party27' |
+  'party28' |
   'party99' |
+  'partysolo1' |
+  'partysolo2' |
+  'partysolo3' |
+  'partysolo4' |
+  'soundroom' |
+  'partygame' |
   'pitch';
 
 
@@ -174,6 +187,11 @@ export const ROOMS: Record<RoomName, Room> = {
   'dojoext': {
     id: 321,
     name: 'Dojo Courtyard',
+    preCpipName: null
+  },
+  'dojoextsolo': {
+    id: 324,
+    name: 'Dojo Exterior Solo',
     preCpipName: null
   },
   'dojofire': {
@@ -321,6 +339,26 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Cloud Forest',
     preCpipName: null
   },
+  'park': {
+    id: 434,
+    name: 'Puffle Park',
+    preCpipName: null
+  },
+  'skatepark': {
+    id: 435,
+    name: 'Skatepark',
+    preCpipName: null
+  },
+  'pufflewild': {
+    id: 436,
+    name: 'Puffle Wild',
+    preCpipName: null
+  },
+  'ufo': {
+    id: 437,
+    name: 'UFO',
+    preCpipName: null
+  },
   'beach': {
     id: 400,
     name: 'Beach',
@@ -344,6 +382,11 @@ export const ROOMS: Record<RoomName, Room> = {
   'stage': {
     id: 340,
     name: 'Stage',
+    preCpipName: null
+  },
+  'mall': {
+    id: 340,
+    name: 'Puffle Berry Mall',
     preCpipName: null
   },
   'ship': {
@@ -511,9 +554,44 @@ export const ROOMS: Record<RoomName, Room> = {
     name: 'Party 27',
     preCpipName: null
   },
+  'party28': {
+    id: 878,
+    name: 'Party 28',
+    preCpipName: null
+  },
   'party99': {
     id: 899,
     name: 'Party 99',
+    preCpipName: null
+  },
+  'partysolo1': {
+    id: 891,
+    name: 'Solo Party 1',
+    preCpipName: null
+  },
+  'partysolo2': {
+    id: 892,
+    name: 'Solo Party 2',
+    preCpipName: null
+  },
+  'partysolo3': {
+    id: 893,
+    name: 'Solo Party 3',
+    preCpipName: null
+  },
+  'partysolo4': {
+    id: 894,
+    name: 'Solo Party 4',
+    preCpipName: null
+  },
+  'soundroom': {
+    id: 898,
+    name: 'Sound Room',
+    preCpipName: null
+  },
+  'partygame': {
+    id: 962,
+    name: 'Party Game',
     preCpipName: null
   }
 };

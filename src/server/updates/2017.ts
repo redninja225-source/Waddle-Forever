@@ -32,6 +32,7 @@ function getNewspaperIssue(date: string, edition: number, title: string): NonNul
 export const UPDATES_2017: Update[] = [
   {
     date: '2017-01-04',
+    end: ['party2'],
     issue: getNewspaperIssue('20170104', 564, 'NEW YEAR NEW HORIZON'),
     miscComments: [
       'The January Penguin Style and Furniture & Igloo catalogs are released',

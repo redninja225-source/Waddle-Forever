@@ -1,9 +1,12 @@
 import { Update } from ".";
+import { UPDATES_2016_PARTIES } from "./party-2016";
+import { mergeIssueUpdates, NEWSPAPER_ISSUES_2016, NEWSPAPER_TITLES_2016 } from "./newspaper-issues";
 
-export const UPDATES_2016: Update[] = [
+const BASE_UPDATES_2016: Update[] = [
   {
     // placeholder 2017 version
-    date: '2016-01-01',
+    date: '2016-01-06',
+    end: ['party'],
     dateReference: 'placeholder-2016',
     websiteFolder: 'modern',
     indexHtml: 'modern-as3',
@@ -111,3 +114,9 @@ export const UPDATES_2016: Update[] = [
     }
   }
 ];
+
+export const UPDATES_2016: Update[] = mergeIssueUpdates(
+  [...BASE_UPDATES_2016, ...UPDATES_2016_PARTIES],
+  NEWSPAPER_ISSUES_2016,
+  NEWSPAPER_TITLES_2016
+);

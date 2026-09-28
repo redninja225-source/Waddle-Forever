@@ -1,6 +1,8 @@
 import { Update } from ".";
+import { UPDATES_2015_PARTIES } from "./party-2015";
+import { mergeIssueUpdates, NEWSPAPER_ISSUES_2015 } from "./newspaper-issues";
 
-export const UPDATES_2015: Update[] = [
+const BASE_UPDATES_2015: Update[] = [
   {
     date: '2015-05-01',
     rooms: {
@@ -10,3 +12,8 @@ export const UPDATES_2015: Update[] = [
     }
   }
 ];
+
+export const UPDATES_2015: Update[] = mergeIssueUpdates(
+  [...BASE_UPDATES_2015, ...UPDATES_2015_PARTIES],
+  NEWSPAPER_ISSUES_2015
+);

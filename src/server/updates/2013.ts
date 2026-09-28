@@ -1,7 +1,8 @@
 import { Update } from ".";
 import { CategoryID } from "../game-data/stamps";
+import { mergeIssueUpdates, NEWSPAPER_ISSUES_2013 } from "./newspaper-issues";
 
-export const UPDATES_2013: Update[] = [
+const BASE_UPDATES_2013: Update[] = [
   {
     date: '2013-01-04',
     end: ['party']
@@ -1231,13 +1232,30 @@ export const UPDATES_2013: Update[] = [
     date: '2013-10-24',
     temp: {
       party2: {
-        update: 'The 8th Anniversary Party begins'
+        partyName: '8th Anniversary Party',
+        update: 'The 8th Anniversary Party begins',
+        partyIcon: 'party',
+        rooms: {
+          coffee: 'archives:RoomsCoffee-8thAnniversaryParty.swf',
+          town: 'archives:RoomsTown-8thAnniversaryParty.swf'
+        },
+        music: {
+          coffee: 1,
+          town: 512
+        },
+        startscreens: [
+          'archives:LoginScreen-EN8thAnniversaryParty.swf'
+        ]
       }
     }
   },
   {
+    date: '2013-10-25',
+    end: ['party2']
+  },
+  {
     date: '2013-11-01',
-    end: ['party', 'party2']
+    end: ['party']
   },
   {
     date: '2013-11-06',
@@ -1474,8 +1492,9 @@ export const UPDATES_2013: Update[] = [
       }
     }
   },
-  {
-    date: '2014-01-02',
-    end: ['party']
-  }
-]
+];
+
+export const UPDATES_2013: Update[] = mergeIssueUpdates(
+  BASE_UPDATES_2013,
+  NEWSPAPER_ISSUES_2013
+);
