@@ -515,8 +515,8 @@ export class GameData {
       'iglooCatalog': (v) => {
         if (this.state.preCpip) {
           this.addRoute('artwork/catalogue/igloo_.swf', v);
-          this.addRoute('play/v2/content/local/en/catalogues/igloo.swf', v);
         }
+        this.addRoute('play/v2/content/local/en/catalogues/igloo.swf', v);
       },
       'startscreens': (v) => {
         const screenFiles: string[] = [];
