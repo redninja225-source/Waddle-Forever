@@ -394,7 +394,17 @@ export const sendBuddyOnlineList: PenguinHandler<[]> = ({ msg, penguin, world })
 
 export const handleBuddyRequest: PenguinHandler<[number]> = (ctx, targetId) => {
   const { msg, penguin, world, data, prst, npcs } = ctx;
-  if (npcs.handleBuddyRequested(penguin, targetId)) {
+  const npc = npcs.handleBuddyRequested(penguin, targetId);
+  if (npc !== undefined) {
+    // NPCs always accept buddy requests
+    penguin.buddy.add(targetId);
+    npc.buddy.add(penguin.id);
+    if (isNewBuddyProtocol(data)) {
+      sendGetBuddies(ctx);
+    } else {
+      msg.send(penguin, 'ba', npc.id, npc.name);
+    }
+    prst(penguin);
     return;
   }
   const target = world.getById(targetId);
@@ -419,7 +429,14 @@ export const handleBuddyRequest: PenguinHandler<[number]> = (ctx, targetId) => {
 
 export const handleBuddyAccept: PenguinHandler<[number]> = async (ctx, requesterId) => {
   const { world, penguin, prst, msg, data, off, npcs } = ctx;
-  if (npcs.handleBuddyAccepted(penguin, requesterId)) {
+  const npc = npcs.handleBuddyAccepted(penguin, requesterId);
+  if (npc !== undefined) {
+    penguin.buddy.add(requesterId);
+    npc.buddy.add(penguin.id);
+    if (isNewBuddyProtocol(data)) {
+      sendGetBuddies(ctx);
+    }
+    prst(penguin);
     return;
   }
   const requester = world.getById(requesterId) ?? await off.getPenguin(requesterId);

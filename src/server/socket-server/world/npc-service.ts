@@ -6,6 +6,9 @@ import { MASCOT_MESSAGES } from "@server/game-data/mascot-messages";
 import { ITEMS, ItemType } from "@server/game-logic/items";
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
+import { FURNITURE } from "@server/game-logic/furniture";
+import { FURNITURE_SPRITES } from "@server/game-data/furniture";
+import { IGLOO_TYPES } from "@server/game-logic/iglooItems";
 import { STORY_QUESTS, TIMELINE_ACHIEVEMENTS, getQuestsForEra, isQuestComplete } from "@server/game-data/story-progress";
 import { UPDATES } from "@server/updates/updates";
 import { isGreater, isLower } from "@server/routes/versions";
@@ -25,6 +28,8 @@ type NpcSpec = {
   outfit?: Partial<Pick<PenguinJson, 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background'>>;
   stationary?: boolean;
   mascotId?: number;
+  /** whether the NPC keeps their igloo open on the map for anyone to visit */
+  openIgloo?: boolean;
 };
 
 type ActiveNpc = {
@@ -73,6 +78,7 @@ const NPCS: NpcSpec[] = [
     name: 'Icy Pete',
     color: 1,
     homeRoom: 100,
+    openIgloo: true,
     phrases: [
       'anyone seen a puffle around here?',
       'the snow feels extra snowy today',
@@ -118,6 +124,7 @@ const NPCS: NpcSpec[] = [
     name: 'Puffle Pal',
     color: 13,
     homeRoom: 110,
+    openIgloo: true,
     phrases: [
       'my favorite puffles are the blue ones',
       'the pet shop is always busy',
@@ -146,6 +153,7 @@ const NPCS: NpcSpec[] = [
     name: 'DJ Splash',
     color: 14,
     homeRoom: 120,
+    openIgloo: true,
     phrases: [
       'the dance floor is calling my name',
       'this song always gets everyone moving',
@@ -253,6 +261,7 @@ const NPCS: NpcSpec[] = [
     name: 'Lodge Luna',
     color: 10,
     homeRoom: 220,
+    openIgloo: true,
     phrases: [
       'the lodge is cozy tonight',
       'ski trips end with hot cocoa',
@@ -277,6 +286,7 @@ const NPCS: NpcSpec[] = [
     name: 'Plaza Pearl',
     color: 12,
     homeRoom: 300,
+    openIgloo: true,
     phrases: [
       'the plaza feels alive today',
       'everyone passes through here eventually',
@@ -313,6 +323,7 @@ const NPCS: NpcSpec[] = [
     name: 'Book Wren',
     color: 15,
     homeRoom: 111,
+    openIgloo: true,
     phrases: [
       'the book room smells like adventure',
       'i am always halfway through a novel',
@@ -779,6 +790,10 @@ export class NpcService {
 
       const penguin = new WorldPenguin(spec.id, json, this._settings);
       this._world.addPenguin(penguin);
+      if (spec.openIgloo === true) {
+        this.decorateNpcIgloo(penguin, spec.id);
+        this._world.openIgloo(penguin);
+      }
       this.placeInRoom(penguin, spec.homeRoom, randomPosition(), randomPosition());
 
       return {
@@ -864,6 +879,33 @@ export class NpcService {
       nextReply: 0
     });
     return displayName;
+  }
+
+  /** Gives the NPC a decorated igloo so visiting it does not look empty */
+  private decorateNpcIgloo(penguin: WorldPenguin, npcId: number): void {
+    const spriteIds = Object.keys(FURNITURE_SPRITES).map(Number);
+    const validFurniture = FURNITURE.rows.filter(row => spriteIds.includes(row.id));
+
+    const furnitureCount = randomInt(4, 10);
+    const furniture = new Array(furnitureCount).fill(null).map((_, i) => {
+      const piece = validFurniture[(npcId * 13 + i * 37) % validFurniture.length];
+      return {
+        id: piece.id,
+        x: randomInt(180, 700),
+        y: randomInt(200, 500),
+        rotation: randomInt(0, 7),
+        frame: 0
+      };
+    });
+
+    const types = IGLOO_TYPES.rows.map(row => row.id).filter(id => id > 0);
+    penguin.igloo.updateIgloo({
+      type: types[npcId % types.length],
+      music: 0,
+      flooring: 0,
+      location: 0,
+      furniture
+    });
   }
 
   public despawnMascot(name: string): string | undefined {
@@ -1024,30 +1066,32 @@ export class NpcService {
     return true;
   }
 
-  public handleBuddyRequested(player: WorldPenguin, requesterId: number): boolean {
+  /** Returns the NPC's penguin if the buddy request targets an NPC */
+  public handleBuddyRequested(player: WorldPenguin, requesterId: number): WorldPenguin | undefined {
     const npc = this._npcs.find((candidate) => candidate.penguin.id === requesterId);
     if (npc === undefined) {
-      return false;
+      return undefined;
     }
 
     if (npc.spec.id === 900010) {
       this._hub.requestTravelToHub(player.id);
     }
 
-    return true;
+    return npc.penguin;
   }
 
-  public handleBuddyAccepted(player: WorldPenguin, requesterId: number): boolean {
+  /** Returns the NPC's penguin if the accepted requester is an NPC */
+  public handleBuddyAccepted(player: WorldPenguin, requesterId: number): WorldPenguin | undefined {
     const npc = this._npcs.find((candidate) => candidate.penguin.id === requesterId);
     if (npc === undefined) {
-      return false;
+      return undefined;
     }
 
     if (npc.spec.id === 900010) {
       this._hub.travelToHub(player);
     }
 
-    return true;
+    return npc.penguin;
   }
 
   private getClosestNpc(player: WorldPenguin, room: WorldRoom): ActiveNpc | undefined {
@@ -1464,11 +1508,29 @@ export class NpcService {
       await this.emote(npc.penguin, room);
     } else if (action < 80) {
       await this.say(npc, room);
-    } else if (action < 93) {
+    } else if (action < 90) {
       await this.converse(room);
+    } else if (action < 95) {
+      await this.requestBuddy(npc, room);
     } else {
       await this.changeRoom(npc, room);
     }
+  }
+
+  /** Occasionally NPCs send buddy requests to players sharing the room with them */
+  private async requestBuddy(npc: ActiveNpc, room: WorldRoom): Promise<void> {
+    const candidates = room.players.filter(p => {
+      return !this.isNpc(p.id) && !p.buddy.isBuddy(npc.penguin.id);
+    });
+    if (candidates.length === 0) {
+      return;
+    }
+
+    const target = choose(candidates);
+    const usesNewProtocol = !this._data.isPreCpip() || this._data.getChatVersion() >= 506;
+    const command = usesNewProtocol ? 'br' : 'bq';
+    await this._msg.send(target, command, npc.penguin.id, npc.penguin.name);
+    await this._msg.send(room.players, 'sm', npc.penguin.id, `${target.name}, want to be buddies?`);
   }
 
   private placeInRoom(penguin: WorldPenguin, roomId: number, x: number, y: number): void {

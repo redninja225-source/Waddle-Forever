@@ -5,8 +5,8 @@
 			"fontSize" : 9,
 			"translation": {
 				"en": "Go to DJ3K!",
-				"es": "¡Ir a DJ3K!",
-				"fr": "Va à DJ3K !",
+				"es": "AIr a DJ3K!",
+				"fr": "Va A DJ3K !",
 				"pt": "Ir pro DJ3K!"			
 			}
 		},
@@ -16,16 +16,16 @@
 				"en": "Record and save your own music mixes in DJ3K.",
 				"es": "Graba y guarda tus temas en DJ3K.",
 				"fr": "Enregistre tes propres mix dans DJ3K.",
-				"pt": "Grave e salve sua própria música no DJ3K."		
+				"pt": "Grave e salve sua prA3pria mAsica no DJ3K."		
 			}
 		},
 		"dialogButtonText" : { 
 			"fontSize" : 9,
 			"translation": {
 				"en": "Go There!",
-				"es": "¡Ir allí!",
+				"es": "AIr allA-!",
 				"fr": "Vas-y !",
-				"pt": "Ir pra lá!"		
+				"pt": "Ir pra lA!"		
 			}
 		},
 		"savedMixesText" : { 
@@ -34,7 +34,7 @@
 				"en": "My Saved Mixes",
 				"es": "Mis temas mezclados",
 				"fr": "Mes Mix",
-				"pt": "Minhas Músicas"		
+				"pt": "Minhas MAsicas"		
 			}
 		},
 		"musicListText" : { 
@@ -43,180 +43,93 @@
 				"en": "Music List",
 				"es": "Lista musical",
 				"fr": "Liste de Musiques",
-				"pt": "Lista de Músicas"		
+				"pt": "Lista de MAsicas"
 			}
 		}
 	},
 	"songs" : 	
 	[
-
-			{
-			"id" : 3,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "I've Been Delayed",
-				"es": "Llego tarde",
-				"fr": "En Retard",
-				"pt": "Chego Logo"
-			}
-		},		
-
-			{
-			"id" : 101,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Organic Journey",
-				"es": "Órgano orgánico",
-				"fr": "Compo-country",
-				"pt": "Orgão Orgânico"
-			}
-		},		
-
-			{
-			"id" : 351,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Herbert Style",
-				"es": "Herbert Style",
-				"fr": "Herbert Style",
-				"pt": "Herbert Style"
-			}
-		},		
-
-			{
-			"id" : 242,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Mix Maestro",
-				"es": "Mix Maestro",
-				"fr": "Mélodies du Maestro",
-				"pt": "Escala do Maestro"
-			}
-		},		
-
-			{
-			"id" : 596,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Bulls Eye",
-				"es": "Ojo de buey",
-				"fr": "En Plein Dans le Mille",
-				"pt": "Na Mira"
-			}
-		},		
-
-			{
-			"id" : 342,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Operation Blackout",
-				"es": "Operación Apagón",
-				"fr": "Opération Black-out",
-				"pt": "Operação Apagão"
-			}
-		},		
-
-			{
-			"id" : 222,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Carnival Fun",
-				"es": "Carnavaleando",
-				"fr": "Forains en Fête",
-				"pt": "Festa Festiva"
-			}
-		},		
-
-			{
-			"id" : 8,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "I'm A Mod",
-				"es": "¡Soy un moderador!",
-				"fr": "Je Suis un Modo !",
-				"pt": "Eu Sou o Mod!"
-			}
-		},		
-
-			{
-			"id" : 506,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Party In My Iggy",
-				"es": "Party In My Iggy",
-				"fr": "Party In My Iggy",
-				"pt": "Party In My Iggy"
-			}
-		},		
-
-			{
-			"id" : 28,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "Epic Island",
-				"es": "Isla épica",
-				"fr": "L'Île Épique",
-				"pt": "Ilha Épica"
-			}
-		},		
-
-			{
-			"id" : 58,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "CP Music Mashup 2016",
-				"es": "Mezcla musical de CP 2016",
-				"fr": "Mashup CP 2016",
-				"pt": "Coletânea de Músicas do CP 2016"
-			}
-		},		
-
-			{
-			"id" : 57,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "CP Music Mashup 2015",
-				"es": "Mezcla musical de CP 2015",
-				"fr": "Mashup CP 2015",
-				"pt": "Coletânea de Músicas do CP 2015"
-			}
-		},		
-
-			{
-			"id" : 56,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "CP Music Mashup 2014",
-				"es": "Mezcla musical de CP 2014",
-				"fr": "Mashup CP 2014",
-				"pt": "Coletânea de Músicas do CP 2014"
-			}
-		},		
-
-			{
-			"id" : 55,
-			"enabled": true,
-			"fontSize" : 12,
-			"translation": {
-				"en": "CP Music Mashup 2013",
-				"es": "Mezcla musical de CP 2013",
-				"fr": "Mashup CP 2013",
-				"pt": "Coletânea de Músicas do CP 2013"
-			}
-		}			
-
+		{ "id": 3, "enabled": true, "fontSize": 12, "translation": { "en": "I've Been Delayed" } },
+		{ "id": 101, "enabled": true, "fontSize": 12, "translation": { "en": "Organic Journey" } },
+		{ "id": 351, "enabled": true, "fontSize": 12, "translation": { "en": "Herbert Style" } },
+		{ "id": 242, "enabled": true, "fontSize": 12, "translation": { "en": "Mix Maestro" } },
+		{ "id": 596, "enabled": true, "fontSize": 12, "translation": { "en": "Bulls Eye" } },
+		{ "id": 342, "enabled": true, "fontSize": 12, "translation": { "en": "Operation Blackout" } },
+		{ "id": 222, "enabled": true, "fontSize": 12, "translation": { "en": "Carnival Fun" } },
+		{ "id": 8, "enabled": true, "fontSize": 12, "translation": { "en": "I'm A Mod" } },
+		{ "id": 506, "enabled": true, "fontSize": 12, "translation": { "en": "Party In My Iggy" } },
+		{ "id": 28, "enabled": true, "fontSize": 12, "translation": { "en": "Epic Island" } },
+		{ "id": 58, "enabled": true, "fontSize": 12, "translation": { "en": "CP Music Mashup 2016" } },
+		{ "id": 57, "enabled": true, "fontSize": 12, "translation": { "en": "CP Music Mashup 2015" } },
+		{ "id": 56, "enabled": true, "fontSize": 12, "translation": { "en": "CP Music Mashup 2014" } },
+		{ "id": 55, "enabled": true, "fontSize": 12, "translation": { "en": "CP Music Mashup 2013" } },
+		{ "id": 221, "enabled": true, "fontSize": 12, "translation": { "en": "All the Fun of The Fair" } },
+		{ "id": 272, "enabled": true, "fontSize": 12, "translation": { "en": "All-Access Pass" } },
+		{ "id": 283, "enabled": true, "fontSize": 12, "translation": { "en": "Anchovy Jazz" } },
+		{ "id": 250, "enabled": true, "fontSize": 12, "translation": { "en": "Anniversary Party" } },
+		{ "id": 114, "enabled": true, "fontSize": 12, "translation": { "en": "Aqua Grabber" } },
+		{ "id": 220, "enabled": true, "fontSize": 12, "translation": { "en": "Campfire Song" } },
+		{ "id": 228, "enabled": true, "fontSize": 12, "translation": { "en": "Candy Cane March" } },
+		{ "id": 113, "enabled": true, "fontSize": 12, "translation": { "en": "Catchin' Waves Theme" } },
+		{ "id": 255, "enabled": true, "fontSize": 12, "translation": { "en": "Christmas Piano Medley" } },
+		{ "id": 1, "enabled": true, "fontSize": 12, "translation": { "en": "Coffee Shop" } },
+		{ "id": 215, "enabled": true, "fontSize": 12, "translation": { "en": "Coconut" } },
+		{ "id": 214, "enabled": true, "fontSize": 12, "translation": { "en": "Cool Surf" } },
+		{ "id": 2, "enabled": true, "fontSize": 12, "translation": { "en": "Dance Mix 1" } },
+		{ "id": 5, "enabled": true, "fontSize": 12, "translation": { "en": "Dance Mix 2" } },
+		{ "id": 226, "enabled": true, "fontSize": 12, "translation": { "en": "DJ Christmas" } },
+		{ "id": 34, "enabled": true, "fontSize": 12, "translation": { "en": "Egyptian Wrap" } },
+		{ "id": 236, "enabled": true, "fontSize": 12, "translation": { "en": "Epic Battle" } },
+		{ "id": 270, "enabled": true, "fontSize": 12, "translation": { "en": "Extra Anchovies" } },
+		{ "id": 262, "enabled": true, "fontSize": 12, "translation": { "en": "Flipper Jig" } },
+		{ "id": 244, "enabled": true, "fontSize": 12, "translation": { "en": "Flipper Stomper" } },
+		{ "id": 277, "enabled": true, "fontSize": 12, "translation": { "en": "Float in the Clouds" } },
+		{ "id": 209, "enabled": true, "fontSize": 12, "translation": { "en": "Folk Guitar" } },
+		{ "id": 32, "enabled": true, "fontSize": 12, "translation": { "en": "For Great Justice" } },
+		{ "id": 224, "enabled": true, "fontSize": 12, "translation": { "en": "Halloween Dance" } },
+		{ "id": 223, "enabled": true, "fontSize": 12, "translation": { "en": "Haunted Disco" } },
+		{ "id": 235, "enabled": true, "fontSize": 12, "translation": { "en": "In the Tower" } },
+		{ "id": 291, "enabled": true, "fontSize": 12, "translation": { "en": "Island Adventure" } },
+		{ "id": 267, "enabled": true, "fontSize": 12, "translation": { "en": "Jungle Jangles" } },
+		{ "id": 269, "enabled": true, "fontSize": 12, "translation": { "en": "Jungle Quest" } },
+		{ "id": 275, "enabled": true, "fontSize": 12, "translation": { "en": "Keytar Jam" } },
+		{ "id": 286, "enabled": true, "fontSize": 12, "translation": { "en": "Knight's Challenge" } },
+		{ "id": 301, "enabled": true, "fontSize": 12, "translation": { "en": "Master the Elements" } },
+		{ "id": 233, "enabled": true, "fontSize": 12, "translation": { "en": "Medieval Town" } },
+		{ "id": 21, "enabled": true, "fontSize": 12, "translation": { "en": "Mountain Dojo" } },
+		{ "id": 116, "enabled": true, "fontSize": 12, "translation": { "en": "Ninja Training" } },
+		{ "id": 37, "enabled": true, "fontSize": 12, "translation": { "en": "Noir Noises" } },
+		{ "id": 42, "enabled": true, "fontSize": 12, "translation": { "en": "Norman Swarm" } },
+		{ "id": 212, "enabled": true, "fontSize": 12, "translation": { "en": "Ocean Voyage" } },
+		{ "id": 245, "enabled": true, "fontSize": 12, "translation": { "en": "Orca Straw" } },
+		{ "id": 20, "enabled": true, "fontSize": 12, "translation": { "en": "Pizza Parlor" } },
+		{ "id": 38, "enabled": true, "fontSize": 12, "translation": { "en": "Planet Y" } },
+		{ "id": 243, "enabled": true, "fontSize": 12, "translation": { "en": "Pop Song" } },
+		{ "id": 35, "enabled": true, "fontSize": 12, "translation": { "en": "Pterodactyl Ptune" } },
+		{ "id": 282, "enabled": true, "fontSize": 12, "translation": { "en": "Puffle Party" } },
+		{ "id": 261, "enabled": true, "fontSize": 12, "translation": { "en": "Puffle Ragtime" } },
+		{ "id": 119, "enabled": true, "fontSize": 12, "translation": { "en": "Puffle Rescue: Ice Flow" } },
+		{ "id": 120, "enabled": true, "fontSize": 12, "translation": { "en": "Puffle Rescue: In the Cave" } },
+		{ "id": 285, "enabled": true, "fontSize": 12, "translation": { "en": "Recycle!" } },
+		{ "id": 271, "enabled": true, "fontSize": 12, "translation": { "en": "Rocking Pizza" } },
+		{ "id": 276, "enabled": true, "fontSize": 12, "translation": { "en": "Rocksteady" } },
+		{ "id": 254, "enabled": true, "fontSize": 12, "translation": { "en": "Santa's Mix" } },
+		{ "id": 258, "enabled": true, "fontSize": 12, "translation": { "en": "Silly to Funky" } },
+		{ "id": 227, "enabled": true, "fontSize": 12, "translation": { "en": "Snowy Holiday" } },
+		{ "id": 229, "enabled": true, "fontSize": 12, "translation": { "en": "Spicy Salsa" } },
+		{ "id": 216, "enabled": true, "fontSize": 12, "translation": { "en": "Summer Song" } },
+		{ "id": 36, "enabled": true, "fontSize": 12, "translation": { "en": "Team Blue 2" } },
+		{ "id": 33, "enabled": true, "fontSize": 12, "translation": { "en": "Team Power" } },
+		{ "id": 43, "enabled": true, "fontSize": 12, "translation": { "en": "The Bamboo Forest" } },
+		{ "id": 266, "enabled": true, "fontSize": 12, "translation": { "en": "The Quest" } },
+		{ "id": 297, "enabled": true, "fontSize": 12, "translation": { "en": "The Ringmaster" } },
+		{ "id": 41, "enabled": true, "fontSize": 12, "translation": { "en": "Viking Opera" } },
+		{ "id": 22, "enabled": true, "fontSize": 12, "translation": { "en": "The Volcano" } },
+		{ "id": 24, "enabled": true, "fontSize": 12, "translation": { "en": "The Way of Sensei" } },
+		{ "id": 31, "enabled": true, "fontSize": 12, "translation": { "en": "Twelfth Fish Theme" } },
+		{ "id": 39, "enabled": true, "fontSize": 12, "translation": { "en": "Twice upon a Time" } },
+		{ "id": 217, "enabled": true, "fontSize": 12, "translation": { "en": "Water Kongo" } },
+		{ "id": 293, "enabled": true, "fontSize": 12, "translation": { "en": "You Rock!" } },
+		{ "id": 279, "enabled": true, "fontSize": 12, "translation": { "en": "Zero Gravity" } }
 	]
 }
