@@ -195,6 +195,9 @@ export class NinjaPlayer extends Ninja {
 }
 
 export class Sensei extends Ninja {
+  protected _name: string = 'Sensei';
+  protected _color: number = 14;
+  protected _rank: number = 10;
   private _unbeatable: boolean;
 
   /**
@@ -204,18 +207,33 @@ export class Sensei extends Ninja {
    * */
   private _cardsToUse = new Map<number, number>();
   
-  private _pupil: NinjaPlayer;
+  private _pupil: NinjaPlayer | undefined;
 
-  constructor(unbeatable: boolean, opponent: NinjaPlayer) {
+  constructor(unbeatable: boolean, opponent?: NinjaPlayer) {
     super(0);
     this._unbeatable = unbeatable;
     this._pupil = opponent;
+  }
+
+  public get name() {
+    return this._name;
+  }
+
+  public get color() {
+    return this._color;
+  }
+
+  public get rank() {
+    return this._rank;
   }
 
   private _sessionToElement = new Map<number, string>();
 
   pickCard() {
     if (this._unbeatable) {
+      if (this._pupil === undefined) {
+        throw new Error('Unbeatable Sensei requires an opponent');
+      }
       // it's cheating time
 
       // NOTE: this is an unbeatable algorithm. But the original sensei seems to lose sometimes
@@ -242,6 +260,9 @@ export class Sensei extends Ninja {
   onDraw(id: number): number {
     let cardId: number;
     if (this._unbeatable) {
+      if (this._pupil === undefined) {
+        throw new Error('Unbeatable Sensei requires an opponent');
+      }
       let unbeatableCard: number;
 
       const cardsWithoutCounter = this._pupil.cards.filter(id => {
@@ -281,6 +302,16 @@ export class Sensei extends Ninja {
 
     this._sessionToElement.set(id, CARDS.getStrict(cardId).element);
     return cardId;
+  }
+}
+
+/** AI opponent for regular Card-Jitsu matches, plays with the beatable Sensei logic but with its own identity */
+export class CJBot extends Sensei {
+  constructor(name: string, color: number, rank: number) {
+    super(false);
+    this._name = name;
+    this._color = color;
+    this._rank = rank;
   }
 }
 
@@ -355,6 +386,9 @@ export class CardJitsu extends WaddleGame {
   /** If in Sensei fight */
   private _sensei: boolean;
 
+  /** If in a match against an AI opponent that is not Sensei */
+  private _bot: CJBot | null = null;
+
   /** Whether or not lowest value wins this round */
   private _swapValue: boolean = false;
 
@@ -363,14 +397,19 @@ export class CardJitsu extends WaddleGame {
 
   private _opponents = new Map<Ninja, Ninja>();
 
-  constructor(players: WorldPenguin[]) {    
+  constructor(players: WorldPenguin[], bot?: CJBot) {
     super(players);
 
-    this._sensei = players.length === 1;
+    this._bot = bot ?? null;
+    this._sensei = players.length === 1 && bot === undefined;
 
     let ninjas: [Ninja, Ninja];
 
-    if (this._sensei) {
+    if (bot !== undefined) {
+      const ninja = new NinjaPlayer(players[0], 1);
+      ninjas = [bot, ninja];
+      this._ninjas.set(players[0], ninja);
+    } else if (this._sensei) {
       const player = players[0];
       const ninja = new NinjaPlayer(player, 1);
       const sensei = new Sensei(player.ninja.senseiAttempts < 5, ninja);
@@ -389,6 +428,16 @@ export class CardJitsu extends WaddleGame {
 
   get sensei() {
     return this._sensei;
+  }
+
+  /** Any match where seat 0 is an AI (Sensei or a bot) */
+  get aiOpponent(): boolean {
+    return this._sensei || this._bot !== null;
+  }
+
+  /** The AI ninja in seat 0 when playing against a computer opponent */
+  get bot(): CJBot | null {
+    return this._bot;
   }
 
   public getOpponent(ninja: Ninja): Ninja {

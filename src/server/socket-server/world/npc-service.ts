@@ -939,6 +939,24 @@ export class NpcService {
 
     this.handleStoryRoomVisit(player, room, prst);
 
+    // occasionally a local greets a penguin entering the room
+    if (Math.random() < 0.2) {
+      const npc = this.getClosestNpc(player, room);
+      if (npc !== undefined) {
+        const greeting = choose([
+          `hi ${player.name}!`,
+          `welcome, ${player.name}`,
+          `hey ${player.name}, nice to see a new face`,
+          `hello there, ${player.name}`
+        ]);
+        delay(randomInt(800, 1600)).then(() => {
+          if (this._running && room.players.includes(npc.penguin)) {
+            return this._msg.send(room.players, 'sm', npc.penguin.id, greeting).catch(console.error);
+          }
+        }).catch(console.error);
+      }
+    }
+
     if (room.id !== TIME_HUB_ROOM_ID) {
       return;
     }
@@ -1221,6 +1239,65 @@ export class NpcService {
         body: pickNpcItem(this._pools.bodies, spec.id * 7, 3)
       }
     };
+  }
+
+  /** NPCs nearby may mirror an emote the player sends */
+  public handlePlayerEmote(player: WorldPenguin, room: WorldRoom, emote: number): void {
+    if (this.isNpc(player.id)) {
+      return;
+    }
+
+    const npc = this.getClosestNpc(player, room);
+    if (npc === undefined || Math.random() >= 0.35) {
+      return;
+    }
+
+    const reply = NPC_EMOTES.includes(emote) ? emote : choose(NPC_EMOTES);
+    delay(randomInt(700, 1800)).then(() => {
+      if (this._running && room.players.includes(npc.penguin)) {
+        return this._msg.send(room.players, 'se', npc.penguin.id, reply).catch(console.error);
+      }
+    }).catch(console.error);
+  }
+
+  /** NPCs react when a snowball lands close to them */
+  public handlePlayerSnowball(player: WorldPenguin, room: WorldRoom, x: number, y: number): void {
+    if (this.isNpc(player.id)) {
+      return;
+    }
+
+    const npc = this._npcs.find(candidate => {
+      if (!room.players.includes(candidate.penguin)) {
+        return false;
+      }
+      const state = room.getState(candidate.penguin);
+      return Math.hypot(state.x - x, state.y - y) < 70;
+    });
+    const now = Date.now();
+    if (npc === undefined || npc.nextReply > now) {
+      return;
+    }
+    npc.nextReply = now + randomInt(6000, 12000);
+
+    delay(randomInt(500, 1300)).then(async () => {
+      if (!this._running || !room.players.includes(npc.penguin)) {
+        return;
+      }
+      const line = choose([
+        'hey! watch it!',
+        'snowball fight!',
+        'that was close',
+        'nice throw!',
+        'you got me!'
+      ]);
+      await this._msg.send(room.players, 'sm', npc.penguin.id, line).catch(console.error);
+      // sometimes they throw one back at the player
+      if (Math.random() < 0.4) {
+        const playerState = room.getState(player);
+        await delay(700);
+        await this._msg.send(room.players, 'sb', npc.penguin.id, playerState.x, playerState.y).catch(console.error);
+      }
+    }).catch(console.error);
   }
 
   public handlePlayerMessage(player: WorldPenguin, message: string, room: WorldRoom, prst: PenguinPersister): void {

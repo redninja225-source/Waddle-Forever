@@ -7,7 +7,7 @@ import { handleAbortCard, handleCardJitsuAction, handleEnterCardGame, handleQuit
 import { handleDeleteMailFromPenguin, handleDeletePostcard, handleGetMail, handleMailTotal, handleSendCard, handleSendMail, handleSetMailCheck } from "./handlers/mail";
 import { handleCheckName } from "./handlers/create";
 import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "./handlers/game";
-import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "./handlers/igloo";
+import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleBuyMultipleFurniture, handleCloseIgloo, handleGetAllIglooLayoutLikes, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleRemoveIglooLayout, handleSetIglooManagement, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "./handlers/igloo";
 import { handleBuyNinjaCards, handleGetFireLevel, handleGetNinjaCards, handleGetNinjaLevel, handleGetNinjaRanks, handleGetWaterLevel, handleJoinFromMatchmake, handleJoinMatchmaking, handleJoinSensei, handleLeaveMatchmake } from "./handlers/ninja";
 import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, handleRetrieveMedieval2012, handleSendEnterHopper, handleViewedMedieval2012 } from "./handlers/party";
 import { handleMusicPartyCookie, handleMusicPartyCountdown, handleMusicPartyMessageViewed } from "./handlers/music-jam-2014";
@@ -246,23 +246,27 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'p#revealgoldpuffle', [], handleRevealGoldPuffle),
 
     p.xt('s', 'g#gm', ['number'], handleGetIglooCpip),
-    p.xt('s', 'g#gii', [], handleGetIglooItems),
+    p.xt('s', 'g#gii', 'string', handleGetIglooItems),
     p.xt('s', 'g#af', ['number'], handleAddFurniture),
     p.xt('s', 'g#au', ['number'], handleAddIgloo),
     p.xt('s', 'g#ag', ['number'], handleAddFlooring),
+    p.xt('s', 'g#buy_multiple_furniture', 'string', handleBuyMultipleFurniture),
     p.xt('s', 'g#ur', 'string', handleUpdateIgloo),
     p.xt('s', 'g#ao', ['number'], handleUpdateIglooType),
     p.xt('s', 'g#gf', [], handleGetFurnitureNew),
     p.xt('s', 'g#go', [], handleGetIglooTypes),
-    p.xt('s', 'g#or', ['number', 'string'], handleOpenIgloo),
-    p.xt('s', 'g#cr', ['number'], handleCloseIgloo),
+    p.xt('s', 'g#or', 'string', handleOpenIgloo),
+    p.xt('s', 'g#cr', 'string', handleCloseIgloo),
     p.xt('s', 'g#gr', [], handleGetOpenIgloos),
     p.xt('s', 'g#um', ['number'], handleUpdateMusic),
     p.xt('s', 'g#gili', [], handleGetIglooLikes),
     p.xt('s', 'g#ggd', [], handleGetDj3kTracks),
     p.xt('s', 'g#gail', ['number'], handleGetAllIglooLayouts),
-    p.xt('s', 'g#uic', ['number', 'number', 'number', 'number', 'number', 'string'], handleUpdateIglooNew),
-    p.xt('s', 'g#al', [], handleAddIglooLayout),
+    p.xt('s', 'g#gaili', 'string', handleGetAllIglooLayoutLikes),
+    p.xt('s', 'g#uic', 'string', handleUpdateIglooNew),
+    p.xt('s', 'g#al', 'string', handleAddIglooLayout),
+    p.xt('s', 'g#rl', ['number'], handleRemoveIglooLayout),
+    p.xt('s', 'g#im', 'string', handleSetIglooManagement),
     p.xt('s', 'g#uiss', ['number', 'string'], handleUpdateIglooLayout),
     p.xt('s', 'g#aloc', ['number'], handleAddIglooLocation),
     

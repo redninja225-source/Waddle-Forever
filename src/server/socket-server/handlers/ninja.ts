@@ -1,6 +1,7 @@
 import { World } from "@server/socket-server/world/world";
 import { CARDS } from "@server/game-logic/cards";
-import { chooseN } from "@common/utils";
+import { choose, chooseN, randomInt } from "@common/utils";
+import { CJBot } from "@server/socket-server/world/card";
 import { PenguinMessenger } from "../../socket-server/messenger";
 import { GameHandler, PenguinHandler } from "./handlers";
 import { MATCHMAKERS } from "@server/game-data/games";
@@ -56,6 +57,16 @@ export const addMatchmakerListeners = (world: World, msg: PenguinMessenger) => {
           msg.send(players, 'scard', game.roomId, 1000 + players[0].id, players.length, 10, ...playersInfo);
         });
         mm.addTickListener((players, time) => {
+          // when the countdown ends with a lone player, they fight a CPU opponent
+          if (time <= 0 && players.length === 1) {
+            const player = players[0];
+            mm.removePlayer(player);
+            const bot = new CJBot(choose(BOT_NAMES), randomInt(1, 15), player.ninja.cardRank);
+            const game = world.getWaddleGame('card', [player], bot);
+            msg.send(players, 'scard', game.roomId, 1000 + player.id, 2, 10,
+              [bot.name, bot.color].join('|'), [player.name, player.inventory.color].join('|'));
+            return;
+          }
           msg.send(players, 'tmm', time, ...players.map(p => p.name));
         });
         break;
@@ -79,6 +90,12 @@ export const handleJoinMatchmaking: GameHandler<[]> = ({ msg, penguin, game }) =
     msg.send(penguin, 'jmm', penguin.name);
   }
 }
+
+const BOT_NAMES = [
+  'Master Penguin', 'Shadow Ninja', 'Silent Fang', 'Ember Claw',
+  'Frost Walker', 'Storm Rider', 'Night Sensei', 'Jade Talon',
+  'Iron Flipper', 'Crimson Beak', 'Moon Scout', 'Echo Strike'
+];
 
 export const handleJoinSensei: GameHandler<[]> = ({ world, penguin, msg, game }) => {
   const room = MATCHMAKERS.find(m => m.id === game.getId());

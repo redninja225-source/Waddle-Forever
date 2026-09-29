@@ -54,21 +54,21 @@ function getModernIglooString(igloo: Igloo, index: number): string {
   ].join(':');
 }
 
-export const handleGetIglooCpip: PenguinHandler<[number]> = ({ world, penguin, msg, data }, penguinId) => {
-  const host = world.getById(penguinId);
-  if (host !== undefined) {
-    // const igloo = host.getOwnIglooString();
-    const igloo = host.igloo.activeIgloo;
-    
-    if (!data.isVanillaEngine()) {
-      msg.send(penguin, 'gm', penguinId, igloo.type, igloo.music, igloo.flooring, getFurnitureString(igloo.furniture));
-    } else {
-      msg.send(penguin, 'gm', penguinId, getModernIglooString(igloo, 1));
-    }
+export const handleGetIglooCpip: PenguinHandler<[number]> = async ({ world, penguin, msg, data, db }, penguinId) => {
+  const igloo = await getIglooFromId(world, db, penguinId);
+  if (igloo === undefined) {
+    return;
+  }
+
+  if (!data.isVanillaEngine()) {
+    msg.send(penguin, 'gm', penguinId, igloo.type, igloo.music, igloo.flooring, getFurnitureString(igloo.furniture));
+  } else {
+    msg.send(penguin, 'gm', penguinId, getModernIglooString(igloo, 1));
   }
 }
 
-export const handleGetIglooItems: PenguinHandler<[]> = ({ msg, penguin }) => {
+// the vanilla client sends the igloo owner ID as an argument, but it is unused
+export const handleGetIglooItems: PenguinHandler<string[]> = ({ msg, penguin }) => {
   // No idea what these zeros are used for
   const zeros = '0000000000';
   const furnitureInfo = penguin.igloo.furniture.map((pair) => {
@@ -97,10 +97,47 @@ export const handleGetIglooItems: PenguinHandler<[]> = ({ msg, penguin }) => {
 
 export const handleAddFurniture: PenguinHandler<[number]> = (ctx, furnitureId) => {
   const { penguin, msg, prst } = ctx;
-  const item = FURNITURE.getStrict(furnitureId);
+  const cost = FURNITURE.get(furnitureId)?.cost ?? 0;
   penguin.igloo.addFurniture(furnitureId, 1);
-  msg.send(penguin, 'af', furnitureId, penguin.currency.discount(item.cost));
+  msg.send(penguin, 'af', furnitureId, penguin.currency.discount(cost));
   prst(penguin);
+};
+
+// the "buy multiple furniture" action, sent when buying the maximum amount at once
+// the arguments appear to be pairs of furnitureId, amount
+export const handleBuyMultipleFurniture: PenguinHandler<string[]> = (ctx, ...args) => {
+  const { penguin, msg, prst } = ctx;
+  for (let i = 0; i < args.length; i += 2) {
+    const id = Number(args[i]);
+    const amount = args[i + 1] === undefined ? 1 : Math.max(1, Number(args[i + 1]));
+    if (Number.isNaN(id)) {
+      continue;
+    }
+    const cost = FURNITURE.get(id)?.cost ?? 0;
+    const owned = penguin.igloo.getFurnitureAmount(id);
+    const added = Math.max(Math.min(amount, 99 - owned), 0);
+    if (added === 0) {
+      continue;
+    }
+    penguin.igloo.addFurniture(id, added);
+    msg.send(penguin, 'af', id, penguin.currency.discount(cost * added));
+  }
+  prst(penguin);
+};
+
+// sent when entering/exiting the igloo editing mode, only used to inform the server
+export const handleSetIglooManagement: PenguinHandler<string[]> = () => {
+};
+
+export const handleRemoveIglooLayout: PenguinHandler<[number]> = ({ penguin, prst }, layoutId) => {
+  penguin.igloo.removeIglooLayout(layoutId);
+  prst(penguin);
+};
+
+// likes for each igloo layout, used by the igloo list UI
+export const handleGetAllIglooLayoutLikes: PenguinHandler<string[]> = ({ msg, penguin }) => {
+  // TODO like system, no likes exist so the list is empty
+  msg.send(penguin, 'gaili', penguin.id, '');
 };
 
 export const handleAddIgloo: PenguinHandler<[number]> = (ctx, iglooId) => {
@@ -167,9 +204,24 @@ export const handleUpdateIgloo: PenguinHandler<string[]> = (ctx, ...furnitureIte
   prst(penguin);
 }
 
-export const handleUpdateIglooNew: PenguinHandler<[number, number, number, number, number, string]> = (ctx, layoutId, type, flooring, location, music, furnitureData) => {
+// the client sends a %-joined serialized layout string:
+// layoutId%type%flooring%location%music%furniture1,furniture2,...
+export const handleUpdateIglooNew: PenguinHandler<string[]> = (ctx, ...args) => {
   const { prst, penguin } = ctx;
-  penguin.igloo.setActiveIgloo(layoutId);
+  const num = (i: number, fallback: number): number => {
+    const v = Number(args[i]);
+    return Number.isNaN(v) ? fallback : v;
+  };
+  const layoutId = num(0, 0);
+  const type = num(1, 0);
+  const flooring = num(2, 0);
+  const location = num(3, 0);
+  const music = num(4, 0);
+  const furnitureData = args[5] ?? '';
+
+  if (layoutId !== 0) {
+    penguin.igloo.setActiveIgloo(layoutId);
+  }
   const furniture = furnitureData === '' ? [] : processFurniture(furnitureData.split(','));
   if (furniture.length >= 99) {
     addFullHouseStamp(ctx);
@@ -202,13 +254,13 @@ export const handleGetFurnitureNew: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'gf', ...penguin.igloo.getAllFurniture().map(pair => pair.join('|')));
 }
 
-export const handleOpenIgloo: PenguinHandler<[number]> = (ctx) => {
+export const handleOpenIgloo: PenguinHandler<(string | number)[]> = (ctx) => {
   const { world, penguin } = ctx;
 
   world.openIgloo(penguin);
 }
 
-export const handleCloseIgloo: PenguinHandler<[number]> = (ctx) => {
+export const handleCloseIgloo: PenguinHandler<(string | number)[]> = (ctx) => {
   const { world, penguin } = ctx;
 
   world.closeIgloo(penguin);
@@ -254,15 +306,25 @@ export const handleGetDj3kTracks: PenguinHandler<[]> = ({ msg, penguin }) => {
   msg.send(penguin, 'ggd', '');
 }
 
-export const handleGetAllIglooLayouts: PenguinHandler<[]> = ({ msg, penguin }) => {
-  const layouts = penguin.igloo.getAllLayouts().map(([index, layout]) => {
-    return getModernIglooString(layout, index);
-  });
+export const handleGetAllIglooLayouts: PenguinHandler<[number]> = async ({ msg, penguin, db, world }, ownerId) => {
+  // client may request another player's layouts (visiting via the map)
+  const owner = world.getById(ownerId);
+  let layouts: Array<[number, Igloo]>;
+  if (owner !== undefined) {
+    layouts = owner.igloo.getAllLayouts();
+  } else {
+    const data = await db.get(ownerId);
+    if (data === null) {
+      return;
+    }
+    layouts = data.igloos.map(igloo => [igloo.id, igloo]);
+  }
   // TODO unsure what the 0 is
-  msg.send(penguin, 'gail', penguin.id, 0, ...layouts);
+  msg.send(penguin, 'gail', ownerId, 0, ...layouts.map(([index, layout]) => getModernIglooString(layout, index)));
 }
 
-export const handleAddIglooLayout: PenguinHandler<[]> = ({ msg, penguin, prst }) => {
+// the vanilla client sends a "1,1,1" string argument, which is unused
+export const handleAddIglooLayout: PenguinHandler<string[]> = ({ msg, penguin, prst }) => {
   const [id, igloo] = penguin.igloo.addIglooLayout();
   // TODO document better what this slot-index is for in the engine 3 string
   msg.send(penguin, 'al', penguin.id, getModernIglooString(igloo, id));

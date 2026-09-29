@@ -9,7 +9,7 @@ import { WaddleRoom } from "./waddle-room";
 import { WorldGame } from "./world-game";
 import { WorldPenguin } from "./world-penguin";
 import { WorldRoom } from "./world-room";
-import { CardJitsu } from "./card";
+import { CardJitsu, CJBot } from "./card";
 import { Bakery } from "./bakery";
 import { MatchMaker } from "./matchmaker";
 import { FireGame } from "./fire";
@@ -93,12 +93,12 @@ export class World {
     });
   }
 
-  public getWaddleGame(name: WaddleName, players: WorldPenguin[]): WaddleGame {
+  public getWaddleGame(name: WaddleName, players: WorldPenguin[], cardJitsuBot?: CJBot): WaddleGame {
     let game: WaddleGame;
 
     switch (name) {
       case 'card':
-        game = new CardJitsu(players);
+        game = new CardJitsu(players, cardJitsuBot);
         players.forEach(p => this.enterState(p, { card: game as CardJitsu }));
         break;
       case 'fire':

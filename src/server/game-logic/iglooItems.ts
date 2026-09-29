@@ -164,11 +164,11 @@ export const IGLOO_FLOORING = new StaticDataTable<IglooItem, [
 ]);
 
 export function getFlooringCost(flooring: number) {
-  const item = IGLOO_FLOORING.getStrict(flooring);
-  return item.cost;
+  const item = IGLOO_FLOORING.get(flooring);
+  return item?.cost ?? 0;
 }
 
 export function getIglooCost(igloo: number) {
-  const item = IGLOO_TYPES.getStrict(igloo);
-  return item.cost;
+  const item = IGLOO_TYPES.get(igloo);
+  return item?.cost ?? 0;
 }

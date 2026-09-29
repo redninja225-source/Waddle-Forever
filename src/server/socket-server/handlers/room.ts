@@ -26,18 +26,20 @@ export const handleSetAction: RoomHandler<[string]> = ({ room, msg, penguin }, a
   msg.send(room.players, 'sa', penguin.id, action);
 }
 
-export const handleSetSnowball: RoomHandler<[string, string]> = ({ room, msg, penguin }, x, y) => {
+export const handleSetSnowball: RoomHandler<[string, string]> = ({ room, msg, penguin, npcs }, x, y) => {
   msg.send(room.players, 'sb', penguin.id, x, y);
+  npcs.handlePlayerSnowball(penguin, room, Number(x), Number(y));
 }
 
-export const handleSendEmote: RoomHandler<[string]> = ({ room, msg, penguin, data, world }, emote) => {
+export const handleSendEmote: RoomHandler<[string]> = ({ room, msg, penguin, data, world, npcs }, emote) => {
   if (data.hasBakery() && room === world.bakery.room) {
     if (Number(emote) === world.bakery.emote) {
       world.bakery.incrementCheer();
     }
   }
-  
+
   msg.send(room.players, 'se', penguin.id, emote);
+  npcs.handlePlayerEmote(penguin, room, Number(emote));
 }
 
 export const handleSendJoke: RoomHandler<[string]> = ({ room, msg, penguin }, joke) => {

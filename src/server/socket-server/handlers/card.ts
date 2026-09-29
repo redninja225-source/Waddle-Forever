@@ -6,16 +6,17 @@ import { handleReceiveMail } from "./mail";
 import { CardGuard, CardHandler, PenguinHandler } from "./handlers";
 
 export const handleEnterCardGame: CardHandler<[]> = async ({ card, penguin, msg }) => {
-  const seatNumber = card.sensei ? 1 : card.getSeatId(penguin);
+  const seatNumber = card.aiOpponent ? 1 : card.getSeatId(penguin);
   // TODO why is seats duplicated?
   await msg.send(penguin, 'gz', card.getPlayerCount(), card.getPlayerCount());
   await msg.send(penguin, 'jz', seatNumber, penguin.name, penguin.inventory.color, penguin.ninja.cardRank);
 }
 
 export const handleUpdateCardSeats: CardHandler<[]> = ({ msg, penguin, card }) => {
+  const aiNinja = card.getNinjaBySeatIndex(0);
   const playersInfo = [
-    ...(card.sensei ? [[0, 'Sensei', 14, 10]] : []),
-    ...card.players.map((p, i) => [i + (card.sensei ? 1 : 0), p.name, p.inventory.color, p.ninja.cardRank])
+    ...(card.aiOpponent && aiNinja instanceof Sensei ? [[0, aiNinja.name, aiNinja.color, aiNinja.rank]] : []),
+    ...card.players.map((p, i) => [i + (card.aiOpponent ? 1 : 0), p.name, p.inventory.color, p.ninja.cardRank])
   ];
   msg.send(penguin, 'uz', ...playersInfo.map(info => info.join('|')));
   msg.send(penguin, 'sz');
@@ -27,7 +28,7 @@ const handleCardJitsuDeal: CardHandler<[number]> = ({ penguin, card, msg }, amou
   const cards = card.deal(ninja, amount);
   msg.send(card.players, 'zm', 'deal', ninja.seat, ...cards);
 
-  if (card.sensei) {
+  if (card.aiOpponent) {
     const sensei = card.getOpponent(ninja);
     const cards = card.deal(sensei, amount);
     msg.send(card.players, 'zm', 'deal', sensei.seat, ...cards);
@@ -216,7 +217,7 @@ const handleCardJitsuPick: CardHandler<[number]> = (ctx, sessionId) => {
       if (loserNinja instanceof NinjaPlayer) {
         gainProgress({ ...ctx, penguin: loserNinja.player }, false);
         // losing to Sensei as a black belt
-        if (winnerNinja instanceof Sensei) {
+        if (card.sensei && winnerNinja instanceof Sensei) {
           if (loserNinja.player.ninja.cardRank >= CardJitsuProgress.MAX_RANK) {
             loserNinja.player.ninja.addAttempt();
             prst(loserNinja.player);

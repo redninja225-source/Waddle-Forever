@@ -581,6 +581,13 @@ class IglooInventory {
     return [id, igloo];
   }
 
+  public removeIglooLayout(id: number) {
+    // the selected layout must always exist
+    if (id !== this._selected) {
+      this._layouts.delete(id);
+    }
+  }
+
   public addIglooLocation(location: number) {
     this._locations.add(location);
   }
