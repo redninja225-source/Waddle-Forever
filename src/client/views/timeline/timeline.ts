@@ -9,6 +9,7 @@ import { getDate } from '@server/timelines/dates';
 import { getPopupCreator } from '@client/popups';
 import { SettingsManager } from '@server/settings';
 import { WorldServer } from '@server/socket-server/world-server';
+import { ROOMS, RoomName } from '@server/game-data/rooms';
 
 export const createTimelinePicker = getPopupCreator('timeline', ['update-version', 'unlock-timeline', 'unlock-all-timeline', 'reset-progress'], (mainWindow: BrowserWindow, settings: SettingsManager, server: WorldServer, _wins, windowData) => {
   const timelinePicker = new BrowserWindow({
@@ -167,6 +168,8 @@ function isCatalogAvailable(input: string | CatalogItems | undefined): boolean {
 function getTimeline(): Day[] {
   let map = new Map<string, Day>();
   const premieres = new Set<string>();
+  /** Rooms that have already appeared at least once, used to detect brand new rooms */
+  const seenRooms = new Set<string>();
 
 
   let daysOfFunStartDate = '';
@@ -224,6 +227,42 @@ function getTimeline(): Day[] {
         addEvent(map, update.date, comment, 'other');
       }) 
     }
+    if (update.update.rooms !== undefined) {
+      Object.keys(update.update.rooms).forEach((room) => {
+        if (!seenRooms.has(room)) {
+          seenRooms.add(room);
+          const display = ROOMS[room as RoomName]?.name;
+          if (display !== undefined) {
+            addEvent(map, update.date, `Visit the new ${display} room`, 'room');
+          }
+        }
+      });
+    }
+    if (update.update.pin === 'start') {
+      addEvent(map, update.date, 'A new pin is hidden somewhere on the island', 'pin');
+    }
+    if (update.update.worldStamps !== undefined) {
+      update.update.worldStamps.forEach(stamp => {
+        addEvent(map, update.date, `Earn the new "${stamp.name}" stamp`, 'other');
+      });
+    }
+    if (update.update.scavengerHunt2007 !== undefined ||
+      update.update.scavengerHunt2010 !== undefined ||
+      update.update.scavengerHunt2011 !== undefined) {
+      addEvent(map, update.date, 'A scavenger hunt has started on the island', 'other');
+    }
+    if (update.update.freeBrownPuffle === true) {
+      addEvent(map, update.date, 'Adopt a free Brown Puffle', 'other');
+    }
+    if (update.update.eliteGearItems !== undefined) {
+      addEvent(map, update.date, 'New Elite Gear is available for agents', 'other');
+    }
+    if (update.update.gameUpgrades !== undefined) {
+      addEvent(map, update.date, 'New game upgrades are available', 'game');
+    }
+    if (update.update.newWaddleRooms !== undefined) {
+      addEvent(map, update.date, 'A new multiplayer game is available', 'game');
+    }
     if (
       update.update.iglooList !== undefined) {
         if (typeof update.update.iglooList !== 'string') {
@@ -236,12 +275,13 @@ function getTimeline(): Day[] {
         }
     }
     if (update.update.migrator !== false && update.update.migrator !== undefined) {
-      addEvent(map, update.date, 'The migrator visits the island', 'migrator');
+      addEvent(map, update.date, 'The Migrator docks at the Beach, board it and meet Rockhopper', 'migrator');
     }
     if (update.end !== undefined) {
       const icon = ('partyIcon' in update.update && update.update.partyIcon !== undefined) ? update.update.partyIcon : 'party';
       if ('partyName' in update.update) {
         addEvent(map, update.date, `The ${update.update.partyName} starts`, icon, update.update.decorated === false ? undefined : 'start');
+        addEvent(map, update.date, `Things to do: explore the decorated rooms and collect the free items`, 'party');
         addEvent(map, update.end, `The ${update.update.partyName} ends`, 'party', update.update.decorated === false ? undefined :'end');
       } else if ('partyStart' in update.update) {
         addEvent(map, update.date, update.update.partyStart, icon, update.update.decorated === false ? undefined :'start');
@@ -301,7 +341,7 @@ function getTimeline(): Day[] {
       addEvent(map, update.date, `Issue #${update.update.issue.edition} of the newspaper releases`, 'news');
     }
     if (update.update.hiddenPin !== undefined) {
-      addEvent(map, update.date, `The ${update.update.hiddenPin} is now hidden in the island`, 'pin');
+      addEvent(map, update.date, `Find the hidden ${update.update.hiddenPin} pin`, 'pin');
     }
   });
 
