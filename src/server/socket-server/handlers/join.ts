@@ -191,8 +191,8 @@ export const handleJoinServer: PenguinHandler<[]> = async (ctx) => {
     ...(data.isPreCpip() ? [] : [penguin.mascot > 0 ? 3 : 0])
   );
 
+  sendGetBuddies(ctx);
   if (isNewBuddyProtocol(data)) {
-    sendGetBuddies(ctx);
     sendBuddyOnlineList(ctx);
   }
 
