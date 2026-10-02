@@ -44,14 +44,29 @@ export const setupSocketServer = async (name: string, port: number, handler: Mes
           })
         },
 
-        end: (d) => ws.close(undefined, d),
+        end: (d) => {
+          if (d === undefined) {
+            ws.close();
+          } else {
+            // mirror TCP's end(data): flush the payload as a message, then close
+            ws.send(Buffer.from(d + '\0', 'utf8'), { binary: true }, () => ws.close());
+          }
+        },
         buffer: ''
       }
 
       ws.on('message', (data) => {
         const str = data.toString();
         if (!str.startsWith('GET')) {
-          handler.handle(cs, data.toString());
+          // websocket frames can carry the null-delimited packets, same as TCP
+          const packets = (cs.buffer + str).split('\0');
+          cs.buffer = packets.pop() ?? '';
+
+          for (const packet of packets) {
+            if (packet.length > 0) {
+              handler.handle(cs, packet);
+            }
+          }
         }
       });
 

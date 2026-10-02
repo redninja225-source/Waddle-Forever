@@ -2,7 +2,6 @@
 
 import { TIMELINE_UNLOCK_COST } from "@common/constants";
 import { EffectService } from "@common/utils";
-import { WORLD_PORT } from "@server/servers";
 
 import { SettingsManager } from "@server/settings";
 import { getDefaultPenguin, PenguinRepository } from "@server/database/database";
@@ -408,6 +407,6 @@ export class WorldServer implements MessageHandler {
 
 export const setupWorldServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<WorldServer>> => {
   const world = new WorldServer(settings, gameData, db);
-  await setupSocketServer('world', WORLD_PORT, world);
+  await setupSocketServer('world', settings.worldPort, world);
   return world;
 }

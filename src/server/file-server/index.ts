@@ -1,4 +1,4 @@
-import { Router, Request } from 'express';
+import express, { Router, Request } from 'express';
 import { GameData } from '@server/timelines/game-data';
 import path from 'path';
 import fs from 'fs';
@@ -78,6 +78,12 @@ export class FileServer {
   public getExpressRouter(): Router {
     const router = Router();
 
+    // Ruffle runtime (Flash emulator) for browsers
+    const ruffleDir = getRuffleDirectory();
+    if (ruffleDir !== undefined) {
+      router.use('/ruffle', express.static(ruffleDir));
+    }
+
     // generic files (swfs, json, etc.)
     router.get('/*', (req: Request, res, next) => {
       const route = req.params[0];
@@ -94,7 +100,7 @@ export class FileServer {
             throw new Error('Split somehow returned empty list');
           }
           
-          this.overrider.override(route, binary).then((value) => {
+          this.overrider.override(route, binary, req).then((value) => {
             res.status(200).type(type).send(value);
           });
         }
@@ -111,4 +117,22 @@ export class FileServer {
 
     return router;
   }
+}
+
+/** Locates the directory of the self-hosted Ruffle build, if it is available */
+function getRuffleDirectory(): string | undefined {
+  const candidates: string[] = [];
+  try {
+    candidates.push(path.dirname(require.resolve('@ruffle-rs/ruffle/package.json')));
+  } catch {
+    // package not resolvable via require (e.g. bundled builds)
+  }
+  candidates.push(path.join(process.cwd(), 'node_modules', '@ruffle-rs', 'ruffle'));
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(path.join(candidate, 'ruffle.js'))) {
+      return candidate;
+    }
+  }
+  return undefined;
 }

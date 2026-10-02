@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { makeSwfFps } from "./30fps";
@@ -7,7 +8,7 @@ import { overrideDanceContest, overrideJPALevelSelector, overrideThinIce, overri
 import { overrideMyPuffle } from "./mypuffle";
 import { overrideMedievalSound } from "./sound-fix";
 
-export type OverriderFunction = (d: GameData, s: SettingsManager, b: Buffer | string) => Promise<Buffer | string>;
+export type OverriderFunction = (d: GameData, s: SettingsManager, b: Buffer | string, req?: Request) => Promise<Buffer | string>;
 
 export const OVERRIDERS: Record<string, OverriderFunction> = {
   '': overrideIndexHtml,
@@ -42,7 +43,7 @@ export class FileOverrider {
     this.regexOverriders = [...regexOverriders];
   }
 
-  async override(route: string, binary: Buffer | string): Promise<Buffer | string> {
+  async override(route: string, binary: Buffer | string, req?: Request): Promise<Buffer | string> {
     let func: OverriderFunction | undefined = this.overriders.get(route);
     if (func === undefined) {
       for (const [key, overrider] of this.regexOverriders) {
@@ -56,7 +57,7 @@ export class FileOverrider {
     if (func === undefined) {
       return binary;
     } else {
-      return await func(this.gameData, this.settings, binary);
+      return await func(this.gameData, this.settings, binary, req);
     }
   }
 }

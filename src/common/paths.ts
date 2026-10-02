@@ -32,8 +32,8 @@ function getOsDataFolder() {
   }
 }
 
-/** Folder where all the WF user data is kept */
-export const USER_DATA_FOLDER = useGameFolder ? process.cwd() : getOsDataFolder();
+/** Folder where all the WF user data is kept. WF_DATA_DIR overrides everything (useful for hosted servers). */
+export const USER_DATA_FOLDER = process.env.WF_DATA_DIR ?? (useGameFolder ? process.cwd() : getOsDataFolder());
 
 export const MODS_DIRECTORY = path.join(USER_DATA_FOLDER, 'mods');
 /** name of the file that contains custom items in a mod */

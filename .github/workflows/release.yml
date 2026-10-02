@@ -88,6 +88,27 @@ jobs:
     - name: Build for Windows
       run: yarn build-packages && yarn build-tsc && yarn electron-builder build --win --x64 --publish always
 
+  build-server:
+    runs-on: windows-latest
+    needs: [verify-version, create-release]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Node.js, NPM and Yarn
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+
+    - name: Restore dependencies
+      run: yarn install
+
+    - name: Build standalone server
+      run: yarn build-server-win-x64
+
+    - name: Upload server binary to release
+      run: gh release upload "${{ needs.create-release.outputs.tag }}" dist/WaddleForeverServer-*.exe --clobber
+
   build-media:
     runs-on: ubuntu-latest
     needs: [verify-version, create-release]

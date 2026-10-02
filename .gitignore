@@ -91,3 +91,5 @@ ffdec-path.ts
 
 # versions dump for debugging
 versions-dump.txt
+# local user data marker (server launcher)
+/.uselocal

@@ -1,5 +1,4 @@
 import { EffectService } from "@common/utils";
-import { LOGIN_PORT } from "@server/servers";
 
 import { SettingsManager } from "@server/settings";
 import { PenguinRepository } from "@server/database/database";
@@ -36,5 +35,5 @@ class LoginServer implements MessageHandler {
 
 export const setupLoginServer = async (settings: SettingsManager, db: PenguinRepository, gameData: GameData): Promise<EffectService<void>> => {
   const loginServer = new LoginServer(gameData, settings, db);
-  await setupSocketServer('login', LOGIN_PORT, loginServer);
+  await setupSocketServer('login', settings.loginPort, loginServer);
 }

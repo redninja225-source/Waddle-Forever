@@ -4,7 +4,7 @@ import { isVersionValid, processVersion, Version } from './routes/versions';
 import { HTTP_PORT } from '../common/constants';
 import { LOGIN_DELTA, WORLD_DELTA } from './servers';
 import { ModManager } from './mods';
-import { EventListener } from '@common/utils';
+import { EventListener, isPositiveInteger } from '@common/utils';
 
 export type BooleanSettingKey = 
   'thin_ice_igt' |
@@ -95,8 +95,13 @@ export class SettingsManager {
 
     this.updateSettings({});
 
-    this.targetIP = '127.0.0.1';
-    this.targetPort = HTTP_PORT;
+    // Address advertised to clients when the server is reachable by other
+    // machines. Env vars take precedence over the settings.json keys.
+    const jsonHost = settingsJson['server_host'];
+    const jsonPort = Number(settingsJson['server_port']);
+    this.targetIP = process.env.WF_HOST ?? (typeof jsonHost === 'string' && jsonHost !== '' ? jsonHost : '127.0.0.1');
+    const envPort = Number(process.env.WF_PORT);
+    this.targetPort = isPositiveInteger(envPort) ? envPort : (isPositiveInteger(jsonPort) ? jsonPort : HTTP_PORT);
   }
 
   readString(object: any, property: string): string {
