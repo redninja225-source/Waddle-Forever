@@ -1,43 +1,46 @@
 import path from 'path';
 import fs from 'fs';
-import { BrowserWindow, dialog, shell } from 'electron';
-import { postJSON } from "@common/utils";
-import { VERSION } from '@common/constants';
-import { SettingsManager } from '@server/settings';
+import { BrowserWindow, dialog, app } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import electronIsDev from 'electron-is-dev';
+import log from 'electron-log';
 
 const UPDATE_PATH = path.join(process.cwd(), 'tempupdate');
 
-export async function checkUpdates (mainWindow: BrowserWindow, settings: SettingsManager): Promise<void> {
+export async function checkUpdates (mainWindow: BrowserWindow): Promise<void> {
   if (fs.existsSync(UPDATE_PATH)) {
     fs.rmdirSync(UPDATE_PATH, { recursive: true })
   }
 
-  const versionStatus = await postJSON(`/api/version`, {
-    version: VERSION
-  })
-
-  if (versionStatus === undefined) {
+  if (electronIsDev || !app.isPackaged) {
     return;
   }
 
-  const newVersion = versionStatus.version;
-  if (typeof newVersion !== 'string') {
-    return;
-  }
-  
-  if (newVersion !== VERSION && settings.settings.ignored_version !== newVersion) {
-    const result = await dialog.showMessageBox(mainWindow, {
-      buttons: ['Ok', 'Don\'t Ask Again', 'Open Download Website'],
-      title: 'New version available',
-      message: `A new version is available (${newVersion}). Please redownload the game to have access to the latest features and bug fixes.`,
+  autoUpdater.logger = log;
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('update-downloaded', (info) => {
+    dialog.showMessageBox(mainWindow, {
+      buttons: ['Restart Now', 'Later'],
+      title: 'Update Ready',
+      message: `Waddle Forever ${info.version} has been downloaded. It will be installed when you quit, or press Restart Now to apply it immediately.`,
       defaultId: 0,
       cancelId: 1
+    }).then((result) => {
+      if (result.response === 0) {
+        autoUpdater.quitAndInstall();
+      }
     });
+  });
 
-    if (result.response === 1) {
-      settings.updateSettings({ ignored_version: newVersion });
-    } else if (result.response === 2) {
-      shell.openExternal('https://waddleforever.com/');
-    }
+  autoUpdater.on('error', (err) => {
+    log.error('Auto-update failed:', err);
+  });
+
+  try {
+    await autoUpdater.checkForUpdates();
+  } catch (err) {
+    log.error('Update check failed:', err);
   }
 }

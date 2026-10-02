@@ -35,13 +35,17 @@
     "electronDist": "node_modules/electron/dist",
     "appId": "com.clubpenguin.speedrunning.client",
     "productName": "Waddle Forever",
+    "publish": {
+      "provider": "github",
+      "owner": "redninja225-source",
+      "repo": "Waddle-Forever"
+    },
     "asar": "false",
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     },
     "win": {
-      "publish": "github",
       "artifactName": "WaddleForever-Setup-${version}.${ext}"
     },
     "mac": {
@@ -51,7 +55,6 @@
     },
     "linux": {
       "category": "game",
-      "publish": "github",
       "target": [
         "deb",
         "AppImage"

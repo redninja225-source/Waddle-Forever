@@ -12,3 +12,5 @@ export const TIMELINE_UNLOCK_COST = 5000;
 export const IS_DEV = process.env.NODE_ENV === 'dev';
 
 export const WEBSITE = 'https://waddleforever.com';
+
+export const GITHUB_REPO = 'redninja225-source/Waddle-Forever';
