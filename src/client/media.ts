@@ -191,12 +191,94 @@ export const downloadMediaFolder = async (mediaName: string, onSuccess: () => vo
       return;
     }
     fs.writeFileSync(path.join(folderDestination, '.version'), VERSION);
+    const mediaHash = await getMediaHash(VERSION, mediaName);
+    if (mediaHash !== undefined) {
+      fs.writeFileSync(path.join(folderDestination, '.hash'), mediaHash);
+    }
     onSuccess();
     
   } catch (error) {
     onFail(error);    
   }
 }
+
+async function fetchJSON(url: string, maxRedirects = 5): Promise<unknown> {
+  const { protocol } = parseURL(url);
+  const module = protocol === 'http' ? http : https;
+
+  return await new Promise((resolve, reject) => {
+    module.get(url, (response) => {
+      const status = response.statusCode ?? 0;
+      if ([301, 302, 303, 307, 308].includes(status)) {
+        const redirectURL = response.headers.location;
+        if (redirectURL === undefined || maxRedirects <= 0) {
+          reject(new Error('Too many redirects'));
+        } else {
+          resolve(fetchJSON(redirectURL, maxRedirects - 1));
+        }
+        return;
+      }
+      if (status !== 200) {
+        response.resume();
+        reject(new Error(`HTTP ${status} for ${url}`));
+        return;
+      }
+      let body = '';
+      response.on('data', (chunk) => { body += chunk; });
+      response.on('end', () => {
+        try {
+          resolve(JSON.parse(body));
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }).on('error', reject);
+  });
+}
+
+type MediaManifest = { media?: Record<string, string> };
+
+const manifestCache: Record<string, MediaManifest | undefined> = {};
+
+const getMediaManifest = async (version: string): Promise<MediaManifest | undefined> => {
+  if (!(version in manifestCache)) {
+    try {
+      manifestCache[version] = await fetchJSON(`https://github.com/${GITHUB_REPO}/releases/download/v${version}/media-manifest.json`) as MediaManifest;
+    } catch (err) {
+      manifestCache[version] = undefined;
+    }
+  }
+  return manifestCache[version];
+};
+
+const getMediaHash = async (version: string, mediaName: string): Promise<string | undefined> => {
+  const manifest = await getMediaManifest(version);
+  return manifest?.media?.[mediaName];
+};
+
+/** Checks whether the locally downloaded media folder is equivalent to the current version's media. */
+const isMediaEquivalent = async (previousVersion: string, mediaName: string, targetDir: string): Promise<boolean> => {
+  const newHash = await getMediaHash(VERSION, mediaName);
+  if (newHash !== undefined) {
+    // releases built with the manifest can be compared cheaply via content hashes
+    const hashFile = path.join(targetDir, '.hash');
+    let oldHash = fs.existsSync(hashFile) ? fs.readFileSync(hashFile, { encoding: 'utf-8' }).trim() : undefined;
+    if (oldHash === undefined) {
+      oldHash = await getMediaHash(previousVersion, mediaName);
+    }
+    if (oldHash !== undefined) {
+      return oldHash === newHash;
+    }
+  }
+
+  // fallback to the website API (older releases without a manifest)
+  const response = await postJSON('/compare-versions', { oldVersion: previousVersion, newVersion: VERSION, media: mediaName });
+  if (response !== undefined) {
+    return response.isEquivalent;
+  }
+  // API error, assume not equivalent
+  return false;
+};
 
 const checkMedia = async (mediaName: string, onSuccess = () => {}): Promise<boolean> => {
   let isUpToDate = true;
@@ -222,18 +304,10 @@ const checkMedia = async (mediaName: string, onSuccess = () => {}): Promise<bool
       // even though the versions are different,
       // the contents may be the same, so we can skip
       // downloading a new file if they are equivalent
-      const response = await postJSON('/compare-versions', { oldVersion: previousVersion, newVersion: VERSION, media: mediaName });
-      if (response !== undefined) {
-        if (response.isEquivalent) {
-          fs.writeFileSync(versionFile, VERSION);
-          isUpToDate = true;
-        } else {
-          isUpToDate = false;
-        }
+      if (await isMediaEquivalent(previousVersion, mediaName, TARGET_DIRECTORY)) {
+        fs.writeFileSync(versionFile, VERSION);
+        isUpToDate = true;
       } else {
-        // API error on server, we assume there's no equivalence
-        // this scenario shouldn't happen, and if it does
-        // we might get an error trying to download anyways
         isUpToDate = false;
       }
     }

@@ -106,6 +106,9 @@ jobs:
     - name: Build media zips
       run: yarn build-media
 
+    - name: Build media manifest
+      run: npx tsx scripts/build-media-manifest.ts
+
     - name: Upload media zips to release
       run: |
         VERSION="${{ needs.verify-version.outputs.version }}"
@@ -113,5 +116,6 @@ jobs:
           name=$(basename "$file" | sed "s/-${VERSION}\.zip/.zip/")
           gh release upload "${{ needs.create-release.outputs.tag }}" "$file#$name" --clobber
         done
+        gh release upload "${{ needs.create-release.outputs.tag }}" zip/media-manifest.json --clobber
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
