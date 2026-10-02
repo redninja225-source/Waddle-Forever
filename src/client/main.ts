@@ -15,7 +15,6 @@ import { NAME, VERSION, WEBSITE } from '@common/constants';
 import { Popups } from './popups';
 import { WorldServer } from '@server/socket-server/world-server';
 import { startMods, startServices } from '@server/boot';
-import { UPDATES } from '@server/updates/updates';
 import { createStartupSplash } from './views/splash/splash';
 
 log.initialize();
@@ -123,7 +122,7 @@ Select 'Boot Serverless' to ignore this error, or check out the error to see the
   settingsManager.updateSettings({
     game_mode: gameMode,
     timeline_progression: gameMode === 'timeline',
-    ...(gameMode === 'main' ? { version: UPDATES[UPDATES.length - 1].date } : {})
+    ...(gameMode === 'main' ? { version: settingsManager.settings.main_version } : {})
   });
 
   mainWindow = await createWindow(store, globalSettings, settingsManager);

@@ -24,6 +24,8 @@ export type BooleanSettingKey =
 
 export type Settings = {
   version: Version
+  /** Date used when running the game in Main Mode */
+  main_version: Version
   game_mode: 'main' | 'timeline'
   /** Latest timeline date that may be selected in progression mode */
   timeline_unlocked: Version
@@ -76,6 +78,7 @@ export class SettingsManager {
       jpa_level_selector: this.readBoolean(settingsJson, 'jpa_level_selector', false),
       swap_dance_arrow: this.readBoolean(settingsJson, 'swap_dance_arrow', false),
       version,
+      main_version: this.readNamedVersion(settingsJson, 'main_version', isVersionValid(settingsJson['version']) ? settingsJson['version'] : '2017-03-30'),
       game_mode: settingsJson['game_mode'] === 'main' ? 'main' : 'timeline',
       timeline_unlocked: this.readTimelineUnlocked(settingsJson, '2006-06-06'),
       timeline_progression: this.readBoolean(settingsJson, 'timeline_progression', true),
@@ -126,6 +129,11 @@ export class SettingsManager {
 
   readTimelineUnlocked(object: any, fallback: Version): Version {
     const value = object['timeline_unlocked'];
+    return typeof value === 'string' && isVersionValid(value) ? value : fallback;
+  }
+
+  readNamedVersion(object: any, property: string, fallback: Version): Version {
+    const value = object[property];
     return typeof value === 'string' && isVersionValid(value) ? value : fallback;
   }
 

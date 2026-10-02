@@ -96,7 +96,7 @@ export const AS3_STATIC_FILES: RouteRefMap = {
   'play/v2/client//fonts/en/FontLibrary.swf': 'svanilla:media/play/v2/client/fonts/en/FontLibrary.swf',
   'play/v2/client/music/assets/music_game.swf': 'svanilla:media/play/v2/client/music/assets/music_game.swf',
   'play/v2/client/music/assets/music_mysonglist.swf': 'svanilla:media/play/v2/client/music/assets/music_mysonglist.swf',
-  'play/v2/client//music/assets/music_widget.swf': 'svanilla:media/play/v2/client/music/assets/music_widget.swf',
+  'play/v2/client/music/assets/music_widget.swf': 'svanilla:media/play/v2/client/music/assets/music_widget.swf',
   'play/v2/client/puffle_tricks_hud/assets/tricks_hud_assets.swf': 'svanilla:media/play/v2/client/puffle_tricks_hud/assets/tricks_hud_assets.swf',
   'play/v2/client/puffle_ui_widget/assets/radial_menu_assets.swf': 'svanilla:media/play/v2/client/puffle_ui_widget/assets/radial_menu_assets.swf',
   'play/v2/client/puffle_ui_widget/assets/stats_bar_assets.swf': 'svanilla:media/play/v2/client/puffle_ui_widget/assets/stats_bar_assets.swf',

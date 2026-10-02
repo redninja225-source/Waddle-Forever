@@ -18,12 +18,14 @@ import { Item, ITEMS, ItemTable } from "@server/game-logic/items";
 import { WaddleRoomInfo } from "@server/game-logic/waddles";
 import { isGreater, isGreaterOrEqual, Version } from "@server/routes/versions";
 import { SettingsManager } from "@server/settings";
-import { CatalogItems, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
+import { CatalogItems, CPUpdate, CPUpdateE, CrumbIndicator, GameUpdate, HuntCrumbs, IglooList, ListSongPatch, PartyOp, WorldStamp } from "@server/updates";
 import { getUpdates } from "@server/updates/updates";
 import path from "path";
 
 const SCAVENGER_ICON_PATH = 'scavenger_hunt/scavenger_hunt_icon.swf';
 const TICKET_INFO_PATH = 'close_ups/tickets.swf';
+/** The party script is requested from either location depending on the client, so both always point to the same file */
+const PARTY_SCRIPT_ROUTES = ['play/v2/client/party.swf', 'play/v2/content/global/content/party.swf'];
 
 export function getNewspaperDate(year: number, month: number, day: number) {
   return `${year}${String(month).padStart(2, '0')}${String(day).padStart(2, '0')}`;
@@ -175,6 +177,8 @@ function getFreshState(): GameState {
 export class GameData {
   private state = getFreshState();
 
+  private eventOverrides = new Map<string, CPUpdate>();
+
   private updateListener = new EventListener();
 
   private date: string;
@@ -200,7 +204,13 @@ export class GameData {
   }
 
   private addRoute(route: string, file: FileRef) {
-    this.state.files.set(toForwardSlash(route), getMediaFilePath(file));
+    const normalized = toForwardSlash(route);
+    const mediaPath = getMediaFilePath(file);
+    this.state.files.set(normalized, mediaPath);
+    const mirror = PARTY_SCRIPT_ROUTES.find((r) => r !== normalized && PARTY_SCRIPT_ROUTES.includes(normalized));
+    if (mirror !== undefined) {
+      this.state.files.set(mirror, mediaPath);
+    }
   }
 
   private addCatalog(input: FileRef | CatalogItems, paths: string[]) {
@@ -279,6 +289,26 @@ export class GameData {
 
   public addListener(callback: () => void): void {
     this.updateListener.addListener(callback);
+  }
+
+  public setEventOverride(name: string, update: CPUpdate): void {
+    this.eventOverrides.set(name, update);
+    this.update(this.date);
+  }
+
+  public clearEventOverride(name: string): boolean {
+    const removed = this.eventOverrides.delete(name);
+    this.update(this.date);
+    return removed;
+  }
+
+  public clearEventOverrides(): void {
+    this.eventOverrides.clear();
+    this.update(this.date);
+  }
+
+  public getEventOverrides(): string[] {
+    return [...this.eventOverrides.keys()];
   }
 
   public update(date: Version): void {
@@ -762,6 +792,16 @@ export class GameData {
       }
     }
 
+    const applyUpdate = (update: CPUpdate): void => {
+      for (const key in actions) {
+        const value = update[key as keyof CPUpdateE];
+        if (value !== undefined) {
+          const callback = actions[key as keyof CPUpdateE] as (v: typeof value, s: GameState) => void;
+          callback(value, this.state);
+        }
+      }
+    };
+
     for (const update of this.updates) {
       // check every update until the current date
       if (isGreater(update.date, date)) {
@@ -772,15 +812,12 @@ export class GameData {
         continue;
       }
 
-      for (const key in actions) {
-        const value = update.update[key as keyof CPUpdateE];
-        if (value !== undefined) {
-          const callback = actions[key as keyof CPUpdateE] as (v: typeof value, s: GameState) => void;
-          callback(value, this.state);
-        }
-      }
+      applyUpdate(update.update);
       this.updateListener.fire();
     }
+
+    this.eventOverrides.forEach(applyUpdate);
+    this.updateListener.fire();
   }
 
   public lookupFile(route: string): string | ((s: SettingsManager) => string) | undefined {

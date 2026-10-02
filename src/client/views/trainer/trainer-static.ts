@@ -24,9 +24,14 @@ type RoomInfo = {
 
 type TrainerData = {
   players: PlayerInfo[];
+  currentVersion: string;
+  mainVersion: string;
   items: ItemInfo[];
   stamps: StampInfo[];
   rooms: RoomInfo[];
+  parties: string[];
+  features: string[];
+  mascots: string[];
 };
 
 const trainerApi = (window as any).api;
@@ -34,6 +39,10 @@ const trainerPlayerSelect = document.getElementById('player-select') as HTMLSele
 const itemSelect = document.getElementById('item-select') as HTMLSelectElement;
 const stampSelect = document.getElementById('stamp-select') as HTMLSelectElement;
 const roomSelect = document.getElementById('room-select') as HTMLSelectElement;
+const partySelect = document.getElementById('party-select') as HTMLSelectElement;
+const featureSelect = document.getElementById('feature-select') as HTMLSelectElement;
+const mascotSelect = document.getElementById('mascot-select') as HTMLSelectElement;
+const mainVersionInput = document.getElementById('main-version-input') as HTMLInputElement;
 const itemSearch = document.getElementById('item-search') as HTMLInputElement;
 const stampSearch = document.getElementById('stamp-search') as HTMLInputElement;
 const roomSearch = document.getElementById('room-search') as HTMLInputElement;
@@ -41,9 +50,14 @@ const statusElement = document.getElementById('status')!;
 
 let state: TrainerData = {
   players: [],
+  currentVersion: '',
+  mainVersion: '',
   items: [],
   stamps: [],
-  rooms: []
+  rooms: [],
+  parties: [],
+  features: [],
+  mascots: []
 };
 
 const itemTypes: Record<number, string> = {
@@ -99,6 +113,25 @@ function fillSelect<T>(
     const option = document.createElement('option');
     option.value = String(getValue(value));
     option.textContent = getText(value);
+    select.appendChild(option);
+  });
+  select.selectedIndex = 0;
+}
+
+function fillStringSelect(select: HTMLSelectElement, values: string[], emptyText: string) {
+  select.replaceChildren();
+  if (values.length === 0) {
+    const option = document.createElement('option');
+    option.textContent = emptyText;
+    option.disabled = true;
+    select.appendChild(option);
+    return;
+  }
+
+  values.forEach(value => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value.replace(/-/g, ' ');
     select.appendChild(option);
   });
   select.selectedIndex = 0;
@@ -161,11 +194,19 @@ function renderRooms() {
   );
 }
 
+function renderWorldControls() {
+  fillStringSelect(partySelect, state.parties, 'No named events found');
+  fillStringSelect(featureSelect, state.features, 'No timed features found');
+  fillStringSelect(mascotSelect, state.mascots, 'No mascots found');
+  mainVersionInput.value = state.mainVersion || state.currentVersion;
+}
+
 function refreshAll() {
   renderPlayers();
   renderItems();
   renderStamps();
   renderRooms();
+  renderWorldControls();
   setStatus(state.players.length > 0 ? 'Trainer ready.' : 'No online players found.');
 }
 
@@ -236,6 +277,80 @@ document.getElementById('join-room-button')!.addEventListener('click', () => {
     return;
   }
   run(`jr ${roomSelect.value}`, 'Joined room');
+});
+
+document.getElementById('set-main-version-button')!.addEventListener('click', () => {
+  const version = mainVersionInput.value;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(version)) {
+    setStatus('Choose a valid pinned date.');
+    return;
+  }
+  run(`mainversion ${version}`, 'Main version updated');
+});
+
+document.querySelectorAll('[data-main-version]').forEach(button => {
+  button.addEventListener('click', () => {
+    const version = (button as HTMLElement).dataset.mainVersion!;
+    mainVersionInput.value = version;
+    run(`mainversion ${version}`, 'Main version updated');
+  });
+});
+
+document.getElementById('start-party-button')!.addEventListener('click', () => {
+  if (partySelect.value === '') {
+    setStatus('Select a party first.');
+    return;
+  }
+  run(`party ${partySelect.value}`, 'Party started');
+});
+
+document.getElementById('end-party-button')!.addEventListener('click', () => {
+  run('endparty', 'Party ended');
+});
+
+document.getElementById('start-feature-button')!.addEventListener('click', () => {
+  if (featureSelect.value === '') {
+    setStatus('Select a timed feature first.');
+    return;
+  }
+  run(`event start ${featureSelect.value}`, 'Timed feature started');
+});
+
+document.getElementById('stop-feature-button')!.addEventListener('click', () => {
+  if (featureSelect.value === '') {
+    setStatus('Select a timed feature first.');
+    return;
+  }
+  run(`event stop ${featureSelect.value}`, 'Timed feature stopped');
+});
+
+document.getElementById('stop-events-button')!.addEventListener('click', () => {
+  run('event stop all', 'All timed events stopped');
+});
+
+document.getElementById('spawn-mascot-button')!.addEventListener('click', () => {
+  if (mascotSelect.value === '') {
+    setStatus('Select a mascot first.');
+    return;
+  }
+  run(`spawnmascot ${mascotSelect.value}`, 'Mascot spawned');
+});
+
+document.getElementById('despawn-mascot-button')!.addEventListener('click', () => {
+  if (mascotSelect.value === '') {
+    setStatus('Select a mascot first.');
+    return;
+  }
+  run(`despawnmascot ${mascotSelect.value}`, 'Mascot despawned');
+});
+
+document.getElementById('mascot-say-button')!.addEventListener('click', () => {
+  const message = (document.getElementById('mascot-message') as HTMLInputElement).value.trim();
+  if (mascotSelect.value === '' || message === '') {
+    setStatus('Select a mascot and enter a message first.');
+    return;
+  }
+  run(`mascotsay ${mascotSelect.value.replace(/\s+/g, '')} ${message}`, 'Mascot spoke');
 });
 
 document.querySelectorAll('[data-cj-wins]').forEach(button => {

@@ -10,6 +10,9 @@ import { handleLeaveGame, handleRoomRefresh, isGameGuard } from "./handlers/game
 import { getIglooOld, handleAddFlooring, handleAddFurniture, handleAddIgloo, handleAddIglooLayout, handleAddIglooLocation, handleCloseIgloo, handleGetAllIglooLayouts, handleGetDj3kTracks, handleGetFurniture, handleGetFurnitureNew, handleGetIglooCpip, handleGetIglooItems, handleGetIglooLikes, handleGetIglooTypes, handleGetMusicTracks, handleGetOpenIgloos, handleOpenIgloo, handleUpdateIgloo, handleUpdateIglooLayout, handleUpdateIglooNew, handleUpdateIglooOld, handleUpdateIglooType, handleUpdateMusic } from "./handlers/igloo";
 import { handleBuyNinjaCards, handleGetFireLevel, handleGetNinjaCards, handleGetNinjaLevel, handleGetNinjaRanks, handleGetWaterLevel, handleJoinFromMatchmake, handleJoinMatchmaking, handleJoinSensei, handleLeaveMatchmake } from "./handlers/ninja";
 import { handleDonateCoins, handleGetBakeryState, handleGetCookieInventory, handleRetrieveMedieval2012, handleSendEnterHopper, handleViewedMedieval2012 } from "./handlers/party";
+import { handleMusicPartyCookie, handleMusicPartyCountdown, handleMusicPartyMessageViewed } from "./handlers/music-jam-2014";
+import { PARTY_SERVICES, createPartyCookieHandler, createPartyViewedHandler } from "./handlers/party-service";
+import { handleBroadcastMusicTracks, handleDeleteMusicTrack, handleGetSharedTracks, handleGetTrackLikes, handleLoadMusicTrack, handleRefreshTrackLikes, handleSaveMusicTrack, handleShareMusicTrack } from "./handlers/music";
 import { handleAdoptPuffle, handleAdoptPuffleOld, handleEatPuffleItem, handleGetIglooPuffles, handleGetIglooPufflesOld, handleGetPuffleInventory, handlePuffleBackyardSwap, handlePuffleDigOnCommand, handlePuffleDigRandom, handlePuffleWalk, handleRevealGoldPuffle, isAfterPuffleCreatureGuard, isBeforePuffleCreatureGuard, sendModernPuffleCheck, sendPuffleCheck } from "./handlers/puffle";
 import { handleGetRainbowQuestData, handleSendRainbowQuestBonusCoins, handleSendRainbowQuestCollectCoins, handleSendRainbowQuestItemCollect, handleSendRainbowTaskComplete } from "./handlers/rainbow";
 import { handleEndSled, handleJoinSled, handleMoveSled, isSledGuard } from "./handlers/sled";
@@ -319,10 +322,30 @@ export const createWorldXtHandler = (): XtHandler => {
     p.xt('s', 'mdvl#retrieve', [], handleRetrieveMedieval2012),
     p.xt('s', 'mdvl#msgviewed', ['number'], handleViewedMedieval2012),
 
+    p.xt('s', 'musicparty#partycookie', [], handleMusicPartyCookie),
+    p.xt('s', 'musicparty#mpmsgviewed', ['number'], handleMusicPartyMessageViewed),
+    p.xt('s', 'musicparty#mpcountdown', ['number'], handleMusicPartyCountdown),
+
+    p.xt('s', 'musictrack#getsharedmusictracks', [], handleGetSharedTracks),
+    p.xt('s', 'musictrack#refreshmytracklikes', [], handleRefreshTrackLikes),
+    p.xt('s', 'musictrack#getlikecountfortrack', ['number', 'number'], handleGetTrackLikes),
+    p.xt('s', 'musictrack#loadmusictrack', ['number', 'number'], handleLoadMusicTrack),
+    p.xt('s', 'musictrack#broadcastingmusictracks', [], handleBroadcastMusicTracks),
+    p.xt('s', 'musictrack#savemymusictrack', ['string', 'string', 'string'], handleSaveMusicTrack),
+    p.xt('s', 'musictrack#deletetrack', ['string'], handleDeleteMusicTrack),
+    p.xt('s', 'musictrack#sharemymusictrack', ['string', 'string'], handleShareMusicTrack),
+
     p.xt('s', 'ba#barsu', [], handleGetBakeryState),
     p.xt('s', 'ba#seh', ['string'], handleSendEnterHopper),
     p.xt('s', 'ba#ctc', [], handleGetCookieInventory),
-    
+
+    ...PARTY_SERVICES.flatMap((spec) => [
+      p.xt('s', `${spec.handler}#partycookie`, [], createPartyCookieHandler(spec)),
+      ...(spec.viewedCommand === undefined ? [] : [
+        p.xt('s', `${spec.handler}#${spec.viewedCommand}`, ['number'], createPartyViewedHandler(spec))
+      ])
+    ]),
+
     r.xt('m', 'sm', ['string', 'string'], handleSendMessage),
     r.xt('m', 'ss', ['string'], handleSafeMessage),
     z.xt('m', 'checkName', ['string'], handleCheckName)

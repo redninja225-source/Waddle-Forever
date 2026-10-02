@@ -5,6 +5,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     date: '2014-01-16',
     temp: {
       const: {
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/prehistoric_construction_2014.swf'
+        },
         rooms: {
           forts: 'archives:Prehistoric2014ConstForts_3.swf',
           party1: 'archives:PrehistoricPartyConstParty1.swf'
@@ -17,6 +20,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'Prehistoric Party 2014',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/prehistoric_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           party6: 'archives:Prehistoric2014Party6.swf',
@@ -134,6 +140,7 @@ export const UPDATES_2014_PARTIES: Update[] = [
         startscreens: [ 'archives:LoginScreen-ENFairPreAwareness.swf' ],
         localChanges: { 'catalogues/prizebooth.swf': { en: 'archives:TheFair2014PrizeBoothEN.swf' } },
         fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/fair_2014.swf',
           'play/v2/content/global/rooms/effects/pixelpenguin.swf': 'archives:RoomsEffectsPixelpenguin-TheFair2014.swf'
         }
       }
@@ -163,6 +170,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'Muppets World Tour',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/muppets_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           party1: 'archives:MuppetsWorldTourParty1.swf',
@@ -217,6 +227,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'Puffle Party 2014',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/puffle_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           beach: 'archives:RoomsBeach-PuffleParty2014.swf',
@@ -280,6 +293,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'Future Party',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/future_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           party7: 'archives:RoomsParty7-FutureParty.swf',
@@ -396,6 +412,7 @@ export const UPDATES_2014_PARTIES: Update[] = [
           'close_ups/character_dialogue_update.swf': 'archives:Close_upsCharacter_dialogue_update-PenguinCup.swf'
         },
         fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/penguin_cup_2014.swf',
           'play/v2/content/global/avatar/sprites/ball_kick.swf': 'archives:AvatarSpritesBall_kick.swf',
           'play/v2/content/global/avatar/sprites/victory_1.swf': 'archives:AvatarSpritesVictory_1.swf',
           'play/v2/content/global/avatar/sprites/victory_2.swf': 'archives:AvatarSpritesVictory_2.swf',
@@ -427,12 +444,7 @@ export const UPDATES_2014_PARTIES: Update[] = [
           party3: 'archives:RoomsParty3-MusicJam2014.swf',
           party1: 'archives:RoomsParty1-MusicJam2014.swf',
           party2: 'archives:RoomsParty2-MusicJam2014.swf',
-          town: 'archives:RoomsTown-MusicJam2014.swf',
-          party7: 'archives:RoomsConcertsConcert_cadence.swf',
-          party8: 'archives:RoomsConcertsConcert_violetta.swf',
-          party9: 'archives:RoomsConcertsConcert_djcole.swf',
-          party10: 'archives:RoomsConcertsConcert_sabrina.swf',
-          party11: 'archives:RoomsConcertsConcert_zendaya.swf'
+          town: 'archives:RoomsTown-MusicJam2014.swf'
         },
         music: {
           party4: 727,
@@ -448,15 +460,34 @@ export const UPDATES_2014_PARTIES: Update[] = [
         mapNote: 'archives:ENClose_upsParty_map_note-MusicJam2014.swf',
         startscreens: [ 'archives:LoginScreen-ENMusicJam20141.swf' ],
         localChanges: {
-          'close_ups/quest_interface.swf': { en: 'archives:ENClose_upsQuest_interface-MusicJam2014.swf' },
-          'close_ups/party_map.swf': { en: 'archives:ENClose_upsParty_map_note-MusicJam2014.swf' },
-          'close_ups/party_igloo_list.swf': { en: 'archives:ENClose_upsParty_igloo_list-MusicJam2014.swf' }
+          'close_ups/quest_interface.swf': { en: ['archives:ENClose_upsQuest_interface-MusicJam2014.swf', 'w.p2014.music.partyinterface'] },
+          'close_ups/party_igloo_list.swf': { en: ['archives:ENClose_upsParty_igloo_list-MusicJam2014.swf', 'w.p2014.music.igloolist'] }
         },
         globalChanges: {
           'membership/party1.swf': 'archives:MembershipParty1-MusicJam2014.swf',
-          'close_ups/party_map.swf': 'archives:Close_upsParty_map-MusicJam2014.swf',
+          'close_ups/party_map.swf': ['archives:Close_upsParty_map-MusicJam2014.swf', 'w.p2014.music.partymap'],
           'content/party_icon.swf': 'archives:ContentParty_icon-MusicJam2014.swf',
-          'close_ups/character_dialogue_login.swf': 'archives:Close_upsCharacter_dialogue_login-MusicJam2014.swf'
+          'close_ups/character_dialogue_login.swf': ['archives:Close_upsCharacter_dialogue_login-MusicJam2014.swf', 'w.p2014.music.login'],
+          'rooms/concerts/concert_cadence.swf': ['archives:RoomsConcertsConcert_cadence.swf', 'w.p2014.concert.cadence'],
+          'rooms/concerts/concert_violetta.swf': ['archives:RoomsConcertsConcert_violetta.swf', 'w.p2014.concert.violetta'],
+          'rooms/concerts/concert_djcole.swf': ['archives:RoomsConcertsConcert_djcole.swf', 'w.p2014.concert.djcole'],
+          'rooms/concerts/concert_sabrina.swf': ['archives:RoomsConcertsConcert_sabrina.swf', 'w.p2014.concert.sabrina'],
+          'rooms/concerts/concert_zendaya.swf': ['archives:RoomsConcertsConcert_zendaya.swf', 'w.p2014.concert.zendaya']
+        },
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/music_jam_2014.swf'
+        },
+        gameStrings: {
+          'w.map.musiccruise': 'Music Cruise',
+          'w.p2014.party.map.open': 'Open',
+          'w.p2014.music.map.header': 'Music Cruise',
+          'w.p2014.music.map.content': 'Explore the ship and rock out with the stars!',
+          'w.p2014.music.dialogue.login': 'Welcome aboard the Music Cruise! Catch performances on the Main Stage, make tracks in SoundStudio and collect free items all party long!',
+          'w.p2014.performers.cadence': 'Cadence',
+          'w.p2014.performers.violetta': 'Violetta',
+          'w.p2014.performers.djcole': 'Cole Plante',
+          'w.p2014.performers.sabrina': 'Sabrina',
+          'w.p2014.performers.zendaya': 'Zendaya'
         }
       }
     }
@@ -517,6 +548,7 @@ export const UPDATES_2014_PARTIES: Update[] = [
           'close_ups/character_dialogue_elsa.swf': 'archives:Close_upsCharacter_dialogue_Elsa-FrozenParty.swf'
         },
         fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/frozen_2014.swf',
           'play/v2/content/global/avatar/sprites/olaf.swf': 'archives:AvatarSpritesOlaf.swf',
           'play/v2/content/global/avatar/sprites/marshmallow.swf': 'archives:AvatarSpritesMarshmallow.swf'
         }
@@ -530,6 +562,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'School & Skate Party',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/school_skate_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           party1: 'archives:RoomsParty1-School&SkateParty.swf',
@@ -695,7 +730,8 @@ export const UPDATES_2014_PARTIES: Update[] = [
           'close_ups/character_dialogue_ghost_defeated.swf': 'archives:Close_upsCharacter_dialogue_ghost_defeated-HalloweenParty2014.swf'
         },
         fileChanges: {
-          'play/v2/content/global/rooms/NOTLS-ALL-EN.swf': 'archives:RoomsNOTLS-ALL-EN-HalloweenParty2014.swf'
+          'play/v2/content/global/rooms/NOTLS-ALL-EN.swf': 'archives:RoomsNOTLS-ALL-EN-HalloweenParty2014.swf',
+          'play/v2/client/party.swf': 'unknown:ghosts/party.swf'
         }
       }
     }
@@ -722,6 +758,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'Pirate Party 2014',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/pirate_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           beach: 'archives:RoomsBeach-PirateParty2014.swf',
@@ -766,6 +805,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party2: {
         partyName: 'Merry Walrus Parade',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/merry_walrus_parade_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           village: 'archives:RoomsVillage-MerryWalrusParade.swf',
@@ -781,6 +823,9 @@ export const UPDATES_2014_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'Merry Walrus Party',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/merry_walrus_2014.swf'
+        },
         partyIcon: 'party',
         rooms: {
           beach: 'archives:RoomsBeach-MerryWalrusParty2014.swf',

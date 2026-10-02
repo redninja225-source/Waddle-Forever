@@ -912,6 +912,24 @@ class Medieval2012Status {
   }
 }
 
+class MusicJam2014Status {
+  private _viewed: number[];
+
+  constructor(data: PenguinJson) {
+    this._viewed = [0, 0, 0].map((_, i) => data.musicJam2014Messages?.[i] === 1 ? 1 : 0);
+  }
+
+  public get viewed() {
+    return [...this._viewed];
+  }
+
+  public setViewed(message: number) {
+    if (message >= 0 && message < this._viewed.length) {
+      this._viewed[message] = 1;
+    }
+  }
+}
+
 class UserPreference {
   private _save: boolean;
   private _safeChat: boolean;
@@ -983,6 +1001,7 @@ export class WorldPenguin implements UserPenguin {
   private _ninja: NinjaProfile;
   private _battleOfDoom: BattleOfDoomStatus;
   private _medieval2012: Medieval2012Status;
+  private _musicJam2014: MusicJam2014Status;
   private _preference: UserPreference;
   private _redeemedCodes: Set<string>;
   private _visitedRooms: Set<number>;
@@ -1015,6 +1034,7 @@ export class WorldPenguin implements UserPenguin {
     this._ninja = new NinjaProfile(json);
     this._battleOfDoom = new BattleOfDoomStatus(json);
     this._medieval2012 = new Medieval2012Status(json);
+    this._musicJam2014 = new MusicJam2014Status(json);
     this._preference = new UserPreference(json);
     this._redeemedCodes = new Set((json.redeemedCodes ?? []).map(code => code.toUpperCase()));
     this._visitedRooms = new Set(json.visitedRooms ?? []);
@@ -1060,6 +1080,10 @@ export class WorldPenguin implements UserPenguin {
 
   public get medieval2012() {
     return this._medieval2012;
+  }
+
+  public get musicJam2014() {
+    return this._musicJam2014;
   }
 
   public get igloo() {
@@ -1252,6 +1276,7 @@ export class WorldPenguin implements UserPenguin {
       battleOfDoom: this._battleOfDoom.completed,
 
       medieval2012Message: this._medieval2012.message,
+      musicJam2014Messages: this._musicJam2014.viewed,
 
       noSave: !this._preference.canSave,
       safeChat: this._preference.isSafeChat,

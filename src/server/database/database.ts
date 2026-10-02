@@ -169,6 +169,9 @@ export interface PenguinJson {
 // MEDIEVAL PARTY 2012
   medieval2012Message?: number;
 
+// MUSIC JAM 2014
+  musicJam2014Messages?: number[];
+
 // USER PREFERENCE
   noSave?: boolean;
   safeChat?: boolean;

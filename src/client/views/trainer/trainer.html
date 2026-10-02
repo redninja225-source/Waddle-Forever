@@ -67,6 +67,49 @@
       </section>
 
       <section class="panel">
+        <h2>Main Version</h2>
+        <label for="main-version-input">Pinned Main Mode date</label>
+        <input type="date" id="main-version-input" min="2005-08-22" max="2017-12-31" />
+        <button id="set-main-version-button">Set Main Version</button>
+        <div class="button-grid">
+          <button data-main-version="2005-08-22" class="secondary">2005 Era</button>
+          <button data-main-version="2010-10-25" class="secondary">2010 Era</button>
+          <button data-main-version="2014-07-17" class="secondary">Music Jam 2014</button>
+          <button data-main-version="2017-03-30" class="secondary">2017 Finale</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Timed Events</h2>
+        <label for="party-select">Party or named event</label>
+        <select id="party-select" class="select tall-select" size="5"></select>
+        <div class="button-grid">
+          <button id="start-party-button">Start Party</button>
+          <button id="end-party-button" class="secondary">End Party</button>
+        </div>
+        <label for="feature-select">Timed feature</label>
+        <select id="feature-select" class="select"></select>
+        <div class="button-grid">
+          <button id="start-feature-button">Start Feature</button>
+          <button id="stop-feature-button" class="secondary">Stop Feature</button>
+          <button id="stop-events-button" class="secondary">Stop All Events</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Mascots</h2>
+        <select id="mascot-select" class="select tall-select" size="5"></select>
+        <div class="button-grid">
+          <button id="spawn-mascot-button">Spawn Mascot</button>
+          <button id="despawn-mascot-button" class="secondary">Despawn</button>
+        </div>
+        <div class="inline-controls">
+          <input type="text" id="mascot-message" maxlength="80" placeholder="Mascot message" />
+          <button id="mascot-say-button">Say</button>
+        </div>
+      </section>
+
+      <section class="panel">
         <h2>Card-Jitsu</h2>
         <div class="button-grid">
           <button data-cj-wins="1">+1 Win</button>

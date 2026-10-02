@@ -1,6 +1,9 @@
 import { choose, randomInt } from "@common/utils";
 import { getDefaultPenguin, PenguinJson } from "@server/database/database";
 import { TIME_HUB_ROOM_ID } from "@server/game-data/rooms";
+import { MASCOTS } from "@server/game-data/mascots";
+import { MASCOT_MESSAGES } from "@server/game-data/mascot-messages";
+import { ITEMS, ItemType } from "@server/game-logic/items";
 import { SettingsManager } from "@server/settings";
 import { GameData } from "@server/timelines/game-data";
 import { STORY_QUESTS, TIMELINE_ACHIEVEMENTS, getQuestsForEra, isQuestComplete } from "@server/game-data/story-progress";
@@ -21,6 +24,7 @@ type NpcSpec = {
   phrases: string[];
   outfit?: Partial<Pick<PenguinJson, 'head' | 'face' | 'neck' | 'body' | 'hand' | 'feet' | 'pin' | 'background'>>;
   stationary?: boolean;
+  mascotId?: number;
 };
 
 type ActiveNpc = {
@@ -45,14 +49,14 @@ const pickNpcItem = (items: number[], npcId: number, slot: number) => {
   return items[Math.abs((npcId * 31 + slot * 17 + npcId * npcId) % items.length)];
 };
 
-const getNpcOutfit = (npcId: number): NpcSpec['outfit'] => ({
-  head: pickNpcItem(NPC_HEADS, npcId, 0),
-  face: pickNpcItem(NPC_FACES, npcId, 1),
-  neck: pickNpcItem(NPC_NECKS, npcId, 2),
-  body: pickNpcItem(NPC_BODIES, npcId, 3),
-  hand: pickNpcItem(NPC_HANDS, npcId, 4),
-  feet: pickNpcItem(NPC_FEET, npcId, 5)
-});
+type OutfitPools = {
+  heads: number[];
+  faces: number[];
+  necks: number[];
+  bodies: number[];
+  hands: number[];
+  feet: number[];
+};
 
 export type TimelineHubHooks = {
   getNextEra(): string | undefined;
@@ -388,7 +392,7 @@ const GENERATED_THEMES = [
 ];
 
 GENERATED_FIRST_NAMES.forEach((firstName, firstIndex) => {
-  [0, 1].forEach((series) => {
+  [0, 1, 2].forEach((series) => {
     const index = firstIndex + series * GENERATED_FIRST_NAMES.length;
     const id = 900023 + index;
     const phrases = GENERATED_THEMES[index % GENERATED_THEMES.length];
@@ -554,6 +558,33 @@ const PLAYER_RESPONSES: Array<[RegExp, string[]]> = [
     'have fun exploring!',
     'later!'
   ]],
+  [/\b(how are you|hows it going|how's it going|whats up|what's up|wassup)\b/i, [
+    'doing great, thanks for asking!',
+    'just enjoying the island. how about you?',
+    'pretty good! the island feels lively today',
+    'can\'t complain! waddling is good exercise'
+  ]],
+  [/\b(who are you|your name|who r u)\b/i, [
+    'just a friendly island local',
+    'i live here. you will see me around a lot',
+    'one of the locals! say talk if you want to chat'
+  ]],
+  [/\b(lost|stuck|confused|help)\b/i, [
+    'try the map if you are lost',
+    'say tip and i will share something useful',
+    'guide gary near the town can show you the time command center',
+    'explore slowly, the island rewards curiosity'
+  ]],
+  [/\b(friend|friends|like you|love)\b/i, [
+    'aww, that is nice of you',
+    'the island is better with friends around',
+    'we can be penguin pals!'
+  ]],
+  [/\b(old|young|age|school|boring|bored)\b/i, [
+    'there is always something to do here',
+    'try a minigame when you are bored',
+    'a bored penguin is an unexplored island'
+  ]],
   [/\b(name|called)\b/i, [
     'i am one of the island locals',
     'you can call me by my penguin name',
@@ -646,12 +677,77 @@ const ROOMS = [
   810 // Cove
 ];
 
+// classic emote ids (smile, laugh, sad, angry, surprised, wave, heart, flower)
+const NPC_EMOTES = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const MASCOT_NPC_ID_START = 901000;
+
+const normalizeName = (name: string): string => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+const findMascot = (name: string) => {
+  const normalized = normalizeName(name);
+  return MASCOTS.find(mascot => {
+    return normalized === normalizeName(mascot.name) || normalized === normalizeName(mascot.display ?? mascot.name);
+  }) ?? MASCOTS.find(mascot => {
+    return normalizeName(mascot.name).startsWith(normalized) || normalizeName(mascot.display ?? mascot.name).startsWith(normalized);
+  });
+};
+
+const getMascotPhrases = (name: string): string[] => {
+  const messages = MASCOT_MESSAGES.find(message => normalizeName(message.mascotName) === normalizeName(name));
+  const phrases = messages?.mascotScript.flatMap(script => script.script) ?? [];
+  return phrases.length > 0 ? phrases : [`${name} has arrived`];
+};
+
 export class NpcService {
   private _npcs: ActiveNpc[] = [];
   private _timer: NodeJS.Timeout | null = null;
   private _running = false;
+  private _nextMascotId = MASCOT_NPC_ID_START;
   private _hubPromptCooldown = new Map<number, number>();
   private _interactionTargets = new Map<number, number>();
+  private _pools: OutfitPools = {
+    heads: NPC_HEADS, faces: NPC_FACES, necks: NPC_NECKS,
+    bodies: NPC_BODIES, hands: NPC_HANDS, feet: NPC_FEET
+  };
+
+  /** Limits the item pools to items that exist in the pinned era, so NPCs
+   * never wear items the client cannot render */
+  private buildOutfitPools(): OutfitPools {
+    const version = this._settings.settings.version;
+    const filterPool = (ids: number[]): number[] => {
+      const pool = ids.filter(id => {
+        const item = this._data.getItem(id);
+        if (item === undefined) {
+          return false;
+        }
+        if (typeof item.releaseDate === 'string' && isGreater(item.releaseDate, version)) {
+          return false;
+        }
+        return !this._data.isPreCpip() || this._data.getClientItems().has(id);
+      });
+      return pool.length > 0 ? pool : [0];
+    };
+    return {
+      heads: filterPool(NPC_HEADS),
+      faces: filterPool(NPC_FACES),
+      necks: filterPool(NPC_NECKS),
+      bodies: filterPool(NPC_BODIES),
+      hands: filterPool(NPC_HANDS),
+      feet: filterPool(NPC_FEET)
+    };
+  }
+
+  private getNpcOutfit(npcId: number): NpcSpec['outfit'] {
+    return {
+      head: pickNpcItem(this._pools.heads, npcId, 0),
+      face: pickNpcItem(this._pools.faces, npcId, 1),
+      neck: pickNpcItem(this._pools.necks, npcId, 2),
+      body: pickNpcItem(this._pools.bodies, npcId, 3),
+      hand: pickNpcItem(this._pools.hands, npcId, 4),
+      feet: pickNpcItem(this._pools.feet, npcId, 5)
+    };
+  }
 
   constructor(
     private _world: World,
@@ -667,6 +763,7 @@ export class NpcService {
     }
 
     this._running = true;
+    this._pools = this.buildOutfitPools();
     this._npcs = NPCS.map((baseSpec) => {
       const spec = this.getEraSpec(baseSpec);
       const json = getDefaultPenguin(
@@ -676,7 +773,7 @@ export class NpcService {
         this._settings.getVirtualDate(0).getTime()
       );
       json.noSave = true;
-      const outfit = spec.outfit ?? getNpcOutfit(spec.id);
+      const outfit = spec.outfit ?? this.getNpcOutfit(spec.id);
       Object.assign(json, outfit);
       json.inventory = [...json.inventory, ...Object.values(outfit ?? {}).filter((item): item is number => item !== 0)];
 
@@ -704,6 +801,135 @@ export class NpcService {
       this._timer = null;
     }
     this._npcs = [];
+  }
+
+  public spawnMascot(name: string, roomId: number): string | undefined {
+    const mascot = findMascot(name);
+    if (mascot === undefined) {
+      return undefined;
+    }
+
+    const displayName = mascot.display ?? mascot.name;
+    const target = this._world.getRoom(roomId);
+    const existing = this._npcs.find(npc => npc.spec.mascotId === mascot.id);
+    if (existing !== undefined) {
+      this.moveNpcToRoom(existing, target);
+      return displayName;
+    }
+
+    const colorItem = mascot.starterItems.map(id => ITEMS.get(id)).find(item => item?.type === ItemType.Color);
+    const color = colorItem?.id ?? 1;
+    const outfit: NpcSpec['outfit'] = {};
+    mascot.starterItems.forEach(id => {
+      const item = ITEMS.get(id);
+      switch (item?.type) {
+        case ItemType.Head: outfit.head = id; break;
+        case ItemType.Face: outfit.face = id; break;
+        case ItemType.Neck: outfit.neck = id; break;
+        case ItemType.Body: outfit.body = id; break;
+        case ItemType.Hand: outfit.hand = id; break;
+        case ItemType.Feet: outfit.feet = id; break;
+        case ItemType.Pin: outfit.pin = id; break;
+        case ItemType.Background: outfit.background = id; break;
+      }
+    });
+
+    const spec: NpcSpec = {
+      id: this._nextMascotId++,
+      name: displayName,
+      color,
+      homeRoom: roomId,
+      phrases: getMascotPhrases(displayName),
+      outfit,
+      mascotId: mascot.id
+    };
+    const json = getDefaultPenguin(
+      displayName,
+      color,
+      this._settings.settings.always_member,
+      this._settings.getVirtualDate(0).getTime()
+    );
+    json.noSave = true;
+    json.mascot = mascot.id;
+    json.inventory = [...mascot.starterItems];
+    Object.assign(json, outfit);
+
+    const penguin = new WorldPenguin(spec.id, json, this._settings);
+    this._world.addPenguin(penguin);
+    this.placeInRoom(penguin, roomId, randomPosition(), randomPosition());
+    this._npcs.push({
+      spec,
+      penguin,
+      nextAction: Date.now() + randomInt(5000, 12000),
+      nextReply: 0
+    });
+    return displayName;
+  }
+
+  public despawnMascot(name: string): string | undefined {
+    const mascot = findMascot(name);
+    if (mascot === undefined) {
+      return undefined;
+    }
+
+    const index = this._npcs.findIndex(npc => npc.spec.mascotId === mascot.id);
+    if (index < 0) {
+      return undefined;
+    }
+
+    const [npc] = this._npcs.splice(index, 1);
+    const room = this._world.getPenguinRoom(npc.penguin);
+    if (room !== undefined) {
+      room.removePenguin(npc.penguin);
+      void this._msg.send(
+        room.players,
+        'rp',
+        npc.penguin.id,
+        ...room.playerStates.map(([p, s]) => getPenguinString(this._data, p, s))
+      ).catch(console.error);
+    }
+    this._world.disconnect(npc.penguin);
+    return npc.spec.name;
+  }
+
+  public sayMascot(name: string, message: string): string | undefined {
+    const mascot = findMascot(name);
+    if (mascot === undefined) {
+      return undefined;
+    }
+
+    const npc = this._npcs.find(candidate => candidate.spec.mascotId === mascot.id);
+    const room = npc === undefined ? undefined : this._world.getPenguinRoom(npc.penguin);
+    if (npc === undefined || room === undefined || message.trim() === '') {
+      return undefined;
+    }
+
+    void this._msg.send(room.players, 'sm', npc.penguin.id, message).catch(console.error);
+    return npc.spec.name;
+  }
+
+  private moveNpcToRoom(npc: ActiveNpc, target: WorldRoom): void {
+    const oldRoom = this._world.getPenguinRoom(npc.penguin);
+    if (oldRoom?.id === target.id) {
+      return;
+    }
+
+    if (oldRoom !== undefined) {
+      oldRoom.removePenguin(npc.penguin);
+      void this._msg.send(
+        oldRoom.players,
+        'rp',
+        npc.penguin.id,
+        ...oldRoom.playerStates.map(([p, s]) => getPenguinString(this._data, p, s))
+      ).catch(console.error);
+    }
+
+    const x = randomPosition();
+    const y = randomPosition();
+    target.addPenguin(npc.penguin, x, y);
+    this._world.enterState(npc.penguin, { room: target });
+    npc.spec.homeRoom = target.id;
+    void this._msg.send(target.players, 'ap', getPenguinString(this._data, npc.penguin, { x, y, frame: 1 })).catch(console.error);
   }
 
   public handlePlayerEnteredRoom(player: WorldPenguin, room: WorldRoom, prst: PenguinPersister): void {
@@ -958,9 +1184,22 @@ export class NpcService {
   }
 
   private getEraSpec(spec: NpcSpec): NpcSpec {
+    // outfits are re-randomized per era year so NPCs change clothing when the
+    // timeline version changes; NPCs with an authored outfit keep it
+    const eraSeed = spec.id * (Number(this._settings.settings.version.slice(0, 4)) - 2004);
+    const eraOutfit: NpcSpec['outfit'] = {
+      head: pickNpcItem(this._pools.heads, eraSeed, 0),
+      face: pickNpcItem(this._pools.faces, eraSeed, 1),
+      neck: pickNpcItem(this._pools.necks, eraSeed, 2),
+      body: pickNpcItem(this._pools.bodies, eraSeed, 3),
+      hand: pickNpcItem(this._pools.hands, eraSeed, 4),
+      feet: pickNpcItem(this._pools.feet, eraSeed, 5)
+    };
+    const baseSpec = spec.outfit === undefined ? { ...spec, outfit: eraOutfit } : spec;
+
     const partyName = this.getActivePartyName();
     if (partyName === undefined) {
-      return spec;
+      return baseSpec;
     }
 
     const partyRoom = spec.id % 10 === 0 && !spec.stationary ? 100 : spec.homeRoom;
@@ -968,18 +1207,18 @@ export class NpcService {
       `the ${partyName} is the best party ever`,
       `are you enjoying the ${partyName}?`,
       `i decorated my outfit for the ${partyName}`,
-      ...spec.phrases
+      ...baseSpec.phrases
     ];
 
     return {
-      ...spec,
+      ...baseSpec,
       homeRoom: partyRoom,
       phrases: partyPhrases,
       outfit: {
-        head: pickNpcItem(NPC_HEADS, spec.id * 7, 0),
-        neck: pickNpcItem(NPC_NECKS, spec.id * 7, 1),
-        hand: pickNpcItem(NPC_HANDS, spec.id * 7, 2),
-        body: pickNpcItem(NPC_BODIES, spec.id * 7, 3)
+        head: pickNpcItem(this._pools.heads, spec.id * 7, 0),
+        neck: pickNpcItem(this._pools.necks, spec.id * 7, 1),
+        hand: pickNpcItem(this._pools.hands, spec.id * 7, 2),
+        body: pickNpcItem(this._pools.bodies, spec.id * 7, 3)
       }
     };
   }
@@ -1053,6 +1292,26 @@ export class NpcService {
     }
 
     const now = Date.now();
+    const addressed = this._npcs.find(npc => room.players.includes(npc.penguin) && npc.nextReply <= now &&
+      normalized.includes(npc.spec.name.toLowerCase().split(' ')[0]));
+    if (addressed !== undefined) {
+      addressed.nextReply = now + randomInt(6000, 15000);
+      const reply = choose([
+        `hey ${player.name}!`,
+        `that's me! what's up, ${player.name}?`,
+        'you called?',
+        'hi! did you need something?',
+        `${player.name}! nice to see you`,
+        `hello ${player.name}, i am ${addressed.spec.name}`
+      ]);
+      delay(randomInt(600, 1500)).then(() => {
+        if (this._running && room.players.includes(addressed.penguin)) {
+          return this._msg.send(room.players, 'sm', addressed.penguin.id, reply).catch(console.error);
+        }
+      }).catch(console.error);
+      return;
+    }
+
     const closest = this.getClosestNpc(player, room);
     const listeners = this._npcs.filter(npc => room.players.includes(npc.penguin) && npc.nextReply <= now);
     const speaker = closest !== undefined && listeners.includes(closest) ? closest : choose(listeners);
@@ -1096,12 +1355,16 @@ export class NpcService {
       }
     }
 
-    const npc = choose(this._npcs.filter(n => n.nextAction <= now));
-    if (npc === undefined) {
-      return;
+    const ready = this._npcs.filter(n => n.nextAction <= now);
+    for (let i = 0; i < 3 && ready.length > 0; i++) {
+      const npc = choose(ready);
+      ready.splice(ready.indexOf(npc), 1);
+      await this.act(npc, now);
     }
+  }
 
-    npc.nextAction = now + randomInt(7000, 18000);
+  private async act(npc: ActiveNpc, now: number): Promise<void> {
+    npc.nextAction = now + randomInt(3000, 5000);
     const room = this._world.getPenguinRoom(npc.penguin);
     if (room === undefined) {
       return;
@@ -1109,16 +1372,22 @@ export class NpcService {
 
     const action = randomInt(0, 99);
     if (npc.spec.stationary) {
-      if (action < 35) {
+      if (action < 40) {
         await this.say(npc, room);
+      } else if (action < 85) {
+        await this.emote(npc.penguin, room);
+      } else {
+        await this.converse(room);
       }
       return;
     }
-    if (action < 45) {
+    if (action < 55) {
       await this.move(npc.penguin, room);
-    } else if (action < 70) {
+    } else if (action < 65) {
+      await this.emote(npc.penguin, room);
+    } else if (action < 80) {
       await this.say(npc, room);
-    } else if (action < 90) {
+    } else if (action < 93) {
       await this.converse(room);
     } else {
       await this.changeRoom(npc, room);
@@ -1141,6 +1410,10 @@ export class NpcService {
 
   private async say(npc: ActiveNpc, room: WorldRoom): Promise<void> {
     await this._msg.send(room.players, 'sm', npc.penguin.id, choose(npc.spec.phrases));
+  }
+
+  private async emote(penguin: WorldPenguin, room: WorldRoom): Promise<void> {
+    await this._msg.send(room.players, 'se', penguin.id, choose(NPC_EMOTES));
   }
 
   private async converse(room: WorldRoom): Promise<void> {

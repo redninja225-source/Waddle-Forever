@@ -535,6 +535,136 @@ so that it works with newer clients (newer being around 2007)`,
   ],
   [RECREATION]: [
     {
+      file: 'party_scripts/music_jam_2014.swf',
+      comment: 'Music Jam 2014 party script rebuilt from the original MusicParty classes shipped inside the party login dialogue, with MusicParty and MusicPartyConstants replaced by the final versions found in the cruise room files (the dialogue has an older draft without SoundStudio), and a bootstrap frame modeled on the original 2015 party scripts',
+      base: 'archives:Close_upsCharacter_dialogue_login-MusicJam2014.swf'
+    },
+    {
+      file: 'party_scripts/mu_takeover_2013.swf',
+      comment: 'Monsters University Takeover party script rebuilt from the original MonsterParty classes shipped inside the party Snow Forts room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsForts-MUTakeover2013.swf'
+    },
+    {
+      file: 'party_scripts/teen_beach_2013.swf',
+      comment: 'Teen Beach Movie Summer Jam party script rebuilt from the original TeenBeachParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-TeenBeachMovieSummerJam.swf'
+    },
+    {
+      file: 'party_scripts/operation_puffle_2013.swf',
+      comment: 'Operation Puffle party script rebuilt from the original EPFParty classes shipped inside the EPF Command Room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:OperationPuffleRoomsParty1.swf'
+    },
+    {
+      file: 'party_scripts/holiday_2013.swf',
+      comment: 'Holiday Party 2013 party script rebuilt from the original CFCParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-HolidayParty2013.swf'
+    },
+    {
+      file: 'party_scripts/prehistoric_construction_2014.swf',
+      comment: 'Prehistoric Party 2014 construction-week party script rebuilt from the original CFCParty classes shipped inside the construction Snow Forts room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:Prehistoric2014ConstForts_3.swf'
+    },
+    {
+      file: 'party_scripts/prehistoric_2014.swf',
+      comment: 'Prehistoric Party 2014 party script rebuilt from the original PrehistoricParty classes shipped inside the party map, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:PrehistoricParty2014Map.swf'
+    },
+    {
+      file: 'party_scripts/fair_2014.swf',
+      comment: 'The Fair 2014 party script rebuilt from the original FairParty and EPFParty classes shipped inside the party rooms, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:TheFair2014Party10.swf'
+    },
+    {
+      file: 'party_scripts/muppets_2014.swf',
+      comment: 'Muppets World Tour party script rebuilt from the original MuppetsParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-MuppetsWorldTour.swf'
+    },
+    {
+      file: 'party_scripts/puffle_2014.swf',
+      comment: 'Puffle Party 2014 party script rebuilt from the original PuffleParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-PuffleParty2014.swf'
+    },
+    {
+      file: 'party_scripts/future_2014.swf',
+      comment: 'Future Party party script rebuilt from the original FutureParty classes shipped inside the Future Snow Forts room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsParty9-FutureParty.swf'
+    },
+    {
+      file: 'party_scripts/penguin_cup_2014.swf',
+      comment: 'Penguin Cup party script rebuilt from the original SoccerParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-PenguinCup.swf'
+    },
+    {
+      file: 'party_scripts/frozen_2014.swf',
+      comment: 'Frozen Party party script rebuilt from the original FrozenParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-FrozenParty.swf'
+    },
+    {
+      file: 'party_scripts/school_skate_2014.swf',
+      comment: 'School & Skate Party script rebuilt from the original SchoolParty classes shipped inside the party Pizza Parlor room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsPizzaParlor-School&SkateParty.swf'
+    },
+    {
+      file: 'party_scripts/pirate_2014.swf',
+      comment: 'Pirate Party 2014 party script rebuilt from the original PirateParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-PirateParty2014.swf'
+    },
+    {
+      file: 'party_scripts/merry_walrus_parade_2014.swf',
+      comment: 'Merry Walrus Parade party script rebuilt from the original CFCParty classes shipped inside the Holiday Party 2013 interface, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:ENClose_upsParty_interface-HolidayParty2013.swf'
+    },
+    {
+      file: 'party_scripts/merry_walrus_2014.swf',
+      comment: 'Merry Walrus Party script rebuilt from the original HolidayParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-MerryWalrusParty2014.swf'
+    },
+    {
+      file: 'party_scripts/star_wars_rebels_2015.swf',
+      comment: 'Star Wars Rebels Takeover party script rebuilt from the original JanuaryParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-StarWarsRebelsTakeover.swf'
+    },
+    {
+      file: 'party_scripts/soundstudio_2015.swf',
+      comment: 'SoundStudio Party script rebuilt from the original FebruaryParty classes shipped inside the party Ice Rink room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsRink-SoundStudioParty2015.swf'
+    },
+    {
+      file: 'party_scripts/puffle_2015.swf',
+      comment: 'Puffle Party 2015 party script rebuilt from the original MarchParty classes shipped inside the party Ski Lodge room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsLodge-PuffleParty2015.swf'
+    },
+    {
+      file: 'party_scripts/frozen_fever_2015.swf',
+      comment: 'Frozen Fever Party 2015 script rebuilt from the original AprilParty classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-FrozenFeverParty.swf'
+    },
+    {
+      file: 'party_scripts/fair_2015.swf',
+      comment: 'The Fair 2015 party script rebuilt from the original MayParty classes shipped inside the party rooms, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsParty10-TheFair2015.swf'
+    },
+    {
+      file: 'party_scripts/inside_out_2015.swf',
+      comment: 'Inside Out Party script rebuilt from the original JulyParty classes shipped inside the party Dock room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsDock-InsideOutParty.swf'
+    },
+    {
+      file: 'party_scripts/fashion_festival_2015.swf',
+      comment: 'Fashion Festival party script rebuilt from the original AugustParty classes shipped inside the party Snow Forts room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsForts-FashionFestival.swf'
+    },
+    {
+      file: 'party_scripts/descendants_2015.swf',
+      comment: 'Descendants Party script rebuilt from the original September1Party classes shipped inside the party catalog interface, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:Close_upsCatalog_interface-DescendantsParty.swf'
+    },
+    {
+      file: 'party_scripts/anniversary_10_2015.swf',
+      comment: '10th Anniversary Party script rebuilt from the original September2Party classes shipped inside the party Town room, with a bootstrap frame modeled on the original party scripts',
+      base: 'archives:RoomsTown-10thAnniversaryParty.swf'
+    },
+    {
       file: '2009_storm/beach.swf',
       comment: '2009 Great Storm room recreations all done by Blue Kirby'
     },

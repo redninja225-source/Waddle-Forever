@@ -87,7 +87,9 @@ export const login: LoginHandler = async (ctx, message: string) => {
     */
     // information regarding how many populations are in each server
     msg.send(client, 'l', id, id, '', serverList.map((server) => {
-      const population = server.name === 'Blizzard' ? 5 : getServerPopulation()
+      // Hibernate is the quiet server: always displayed as empty for players
+      // who want the island to themselves (Blizzard stays full)
+      const population = server.name === 'Hibernate' ? 0 : server.name === 'Blizzard' ? 5 : getServerPopulation()
       return `${server.id},${population}`;
     }).join('|'));
   }

@@ -23,10 +23,11 @@ import { XmlHandler } from "./xml-handler";
 import { createWorldXtHandler } from "./world-handlers";
 import { createLoginXmlHandler } from "./login-handlers";
 import { PenguinPersister, WorldContext } from "@server/socket-server/handlers/handlers";
-import { CommandsHandler, getCommandsHandler } from "@server/commands/commands";
+import { CommandsHandler, FEATURE_UPDATES, getCommandsHandler } from "@server/commands/commands";
 import { OfflineWorld } from "./offline-world";
-import { NpcService, NPC_ID_START } from "./world/npc-service";
+import { NpcService } from "./world/npc-service";
 import { ITEMS } from "@server/game-logic/items";
+import { MASCOTS } from "@server/game-data/mascots";
 import { ROOMS, TIME_HUB_ROOM_ID } from "@server/game-data/rooms";
 import { UPDATES } from "@server/updates/updates";
 import { isGreater, Version } from "@server/routes/versions";
@@ -254,6 +255,7 @@ export class WorldServer implements MessageHandler {
         settings: this._settings,
         off: this._off,
         npcs: this._npcs,
+        resetWorld: () => this.reset(),
         client,
         room: this._world.getPenguinRoom(penguin)
       }, name, args);
@@ -261,8 +263,11 @@ export class WorldServer implements MessageHandler {
   }
 
   public getAllPlayersInfo() {
-    return this._world.players
-      .filter(p => p.id < NPC_ID_START)
+    // NPCs and mascots never have a client attached, so listing connected
+    // penguins through the messenger only returns real, currently-online players
+    return this._msg.getClients()
+      .map(client => this._msg.getPenguin(client))
+      .filter((p): p is WorldPenguin => p !== undefined)
       .map(p => ({
         name: p.name,
         id: p.id
@@ -301,8 +306,16 @@ export class WorldServer implements MessageHandler {
   }
 
   public getTrainerData() {
+    const partyNames = UPDATES.flatMap(update => {
+      return 'partyName' in update.update && typeof update.update.partyName === 'string'
+        ? [update.update.partyName]
+        : [];
+    });
+
     return {
       players: this.getAllPlayersInfo(),
+      currentVersion: this._settings.settings.version,
+      mainVersion: this._settings.settings.main_version,
       items: ITEMS.rows.map(item => ({
         id: item.id,
         name: item.name,
@@ -320,7 +333,10 @@ export class WorldServer implements MessageHandler {
       rooms: Object.values(ROOMS).map(room => ({
         id: room.id,
         name: room.name
-      }))
+      })),
+      parties: [...new Set(partyNames)],
+      features: Object.keys(FEATURE_UPDATES),
+      mascots: MASCOTS.map(mascot => mascot.display ?? mascot.name)
     };
   }
 
@@ -358,6 +374,7 @@ export class WorldServer implements MessageHandler {
       prst: this._persister,
       off: this._off,
       npcs: this._npcs,
+      resetWorld: () => this.reset(),
 
       client,
 

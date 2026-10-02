@@ -5,6 +5,9 @@ import { getStamp } from "@server/socket-server/handlers/puffle";
 import { RoomName, ROOMS } from "@server/game-data/rooms";
 import PuffleLaunchGameSet from "@server/game-logic/pufflelaunch";
 import { CARDS } from "@server/game-logic/cards";
+import { CPUpdate } from "@server/updates";
+import { UPDATES } from "@server/updates/updates";
+import { isVersionValid, processVersion } from "@server/routes/versions";
 import { PenguinContext, RoomContext } from "@server/socket-server/handlers/handlers";
 
 type CommandContext = PenguinContext | RoomContext;
@@ -234,6 +237,145 @@ const handleSafechat: CommandHandler<[]> = ({ penguin, prst }) => {
   prst(penguin);
 }
 
+const normalizeCommandName = (name: string): string => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+const findPartyUpdate = (name: string) => {
+  const normalized = normalizeCommandName(name);
+  if (normalized === '') {
+    return undefined;
+  }
+  const parties = UPDATES.filter(update => 'partyName' in update.update);
+  const exact = parties.find(update => {
+    const updateName = (update.update as { partyName: string }).partyName;
+    return normalizeCommandName(updateName) === normalized;
+  });
+  if (exact !== undefined) {
+    return exact;
+  }
+
+  const partial = parties.filter(update => {
+    const updateName = (update.update as { partyName: string }).partyName;
+    return normalizeCommandName(updateName).includes(normalized);
+  });
+  return partial[partial.length - 1];
+};
+
+export const FEATURE_UPDATES: Record<string, CPUpdate> = {
+  migrator: { migrator: true },
+  bakery: { bakery: true },
+  'coins-for-change': {
+    coinsForChange: true,
+    cfcValues: [100000000, 250000000, 500000000]
+  },
+  'battle-of-doom': { battleOp: 'battle-of-doom' },
+  'brown-puffle': { freeBrownPuffle: true }
+};
+
+const findFeature = (name: string) => {
+  const normalized = normalizeCommandName(name);
+  return Object.keys(FEATURE_UPDATES).find(feature => normalizeCommandName(feature) === normalized);
+};
+
+const startEvent = (ctx: CommandContext, name: string): boolean => {
+  const feature = findFeature(name);
+  if (feature !== undefined) {
+    ctx.data.setEventOverride(`feature:${feature}`, FEATURE_UPDATES[feature]);
+    return true;
+  }
+
+  const party = findPartyUpdate(name);
+  if (party === undefined) {
+    return false;
+  }
+
+  ctx.data.setEventOverride('party', party.update);
+  return true;
+};
+
+const stopEvent = (ctx: CommandContext, name: string): void => {
+  const normalized = normalizeCommandName(name);
+  if (normalized === 'all' || normalized === 'everything') {
+    ctx.data.clearEventOverrides();
+    return;
+  }
+
+  const feature = findFeature(name);
+  if (feature !== undefined) {
+    ctx.data.clearEventOverride(`feature:${feature}`);
+  } else {
+    ctx.data.clearEventOverride('party');
+  }
+};
+
+const handleMainVersion: CommandHandler<[string]> = (ctx, version) => {
+  if (!isVersionValid(version)) {
+    return;
+  }
+  try {
+    processVersion(version);
+  } catch {
+    return;
+  }
+
+  ctx.data.clearEventOverrides();
+  ctx.settings.updateSettings({
+    version,
+    main_version: version,
+    game_mode: 'main',
+    timeline_progression: false
+  });
+  void ctx.resetWorld();
+};
+
+const handleParty: CommandHandler<string[]> = (ctx, ...name) => {
+  const normalized = normalizeCommandName(name.join(' '));
+  if (normalized === 'off' || normalized === 'stop' || normalized === 'end') {
+    stopEvent(ctx, 'party');
+    void ctx.resetWorld();
+    return;
+  }
+
+  if (startEvent(ctx, name.join(' '))) {
+    void ctx.resetWorld();
+  }
+};
+
+const handleEndParty: CommandHandler<[]> = (ctx) => {
+  stopEvent(ctx, 'party');
+  void ctx.resetWorld();
+};
+
+const handleEvent: CommandHandler<string[]> = (ctx, ...args) => {
+  const [action = 'start', ...rest] = args;
+  const name = rest.join(' ');
+  const normalized = normalizeCommandName(action);
+
+  if (normalized === 'stop' || normalized === 'end' || normalized === 'clear' || normalized === 'off') {
+    stopEvent(ctx, name === '' ? 'all' : name);
+    void ctx.resetWorld();
+    return;
+  }
+
+  const eventName = normalized === 'start' || normalized === 'on' ? name : args.join(' ');
+  if (startEvent(ctx, eventName)) {
+    void ctx.resetWorld();
+  }
+};
+
+const handleSpawnMascot: CommandHandler<string[]> = (ctx, ...name) => {
+  const roomId = 'room' in ctx && ctx.room !== undefined ? ctx.room.id : 100;
+  ctx.npcs.spawnMascot(name.join(' '), roomId);
+};
+
+const handleDespawnMascot: CommandHandler<string[]> = (ctx, ...name) => {
+  ctx.npcs.despawnMascot(name.join(' '));
+};
+
+const handleMascotSay: CommandHandler<string[]> = (ctx, ...args) => {
+  const [name = '', ...message] = args;
+  ctx.npcs.sayMascot(name, message.join(' '));
+};
+
 export class CommandsHandler {
   private _listeners: Map<
     string,
@@ -438,6 +580,69 @@ const generators: CommandsGenerator = [
       argNames: [],
       description: "Toggles safe-chat mode for your penguin.",
       examples: []
+    }
+  ],
+  [
+    'mainversion',
+    [c(['string'], handleMainVersion)],
+    {
+      argNames: ['date'],
+      description: "Sets the date used by Main Mode and switches the game to that version.",
+      examples: ['mainversion 2014-07-17', 'mainversion 2016-11-02']
+    }
+  ],
+  [
+    'party',
+    [c('string', handleParty)],
+    {
+      argNames: ['party name'],
+      description: "Applies a historical party or named event over the current version until it is stopped.",
+      examples: ['party Music Jam 2014', 'party Frozen Party', 'party Holiday Party 2016']
+    }
+  ],
+  [
+    'endparty',
+    [c([], handleEndParty)],
+    {
+      argNames: [],
+      description: "Removes the forced party/event room override from the current version.",
+      examples: []
+    }
+  ],
+  [
+    'event',
+    [c('string', handleEvent)],
+    {
+      argNames: ['start/stop', 'name'],
+      description: "Starts or stops forced timed features. Built-in features are migrator, bakery, coins-for-change, battle-of-doom, and brown-puffle.",
+      examples: ['event start bakery', 'event start Music Jam 2016', 'event stop all']
+    }
+  ],
+  [
+    'spawnmascot',
+    [c('string', handleSpawnMascot)],
+    {
+      argNames: ['name'],
+      description: "Spawns a Club Penguin mascot in your current room.",
+      examples: ['spawnmascot Rockhopper', 'spawnmascot Aunt Arctic', 'spawnmascot Gary']
+    }
+  ],
+  [
+    'despawnmascot',
+    [c('string', handleDespawnMascot)],
+    {
+      argNames: ['name'],
+      description: "Removes a spawned mascot from the island.",
+      examples: ['despawnmascot Rockhopper']
+    }
+  ],
+  [
+    'mascotsay',
+    [c('string', handleMascotSay)],
+    {
+      argNames: ['name', 'message'],
+      description: "Makes a spawned mascot say a message. For multi-word mascot names, remove the spaces.",
+      examples: ['mascotsay Rockhopper ahoy', 'mascotsay AuntArctic hello reporters']
     }
   ]
 ];

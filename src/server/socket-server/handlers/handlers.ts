@@ -36,6 +36,7 @@ type GlobalContext = {
   prst: PenguinPersister;
   off: OfflineWorld;
   npcs: NpcService;
+  resetWorld: () => Promise<void>;
 }
 
 type AlwaysSingularContext = {

@@ -51,6 +51,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'telescope/telescope.swf': 'archives:StarWarsRebelsTakeoverTelescopeEmpty2.swf'
         },
         fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/star_wars_rebels_2015.swf',
           'play/v2/content/global/avatar/sprites/jedidual.swf': 'archives:AvatarSpritesJediDual.swf',
           'play/v2/content/global/avatar/sprites/jediinquisitor.swf': 'archives:AvatarSpritesJediInquisitor.swf',
           'play/v2/content/global/avatar/sprites/jedisingle.swf': 'archives:AvatarSpritesJediSingle.swf',
@@ -65,6 +66,9 @@ export const UPDATES_2015_PARTIES: Update[] = [
     temp: {
       party: {
         partyName: 'SoundStudio Party',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/soundstudio_2015.swf'
+        },
         partyIcon: 'party',
         rooms: {
           forts: 'archives:RoomsForts-SoundStudioParty2015.swf',
@@ -185,7 +189,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'close_ups/choose_puffle_color_raccoon.swf': 'archives:Close_upsChoose_puffle_color_raccoon-PuffleParty2015.swf',
           'content/logologo.swf': 'archives:ContentLogoLogo-PuffleParty2015.swf'
         },
-        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-PuffleParty2015.swf' }
+        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-PuffleParty2015.swf', 'play/v2/client/party.swf': 'recreation:party_scripts/puffle_2015.swf' }
       }
     }
   },
@@ -278,6 +282,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'close_ups/character_dialogue_login.swf': 'archives:CloseUpsCharacterDialogueLogin-FrozenFeverParty.swf'
         },
         fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/frozen_fever_2015.swf',
           'play/v2/client/interface.swf': 'archives:ClientInterfaceFrozenFever2015.swf',
           'play/v2/content/global/avatar/sprites/olaf.swf': 'archives:AvatarSpritesOlaf.swf',
           'play/v2/content/global/avatar/sprites/marshmallow.swf': 'archives:AvatarSpritesMarshmallow-FrozenFeverParty.swf'
@@ -405,6 +410,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'content/logo.swf': 'archives:ContentLogo-TheFair2015.swf'
         },
         fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/fair_2015.swf',
           'play/v2/client/interface.swf': 'archives:ClientInterfaceFair2015.swf',
           'play/v2/content/global/rooms/effects/boatfront.swf': 'archives:RoomsEffectsBoatfront-TheFair2015.swf',
           'play/v2/content/global/rooms/effects/boatback.swf': 'archives:RoomsEffectsBoatback-TheFair2015.swf',
@@ -587,6 +593,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'content/logo.swf': 'archives:ContentLogo-InsideOutParty.swf'
         },
         fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/inside_out_2015.swf',
           'play/v2/client/interface.swf': 'archives:ClientInterface-InsideOutParty.swf',
           'play/v2/content/global/rooms/effects/avatar.swf': 'archives:RoomsEffectsAvatar-InsideOutParty.swf'
         }
@@ -697,7 +704,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'telescope/telescope.swf': 'archives:Telescope-FashionFestival.swf',
           'binoculars/binoculars.swf': 'archives:Binoculars-FashionFestival.swf'
         },
-        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-FashionFestival_3.swf' }
+        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-FashionFestival_3.swf', 'play/v2/client/party.swf': 'recreation:party_scripts/fashion_festival_2015.swf' }
       }
     }
   },
@@ -721,7 +728,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'content/party_icon.swf': 'archives:ContentParty_icon-DescendantsParty.swf',
           'close_ups/character_dialogue_login.swf': 'archives:Close_upsCharacter_dialogue_login-DescendantsParty.swf'
         },
-        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-DescendantsParty.swf' }
+        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-DescendantsParty.swf', 'play/v2/client/party.swf': 'recreation:party_scripts/descendants_2015.swf' }
       },
       party3: {
         partyName: 'Talk Like a Pirate Day',
@@ -824,7 +831,7 @@ export const UPDATES_2015_PARTIES: Update[] = [
           'close_ups/character_dialogue_sensei_10thanniversaryparty_2.swf': 'archives:Close_upsCharacter_dialogue_sensei-10thAnniversaryParty_2.swf',
           'content/logo.swf': 'archives:ContentLogo-10thAnniversaryParty.swf'
         },
-        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-10thAnniversaryParty.swf' }
+        fileChanges: { 'play/v2/client/interface.swf': 'archives:ClientInterface-10thAnniversaryParty.swf', 'play/v2/client/party.swf': 'recreation:party_scripts/anniversary_10_2015.swf' }
       }
     }
   },

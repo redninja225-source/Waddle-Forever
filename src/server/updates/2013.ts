@@ -699,6 +699,9 @@ const BASE_UPDATES_2013: Update[] = [
     temp: {
       party: {
         partyName: 'Monsters University Takeover',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/mu_takeover_2013.swf'
+        },
         rooms: {
           coffee: 'archives:RoomsCoffee-MUTakeover2013.swf',
           forts: 'archives:RoomsForts-MUTakeover2013.swf',
@@ -973,6 +976,9 @@ const BASE_UPDATES_2013: Update[] = [
     temp: {
       party: {
         partyName: 'Teen Beach Movie Summer Jam',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/teen_beach_2013.swf'
+        },
         rooms: {
           beach: 'archives:RoomsBeach-TeenBeachMovieSummerJam.swf',
           cove: 'archives:RoomsCove-TeenBeachMovieSummerJam.swf',
@@ -1114,7 +1120,11 @@ const BASE_UPDATES_2013: Update[] = [
           }
         },
         mapNote: 'archives:ENClose_upsParty_map_note-MedievalParty2013.swf',
-        partyIconFile: 'archives:ContentParty_icon-MedievalParty2013.swf'
+        partyIconFile: 'archives:ContentParty_icon-MedievalParty2013.swf',
+        fileChanges: {
+          'play/v2/client/party.swf': 'archives:ClientParty-MedievalParty2013.swf'
+        },
+        activeFeatures: '20130901'
       }
     }
   },
@@ -1402,7 +1412,8 @@ const BASE_UPDATES_2013: Update[] = [
         },
         fileChanges: {
           'play/v2/games/chase/chase.swf': 'archives:GamesChaseChase.swf',
-          'play/v2/games/chase/lang/en/locale.swf': 'archives:GamesChaseLangEnLocale.swf'
+          'play/v2/games/chase/lang/en/locale.swf': 'archives:GamesChaseLangEnLocale.swf',
+          'play/v2/client/party.swf': 'recreation:party_scripts/operation_puffle_2013.swf'
         }
       }
     }
@@ -1420,6 +1431,9 @@ const BASE_UPDATES_2013: Update[] = [
     temp: {
       party: {
         partyName: 'Holiday Party',
+        fileChanges: {
+          'play/v2/client/party.swf': 'recreation:party_scripts/holiday_2013.swf'
+        },
         rooms: {
           agentlobbymulti: 'archives:RoomsAgentlobbymulti-HolidayParty2013.swf',
           attic: 'archives:RoomsAttic-HolidayParty2013.swf',
