@@ -7,6 +7,16 @@ It has the main goal to be as complete as possible of an archive of Club Penguin
 > [!IMPORTANT]  
 > Download links are available in the [website!](https://waddleforever.com/)
 
+# Why this fork exists
+
+This is my fork of Waddle Forever, and here's why I made it.
+
+I lived a very chronically online childhood, and I feel it was damaging to my mind as I became an adult. Along with that, a lack of parenting and restrictions on things led me to getting a later start on a lot of things. I wanted to create this version of Club Penguin — one that's all-inclusive and fully self-contained — for my son, who is to be born in February 2027. I'll probably be working on this until he's old enough to play it, but that's the main reason. I want him to experience the things I did growing up, forming a love and nostalgia for this game as I did, without the worry of accessing the rest of the unfiltered internet.
+
+## A note on AI
+
+This fork was essentially fully changed with AI. I am not a programmer, nor do I have an aspiration to form a career as one. What I am, however, is a soon-to-be dad who wants to give his son a fun and safe world to be in at his pace. I am personally against AI as it currently exists or will exist in the future, but I do believe in its ability to be a tool to help the individual person. Unfortunately, I use the tool despite my personal feelings.
+
 # Progress
 
 Waddle Forever is still in constant development. A decent amount of features are present, but the program is far from complete.
