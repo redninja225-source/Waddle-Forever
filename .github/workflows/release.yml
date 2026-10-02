@@ -48,7 +48,7 @@ jobs:
           echo "tag=v${{ needs.verify-version.outputs.version }}" >> "$GITHUB_OUTPUT"
         fi
     - name: Create release
-      run: gh release create "${{ steps.tag.outputs.tag }}" --title "${{ steps.tag.outputs.tag }}" --generate-notes || true
+      run: gh release create "${{ steps.tag.outputs.tag }}" --repo ${{ github.repository }} --title "${{ steps.tag.outputs.tag }}" --generate-notes || true
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -68,7 +68,7 @@ jobs:
       run: yarn install
 
     - name: Build for Linux
-      run: yarn build-packages && yarn build-tsc && electron-builder build --linux --x64 --publish always
+      run: yarn build-packages && yarn build-tsc && yarn electron-builder build --linux --x64 --publish always
 
   build-windows:
     runs-on: windows-latest
@@ -86,7 +86,7 @@ jobs:
       run: yarn install
 
     - name: Build for Windows
-      run: yarn build-packages && yarn build-tsc && electron-builder build --win --x64 --publish always
+      run: yarn build-packages && yarn build-tsc && yarn electron-builder build --win --x64 --publish always
 
   build-media:
     runs-on: ubuntu-latest
